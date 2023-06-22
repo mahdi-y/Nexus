@@ -179,19 +179,19 @@
                 <div class="col-lg-4 col-md-6 col-12 mt-2 pt-2">
                     <div class="card border-0 bg-light rounded shadow">
                         <div class="card-body p-4">
-                            <h5>{{reponse.contenuR}}</h5>
-                            <div class="mt-3">
-                                <span class="text-muted d-block"><i class="fa fa-calendar" aria-hidden="true"></i> <a
+                            <h5 style="text-align:center;">{{reponse.contenuR}}</h5>
+                            <div class="mt-3"style="text-align:center;"">
+                                <span class="text-muted d-block" ><i class="fa fa-calendar" aria-hidden="true" ></i> <a
                                     href="#" target="_blank"
-                                    class="text-muted">{{reponse.dateAjoutR|date('Y-m-d')}}</a></span>
-                                <span class="text-muted d-block"><i class="fa fa-info"
+                                    class="text-muted" >{{reponse.dateAjoutR|date('Y-m-d')}}</a></span>
+                                <span class="text-muted d-block"><i class="fa fa-sort"
                                     aria-hidden="true"></i> {{reponse.voteR}}</span>
                             </div>
                             <div class="mt-3">
-                            <a href="{{ path('modifierreponse',{'id' : reponse.idR}) }}" class="btn btn-primary">Modifier</a>
+                            <a href="{{ path('modifierreponse',{'id' : reponse.idR}) }}" class="btn btn-primary"style="margin-left:120px;">Modifier</a>
                         </div>
                         <div class="mt-3">
-                            <a href="{{ path('supprimerreponse',{'id' : reponse.idR}) }}" class="btn btn-primary">Supprimer</a>
+                            <a href="{{ path('supprimerreponse',{'id' : reponse.idR}) }}" class="btn btn-primary"style="margin-left:115px;">Supprimer</a>
                         </div>
                         </div>
                     </div>

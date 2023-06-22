@@ -63,7 +63,8 @@ class Question
      */
     private $signaleQ = '0';
 
-    #[ORM\ManyToOne(inversedBy: 'Questions')]
+#[ORM\ManyToOne(targetEntity: Utilisateur::class, inversedBy: 'Questions')]
+#[ORM\JoinColumn(name: 'idU', referencedColumnName: 'idU')]
     private ?Utilisateur $idU = null;
 
     public function getIdQ(): ?int
@@ -148,7 +149,7 @@ class Question
         return $this->idU;
     }
 
-    public function setIdU(?Utilisateur $idU): static
+    public function setIdU(?Utilisateur $idU): self 
     {
         $this->idU = $idU;
 

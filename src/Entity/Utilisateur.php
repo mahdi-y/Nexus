@@ -6,10 +6,9 @@ use Doctrine\DBAL\Types\Types;
 use Doctrine\ORM\Mapping as ORM;
 use App\Repository\UtilisateurRepository;
 use DateTime;
+use Symfony\Component\Security\Core\User\PasswordAuthenticatedUserInterface;
 
-/**
- * @ORM\Entity(repositoryClass="App\Repository\UtilisateurRepository")
- */
+#[ORM\Entity(repositoryClass: UtilisateurRepository::class)]
 class Utilisateur
 {
     #[ORM\Id]
@@ -30,10 +29,13 @@ class Utilisateur
     private ?DateTime $dateNaissanceU = null;
 
     #[ORM\Column(length: 150)]
-    private ?int $sexeU = null;
+    private ?string $sexeU = null;
 
     #[ORM\Column]
     private ?int $roleU = 0;
+
+    #[ORM\Column]
+    private ?string $Mdp = null;
 
     #[ORM\Column]
     private ?int $verifieU = 0;
@@ -114,6 +116,17 @@ class Utilisateur
     public function setRoleU(int $roleU): static
     {
         $this->roleU = $roleU;
+
+        return $this;
+    }
+    public function getMpd(): ?string
+    {
+        return $this->Mdp;
+    }
+
+    public function setMdp(string $Mdp): static
+    {
+        $this->Mdp = $Mdp;
 
         return $this;
     }

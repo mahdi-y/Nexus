@@ -4,72 +4,53 @@ namespace App\Entity;
 
 use Doctrine\DBAL\Types\Types;
 use Doctrine\ORM\Mapping as ORM;
+use App\Repository\QuestionRepository;
+use DateTime;
 
-/**
- * Question
- *
- * @ORM\Table(name="question", indexes={@ORM\Index(name="fk_id_u2", columns={"Id_U"})})
- * @ORM\Entity
- */
+#[ORM\Entity(repositoryClass: QuestionRepository::class)]
 class Question
 {
-    /**
-     * @var int
-     *
-     * @ORM\Column(name="Id_Q", type="integer", nullable=false)
-     * @ORM\Id
-     * @ORM\GeneratedValue(strategy="IDENTITY")
-     */
-    private $idQ;
+    #[ORM\Id]
+    #[ORM\GeneratedValue]
+    #[ORM\Column]
+    private ?int $idQ = null;
 
-    /**
-     * @var string
-     *
-     * @ORM\Column(name="Contenu_Q", type="text", length=65535, nullable=false)
-     */
-    private $contenuQ;
+    #[ORM\Column(length: 150)]
+    private ?string $titreQ = null;
 
-    /**
-     * @var string
-     *
-     * @ORM\Column(name="Type_Q", type="string", length=40, nullable=false)
-     */
-    private $typeQ;
+    #[ORM\Column(length: 150)]
+    private ?string $contenuQ = null;
 
-    /**
-     * @var \DateTime
-     *
-     * @ORM\Column(name="Date_Ajout_Q", type="date", nullable=false)
-     */
-    private $dateAjoutQ;
+    #[ORM\Column(length: 150)]
+    private ?string $typeQ = null;
 
-    /**
-     * @var int
-     *
-     * @ORM\Column(name="Vote_Q", type="integer", nullable=false)
-     */
-    private $voteQ = '0';
+    #[ORM\Column]
+    private ?DateTime $dateAjoutQ = null;
 
-    /**
-     * @var int
-     *
-     * @ORM\Column(name="Signale_Q", type="integer", nullable=false)
-     */
-    private $signaleQ = '0';
+    #[ORM\Column]
+    private ?int $voteQ = 0;
 
-    /**
-     * @var \Utilisateur
-     *
-     * @ORM\ManyToOne(targetEntity="Utilisateur")
-     * @ORM\JoinColumns({
-     *   @ORM\JoinColumn(name="Id_U", referencedColumnName="Id_U")
-     * })
-     */
-    private $idU;
+    #[ORM\Column]
+    private ?int $signaleQ = 0;
+
+    #[ORM\ManyToOne(inversedBy: 'Questions')]
+    private ?Utilisateur $idU = null;
 
     public function getIdQ(): ?int
     {
         return $this->idQ;
+    }
+
+    public function getTitreQ(): ?string
+    {
+        return $this->titreQ;
+    }
+
+    public function setTitreQ(string $titreQ): static
+    {
+        $this->titreQ = $titreQ;
+
+        return $this;
     }
 
     public function getContenuQ(): ?string
@@ -143,6 +124,4 @@ class Question
 
         return $this;
     }
-
-
 }

@@ -4,78 +4,37 @@ namespace App\Entity;
 
 use Doctrine\DBAL\Types\Types;
 use Doctrine\ORM\Mapping as ORM;
+use App\Repository\ReponseRepository;
+use DateTime;
 
-/**
- * Reponse
- *
- * @ORM\Table(name="reponse", indexes={@ORM\Index(name="fk_id_u", columns={"Id_U"}), @ORM\Index(name="fk_id_q", columns={"Id_Q"})})
- * @ORM\Entity
- */
+#[ORM\Entity(repositoryClass: ReponseRepository::class)]
 class Reponse
 {
-    /**
-     * @var int
-     *
-     * @ORM\Column(name="Id_R", type="integer", nullable=false)
-     * @ORM\Id
-     * @ORM\GeneratedValue(strategy="IDENTITY")
-     */
-    private $idR;
+    #[ORM\Id]
+    #[ORM\GeneratedValue]
+    #[ORM\Column]
+    private ?int $idR = null;
 
-    /**
-     * @var string
-     *
-     * @ORM\Column(name="Contenu_R", type="text", length=65535, nullable=false)
-     */
-    private $contenuR;
+    #[ORM\Column(length: 150)]
+    private ?string $contenuR = null;
 
-    /**
-     * @var \DateTime
-     *
-     * @ORM\Column(name="Date_Ajout_R", type="date", nullable=false)
-     */
-    private $dateAjoutR;
+    #[ORM\Column]
+    private ?DateTime $dateAjoutR = null;
 
-    /**
-     * @var int
-     *
-     * @ORM\Column(name="Vote_R", type="integer", nullable=false)
-     */
-    private $voteR = '0';
+    #[ORM\Column]
+    private ?int $voteR = 0;
 
-    /**
-     * @var int
-     *
-     * @ORM\Column(name="Etat_R", type="integer", nullable=false)
-     */
-    private $etatR = '0';
+    #[ORM\Column]
+    private ?int $etatR = 0;
 
-    /**
-     * @var int
-     *
-     * @ORM\Column(name="Signale_R", type="integer", nullable=false)
-     */
-    private $signaleR = '0';
+    #[ORM\Column]
+    private ?int $signaleR = 0;
 
-    /**
-     * @var \Question
-     *
-     * @ORM\ManyToOne(targetEntity="Question")
-     * @ORM\JoinColumns({
-     *   @ORM\JoinColumn(name="Id_Q", referencedColumnName="Id_Q")
-     * })
-     */
-    private $idQ;
+    #[ORM\ManyToOne(inversedBy: 'Reponses')]
+    private ?Question $idQ = null;
 
-    /**
-     * @var \Utilisateur
-     *
-     * @ORM\ManyToOne(targetEntity="Utilisateur")
-     * @ORM\JoinColumns({
-     *   @ORM\JoinColumn(name="Id_U", referencedColumnName="Id_U")
-     * })
-     */
-    private $idU;
+    #[ORM\ManyToOne(inversedBy: 'Reponses')]
+    private ?Utilisateur $idU = null;
 
     public function getIdR(): ?int
     {
@@ -165,6 +124,4 @@ class Reponse
 
         return $this;
     }
-
-
 }

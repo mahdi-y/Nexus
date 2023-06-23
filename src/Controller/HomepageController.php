@@ -35,14 +35,15 @@ class HomepageController extends AbstractController
 
             // $output now contains the output of the Java application
             // You can access and use it as needed
-            var_dump($output);
+            $jsonString = implode('', $output); // Convert array to a single string
+            $output = json_decode($jsonString, true); // Decode the JSON string into an array
         }
 
         // Render the template with the form
         return $this->render(
-            'homepage/index.html.twig',
+            'homepage/search1.html.twig',
             [
-                'output' => $output,
+                'jsonOutput' => $output,
             ]
         );
     }

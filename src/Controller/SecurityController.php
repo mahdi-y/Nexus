@@ -1,0 +1,74 @@
+<?php
+
+namespace App\Controller;
+
+use App\Entity\Utilisateur;
+use DateTimeImmutable;
+use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
+use Symfony\Component\HttpFoundation\Request;
+use Symfony\Component\Routing\Annotation\Route;
+use Symfony\Component\Security\Core\Encoder\UserPasswordEncoderInterface;
+use Symfony\Component\Security\Http\Authentication\AuthenticationUtils;
+
+class SecurityController extends AbstractController
+{
+    /**
+     * @Route("/login", name="login")
+     */
+    public function login(AuthenticationUtils $authenticationUtils)
+    {
+        // Get the login error if there is one
+        $error = $authenticationUtils->getLastAuthenticationError();
+
+        // Get the last username entered by the user
+        $lastUsername = $authenticationUtils->getLastUsername();
+
+        return $this->render('security/login.html.twig', [
+            'last_username' => $lastUsername,
+            'error' => $error,
+        ]);
+    }
+
+    /**
+     * @Route("/register", name="register")
+     */
+    public function register(Request $request, UserPasswordEncoderInterface $passwordEncoder)
+    {
+        if ($request->isMethod('POST')) {
+            $entityManager = $this->getDoctrine()->getManager();
+
+            // Get the form data
+            $nom = $request->request->get('nom');
+            $prenom = $request->request->get('prenom');
+            $email = $request->request->get('email');
+            $DOB = $request->request->get('DateDeNaissance');
+            $sexe = $request->request->get('sexe');
+            $password = $request->request->get('password');
+
+            //convert date from string to datetimeinterface 
+            $DOB = DateTimeImmutable::createFromFormat('Y-m-d', $DOB);
+
+
+            // Create a new Utilisateur object
+            $utilisateur = new Utilisateur();
+            $utilisateur->setNomU($nom);
+            $utilisateur->setPrenomU($prenom);
+            $utilisateur->setEmailU($email);
+            $utilisateur->setDateNaissanceU($DOB);
+            $utilisateur->setSexeU($sexe);
+
+            // Hash the password
+            $encodedPassword = $passwordEncoder->encodePassword($utilisateur, $password);
+            $utilisateur->setMdp($encodedPassword);
+
+            // Save the utilisateur to the database
+            $entityManager->persist($utilisateur);
+            $entityManager->flush();
+
+            // Redirect to the login page
+            return $this->redirectToRoute('login');
+        }
+
+        return $this->render('security/register.html.twig');
+    }
+}

@@ -9,6 +9,7 @@ use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\Routing\Annotation\Route;
 use Symfony\Component\Security\Core\Encoder\UserPasswordEncoderInterface;
 use Symfony\Component\Security\Http\Authentication\AuthenticationUtils;
+use Symfony\Component\Security\Http\Logout\LogoutSuccessHandlerInterface;
 
 class SecurityController extends AbstractController
 {
@@ -27,6 +28,15 @@ class SecurityController extends AbstractController
             'last_username' => $lastUsername,
             'error' => $error,
         ]);
+    }
+
+    /**
+     * @Route("/logout", name="logout")
+     */
+    public function logout(Request $request, LogoutSuccessHandlerInterface $logoutSuccessHandler)
+    {
+        // This method will not be executed.
+        throw new \Exception('This should not be reached.');
     }
 
     /**

@@ -7,3 +7,6 @@ login:
 register:
   path: /register
   controller: App\Controller\SecurityController::register
+logout:
+  path: /logout
+  controller: App\Controller\SecurityController::logout

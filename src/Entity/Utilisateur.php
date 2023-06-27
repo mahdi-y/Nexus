@@ -17,11 +17,11 @@ class Utilisateur implements UserInterface, PasswordAuthenticatedUserInterface
     /**
      * @var int
      *
-     * @ORM\Column(name="Id_U", type="integer", nullable=false)
+     * @ORM\Column(type="integer")
      * @ORM\Id
      * @ORM\GeneratedValue(strategy="IDENTITY")
      */
-    private $idU;
+    private ?int $idU = null;
 
     /**
      * @var string

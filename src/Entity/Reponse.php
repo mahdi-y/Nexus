@@ -2,86 +2,157 @@
 
 namespace App\Entity;
 
+use Doctrine\DBAL\Types\Types;
 use Doctrine\ORM\Mapping as ORM;
+use App\Repository\ReponseRepository;
+use DateTime;
+use Symfony\Component\Serializer\Annotation\Groups;
+use Symfony\Component\Validator\Constraints as Assert;
 
 /**
- * Reponse
- *
- * @ORM\Table(name="reponse", indexes={@ORM\Index(name="fk_id_u", columns={"Id_U"}), @ORM\Index(name="fk_id_q", columns={"Id_Q"})})
- * @ORM\Entity
+ * @ORM\Entity(repositoryClass="App\Repository\ReponseRepository")
  */
 class Reponse
 {
     /**
-     * @var int
-     *
-     * @ORM\Column(name="Id_R", type="integer", nullable=false)
      * @ORM\Id
-     * @ORM\GeneratedValue(strategy="IDENTITY")
+     * @ORM\GeneratedValue
+     * @ORM\Column(name="id_R", type="integer", nullable=false)
+     * @Groups("reponses")
      */
-    private $idR;
+    private ?int $idR = null;
 
     /**
-     * @var string
-     *
-     * @ORM\Column(name="Titre_Q", type="text", length=65535, nullable=false)
+     * @ORM\Column(length=150)
+     * @Groups("reponses")
      */
-    private $titreQ;
+    #[Assert\NotBlank(message: "Le contenu est obligatoire!")]
+    private ?string $contenuR = null;
 
     /**
-     * @var string
-     *
-     * @ORM\Column(name="Contenu_R", type="text", length=65535, nullable=false)
+     * @ORM\Column(type="datetime")
+     * @Groups("reponses")
      */
-    private $contenuR;
+    private ?DateTime $dateAjoutR = null;
 
     /**
-     * @var \DateTime
-     *
-     * @ORM\Column(name="Date_Ajout_R", type="date", nullable=false)
+     * @ORM\Column(type="integer")
+     * @Groups("reponses")
      */
-    private $dateAjoutR;
+    private ?int $voteR = 0;
 
     /**
-     * @var int
-     *
-     * @ORM\Column(name="Vote_R", type="integer", nullable=false)
+     * @ORM\Column(type="integer")
+     * @Groups("reponses")
      */
-    private $voteR = '0';
+    private ?int $etatR = 0;
 
     /**
-     * @var int
-     *
-     * @ORM\Column(name="Etat_R", type="integer", nullable=false)
+     * @ORM\Column(type="integer")
+     * @Groups("reponses")
      */
-    private $etatR = '0';
+    private ?int $signaleR = 0;
 
     /**
-     * @var int
-     *
-     * @ORM\Column(name="Signale_R", type="integer", nullable=false)
+     * @ORM\ManyToOne(targetEntity=Question::class)
+     * @ORM\JoinColumn(name="Id_Q", referencedColumnName="id_Q", nullable=true)
+     * @Groups("reponses")
      */
-    private $signaleR = '0';
+    private ?Question $idQ = null;
 
     /**
-     * @var \Question
-     *
-     * @ORM\ManyToOne(targetEntity="Question")
-     * @ORM\JoinColumns({
-     *   @ORM\JoinColumn(name="Id_Q", referencedColumnName="Id_Q")
-     * })
+     * @ORM\ManyToOne(targetEntity=Utilisateur::class)
+     * @ORM\JoinColumn(name="id_u", referencedColumnName="id_u", nullable=true)
+     * @Groups("reponses")
      */
-    private $idQ;
+    private ?Utilisateur $idU = null;
 
-    /**
-     * @var \Utilisateur
-     *
-     * @ORM\ManyToOne(targetEntity="Utilisateur")
-     * @ORM\JoinColumns({
-     *   @ORM\JoinColumn(name="Id_U", referencedColumnName="Id_U")
-     * })
-     */
-    private $idU;
+    public function getIdR(): ?int
+    {
+        return $this->idR;
+    }
 
+    public function getContenuR(): ?string
+    {
+        return $this->contenuR;
+    }
 
+    public function setContenuR(string $contenuR): self
+    {
+        $this->contenuR = $contenuR;
+
+        return $this;
+    }
+
+    public function getDateAjoutR(): ?DateTime
+    {
+        return $this->dateAjoutR;
+    }
+
+    public function setDateAjoutR(DateTime $dateAjoutR): self
+    {
+        $this->dateAjoutR = $dateAjoutR;
+
+        return $this;
+    }
+
+    public function getVoteR(): ?int
+    {
+        return $this->voteR;
+    }
+
+    public function setVoteR(int $voteR): self
+    {
+        $this->voteR = $voteR;
+
+        return $this;
+    }
+
+    public function getEtatR(): ?int
+    {
+        return $this->etatR;
+    }
+
+    public function setEtatR(int $etatR): self
+    {
+        $this->etatR = $etatR;
+
+        return $this;
+    }
+
+    public function getSignaleR(): ?int
+    {
+        return $this->signaleR;
+    }
+
+    public function setSignaleR(int $signaleR): self
+    {
+        $this->signaleR = $signaleR;
+
+        return $this;
+    }
+
+    public function getIdQ(): ?Question
+    {
+        return $this->idQ;
+    }
+
+    public function setIdQ(?Question $idQ): self
+    {
+        $this->idQ = $idQ;
+
+        return $this;
+    }
+
+    public function getIdU(): ?Utilisateur
+    {
+        return $this->idU;
+    }
+
+    public function setIdU(?Utilisateur $idU): self
+    {
+        $this->idU = $idU;
+
+        return $this;
+    }
 }

@@ -6,6 +6,7 @@ use Doctrine\DBAL\Types\Types;
 use Doctrine\ORM\Mapping as ORM;
 use App\Repository\QuestionRepository;
 use DateTime;
+
 /**
  * @ORM\Entity(repositoryClass="App\Repository\QuestionRepository")
  */
@@ -14,11 +15,11 @@ class Question
     /**
      * @var int
      *
-     * @ORM\Column(name="Id_Q", type="integer", nullable=false)
+     * @ORM\Column(name="id_Q", type="integer", nullable=false)
      * @ORM\Id
      * @ORM\GeneratedValue(strategy="IDENTITY")
      */
-    private $idQ;
+    private ?int $idQ = null;
 
     /**
      * @var string
@@ -63,8 +64,8 @@ class Question
      */
     private $signaleQ = '0';
 
-#[ORM\ManyToOne(targetEntity: Utilisateur::class, inversedBy: 'Questions')]
-#[ORM\JoinColumn(name: 'idU', referencedColumnName: 'idU')]
+    #[ORM\ManyToOne(targetEntity: Utilisateur::class, inversedBy: 'Questions')]
+    #[ORM\JoinColumn(name: 'idU', referencedColumnName: 'idU')]
     private ?Utilisateur $idU = null;
 
     public function getIdQ(): ?int
@@ -149,12 +150,10 @@ class Question
         return $this->idU;
     }
 
-    public function setIdU(?Utilisateur $idU): self 
+    public function setIdU(?Utilisateur $idU): self
     {
         $this->idU = $idU;
 
         return $this;
     }
-
-
 }

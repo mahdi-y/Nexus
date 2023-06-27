@@ -62,4 +62,18 @@ class QuestionRepository extends ServiceEntityRepository
             ->getQuery()
             ->getOneOrNullResult();
     }
+    public function getbyid($id): array
+    {
+        $entityManager = $this->getEntityManager();
+
+        $query = $entityManager->createQuery(
+            'SELECT q
+            FROM App\Entity\Question q
+            where q.idQ=:id
+            '
+
+        )->setParameter('id', $id);
+
+        return $query->getResult();
+    }
 }

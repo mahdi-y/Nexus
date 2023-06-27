@@ -2,6 +2,7 @@
 
 namespace App\Controller;
 
+use App\Repository\QuestionRepository;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
@@ -17,7 +18,7 @@ class HomepageController extends AbstractController
         ]);
     }
     #[Route('/searchroute', name: 'search_route')]
-    public function searchroute(Request $request): Response
+    public function searchroute(Request $request, QuestionRepository $repo): Response
     {
         if ($request->isMethod('POST')) {
             $searchQuery = $request->request->get('search_query');
@@ -37,7 +38,11 @@ class HomepageController extends AbstractController
             // You can access and use it as needed
             $jsonString = implode('', $output); // Convert array to a single string
             $output = json_decode($jsonString, true); // Decode the JSON string into an array
-
+            $votes = [];
+            foreach ($output as $item) {
+                $question = $item['question'];
+                $votes[$question] = $repo->getVotesForQuestion($question);
+            }
         }
 
         // Render the template with the form
@@ -45,6 +50,7 @@ class HomepageController extends AbstractController
             'homepage/search1.html.twig',
             [
                 'jsonOutput' => $output,
+                'votes' => $votes
             ]
         );
     }

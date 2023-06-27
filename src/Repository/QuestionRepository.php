@@ -91,4 +91,14 @@ class QuestionRepository extends ServiceEntityRepository
 
         return $query->getOneOrNullResult();
     }
+    public function getVotesForQuestion($questionName)
+    {
+        $query = $this->createQueryBuilder('q')
+            ->select('q.voteQ')
+            ->andWhere('q.contenuQ = :name')
+            ->setParameter('name', $questionName)
+            ->getQuery();
+
+        return $query->getSingleScalarResult();
+    }
 }

@@ -37,6 +37,7 @@ class HomepageController extends AbstractController
             // You can access and use it as needed
             $jsonString = implode('', $output); // Convert array to a single string
             $output = json_decode($jsonString, true); // Decode the JSON string into an array
+
         }
 
         // Render the template with the form

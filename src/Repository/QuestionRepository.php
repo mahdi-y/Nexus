@@ -76,4 +76,19 @@ class QuestionRepository extends ServiceEntityRepository
 
         return $query->getResult();
     }
+
+    public function getbyname($nom): ?Question
+    {
+        $entityManager = $this->getEntityManager();
+
+        $query = $entityManager->createQuery(
+            'SELECT q
+            FROM App\Entity\Question q
+            where q.contenuQ=:nom
+            '
+
+        )->setParameter('nom', $nom);
+
+        return $query->getOneOrNullResult();
+    }
 }

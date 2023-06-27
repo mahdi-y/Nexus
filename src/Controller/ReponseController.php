@@ -14,9 +14,19 @@ use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
+use Symfony\Component\Security\Core\Security;
 
 class ReponseController extends AbstractController
 {
+    private $security;
+
+    public function __construct(Security $security)
+    {
+        $this->security = $security;
+    }
+
+
+
     #[Route('/reponse', name: 'app_reponse')]
     public function index(): Response
     {
@@ -27,12 +37,11 @@ class ReponseController extends AbstractController
     #[Route('/reponse/add', name: 'reponseadd')]
     public function reponseadd(ManagerRegistry $doctrine, Request $req, UtilisateurRepository $utirep, QuestionRepository $quesrep): Response
     {
+        $user = $this->security->getUser();
         $date = new \DateTime('@' . strtotime('now'));
         $em = $doctrine->getManager();
         $question = new Question();
-        $utilisateur = new Utilisateur();
         $question = $quesrep->find(1);
-        $utilisateur = $utirep->find(1);
         $reponse = new Reponse();
         $form = $this->createForm(ReponseType::class, $reponse);
         $form->handleRequest($req);
@@ -42,7 +51,7 @@ class ReponseController extends AbstractController
             $reponse->setVoteR(0);
             $reponse->setSignaleR(0);
             $reponse->setIdQ($question);
-            $reponse->setIdU($utilisateur);
+            $reponse->setIdU($user);
             $em->persist($reponse);
             $em->flush();
             return $this->redirectToRoute('afficherreponse');
@@ -50,24 +59,29 @@ class ReponseController extends AbstractController
 
         return $this->renderForm('reponse/addReponse.html.twig', ['f' => $form]);
     }
-    #[Route('/reponse/afficherall', name: 'afficherreponseall')]
+    #[Route('/reponse/afficherUC', name: 'afficherreponseUC')]
     public function afficherreponseall(ManagerRegistry $doctrine, Request $request, ReponseRepository $repository): Response
     {
-        $reponses = $repository->findAll();
-
+        $user = $this->security->getUser();
+        if ($user instanceof Utilisateur) {
+            $reponses = $repository->getbyid($user->getIdU());
+        }
         return $this->render('reponse/afficherallReponse.html.twig', [
 
             'r' => $reponses
         ]);
     }
-    #[Route('/reponse/afficher', name: 'afficherreponse')]
-    public function afficherreponse(ManagerRegistry $doctrine, Request $request, ReponseRepository $repository, QuestionRepository $repo): Response
+    #[Route('/reponse/afficher/{id}', name: 'afficherreponse')]
+    public function afficherreponse(ManagerRegistry $doctrine, Request $request, QuestionRepository $repo, $id, ReponseRepository $repository): Response
     {
-        $question = $repo->getbyid(1);
 
-        return $this->render('reponse/afficher_reponse.html.twig', [
+        $question = $repo->getbyname($id);
+        var_dump($question);
+        $reponses = $repository->getbyid($question->getIdQ());
 
-            'q' => $question
+        return $this->render('reponse/afficherallReponse.html.twig', [
+
+            'r' => $reponses
         ]);
     }
     #[Route('/reponse/afficher/{id}', name: 'afficherreponse1')]

@@ -2,47 +2,91 @@
 
 namespace App\Entity;
 
-use Doctrine\DBAL\Types\Types;
+
 use Doctrine\ORM\Mapping as ORM;
-use App\Repository\UtilisateurRepository;
-use DateTime;
 use Symfony\Component\Security\Core\User\PasswordAuthenticatedUserInterface;
+use Symfony\Component\Security\Core\User\UserInterface;
 
-
-#[ORM\Entity(repositoryClass: UtilisateurRepository::class)]
-class Utilisateur
+/**
+ * Utilisateur
+ *
+ * @ORM\Table(name="utilisateur")
+ * @ORM\Entity
+ */
+class Utilisateur implements UserInterface, PasswordAuthenticatedUserInterface
 {
-    #[ORM\Id]
-    #[ORM\GeneratedValue]
-    #[ORM\Column]
+    /**
+     * @var int
+     *
+     * @ORM\Column(type="integer")
+     * @ORM\Id
+     * @ORM\GeneratedValue(strategy="IDENTITY")
+     */
     private ?int $idU = null;
 
-    #[ORM\Column(length: 150)]
-    private ?string $nomU = null;
+    /**
+     * @var string
+     *
+     * @ORM\Column(name="Nom_U", type="string", length=20, nullable=false)
+     */
+    private $nomU;
 
-    #[ORM\Column(length: 150)]
-    private ?string $prenomU = null;
+    /**
+     * @var string
+     *
+     * @ORM\Column(name="Prenom_U", type="string", length=20, nullable=false)
+     */
+    private $prenomU;
 
-    #[ORM\Column(length: 150)]
-    private ?string $emailU = null;
+    /**
+     * @var string
+     *
+     * @ORM\Column(name="Email_U", type="string", length=50, nullable=false)
+     */
+    private $emailU;
 
-    #[ORM\Column]
-    private ?DateTime $dateNaissanceU = null;
+    /**
+     * @var \DateTime
+     *
+     * @ORM\Column(name="Date_Naissance_U", type="date", nullable=false)
+     */
+    private $dateNaissanceU;
 
-    #[ORM\Column(length: 150)]
-    private ?string $sexeU = null;
+    /**
+     * @var string
+     *
+     * @ORM\Column(name="Sexe_U", type="string", length=20, nullable=false)
+     */
+    private $sexeU;
 
-    #[ORM\Column]
-    private ?int $roleU = 0;
+    /**
+     * @var string
+     *
+     * @ORM\Column(name="Mdp", type="string", length=64, nullable=false)
+     */
+    private $mdp;
 
-    #[ORM\Column]
-    private ?string $Mdp = null;
+    /**
+     * @var int
+     *
+     * @ORM\Column(name="Role_U", type="integer", nullable=false)
+     */
+    private $roleU = '0';
 
-    #[ORM\Column]
-    private ?int $verifieU = 0;
+    /**
+     * @var int
+     *
+     * @ORM\Column(name="Verifie_U", type="integer", nullable=false)
+     */
+    private $verifieU = '0';
 
-    #[ORM\Column]
-    private ?int $actifU = 0;
+    /**
+     * @var int
+     *
+     * @ORM\Column(name="Actif_U", type="integer", nullable=false)
+     */
+    private $actifU = '0';
+
 
     public function getIdU(): ?int
     {
@@ -54,7 +98,9 @@ class Utilisateur
         return $this->nomU;
     }
 
-    public function setNomU(string $nomU): static
+
+    public function setNomU(string $nomU): self
+
     {
         $this->nomU = $nomU;
 
@@ -66,7 +112,9 @@ class Utilisateur
         return $this->prenomU;
     }
 
-    public function setPrenomU(string $prenomU): static
+
+    public function setPrenomU(string $prenomU): self
+
     {
         $this->prenomU = $prenomU;
 
@@ -78,7 +126,9 @@ class Utilisateur
         return $this->emailU;
     }
 
-    public function setEmailU(string $emailU): static
+
+    public function setEmailU(string $emailU): self
+
     {
         $this->emailU = $emailU;
 
@@ -90,7 +140,9 @@ class Utilisateur
         return $this->dateNaissanceU;
     }
 
-    public function setDateNaissanceU(\DateTimeInterface $dateNaissanceU): static
+
+    public function setDateNaissanceU(\DateTimeInterface $dateNaissanceU): self
+
     {
         $this->dateNaissanceU = $dateNaissanceU;
 
@@ -102,9 +154,24 @@ class Utilisateur
         return $this->sexeU;
     }
 
-    public function setSexeU(string $sexeU): static
+
+    public function setSexeU(string $sexeU): self
+
     {
         $this->sexeU = $sexeU;
+
+        return $this;
+    }
+
+
+    public function getMdp(): ?string
+    {
+        return $this->mdp;
+    }
+
+    public function setMdp(string $mdp): self
+    {
+        $this->mdp = $mdp;
 
         return $this;
     }
@@ -114,20 +181,10 @@ class Utilisateur
         return $this->roleU;
     }
 
-    public function setRoleU(int $roleU): static
+    public function setRoleU(int $roleU): self
     {
         $this->roleU = $roleU;
 
-        return $this;
-    }
-    public function getMpd(): ?string
-    {
-        return $this->Mdp;
-    }
-
-    public function setMdp(string $Mdp): static
-    {
-        $this->Mdp = $Mdp;
 
         return $this;
     }
@@ -137,7 +194,9 @@ class Utilisateur
         return $this->verifieU;
     }
 
-    public function setVerifieU(int $verifieU): static
+
+    public function setVerifieU(int $verifieU): self
+
     {
         $this->verifieU = $verifieU;
 
@@ -149,10 +208,53 @@ class Utilisateur
         return $this->actifU;
     }
 
-    public function setActifU(int $actifU): static
+
+    public function setActifU(int $actifU): self
+
     {
         $this->actifU = $actifU;
 
         return $this;
     }
+
+
+    // Implement methods from UserInterface and PasswordAuthenticatedUserInterface
+
+    public function getRoles()
+    {
+        // Define the roles for your user based on the $roleU property
+        if ($this->roleU === 1) {
+            return ['ROLE_ADMIN'];
+        }
+
+        return ['ROLE_USER'];
+    }
+
+    public function getPassword(): string
+    {
+        return $this->mdp;
+    }
+
+    public function getSalt(): ?string
+    {
+        // Leave this empty if you're using bcrypt for password hashing
+        // Symfony's built-in password encoder automatically handles the salt
+        return null;
+    }
+
+    public function getUsername(): string
+    {
+        return $this->emailU;
+    }
+
+    public function eraseCredentials()
+    {
+        // Implement this method if you have any sensitive information to clear
+        // For example, if you have a plain-text password property, you can set it to null here
+    }
+    public function getUserIdentifier()
+    {
+        return $this->emailU;
+    }
+
 }

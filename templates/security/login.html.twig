@@ -5,13 +5,23 @@
 {% block body %}
     <h1>Login</h1>
 
-    {{ form_start(form) }}
 
-    {{ form_row(form.emailU) }}
+    {% if error %}
+        <div>{{ error.messageKey|trans(error.messageData, 'security') }}</div>
+    {% endif %}
 
-    {{ form_row(form.mdp) }}
-
-    {{ form_row(form.submit) }}
-
-    {{ form_end(form) }}
+    <form method="post">
+        <div>
+            <label for="email">Email:</label>
+            <input type="text" id="email" name="_username" value="{{ last_username }}" required autofocus>
+        </div>
+        <div>
+            <label for="password">Password:</label>
+            <input type="password" id="password" name="_password" required>
+        </div>
+        <div>
+            <button type="submit">Login</button>
+        </div>
+    </form>
 {% endblock %}
+

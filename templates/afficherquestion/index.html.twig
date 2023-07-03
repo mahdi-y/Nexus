@@ -1,0 +1,19 @@
+{% extends 'front.html.twig' %}
+
+{% block content %}
+{% block body %}
+    <h1>Asked Questions.. </h1>
+
+    {% for question in questions %}
+        <div class="question">
+
+            <h3>{{ question.titreQ }}</h3>
+            <p>{{ question.contenuQ }}</p>
+            {% if question.idU is not null %}
+            <p>Asked by: {{ question.idU.emailU }}</p>
+            {% endif %}
+
+        </div>
+    {% endfor %}
+{% endblock %}
+{% endblock %}

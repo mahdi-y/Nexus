@@ -39,28 +39,68 @@ class QuestionRepository extends ServiceEntityRepository
         }
     }
 
-//    /**
-//     * @return Question[] Returns an array of Question objects
-//     */
-//    public function findByExampleField($value): array
-//    {
-//        return $this->createQueryBuilder('q')
-//            ->andWhere('q.exampleField = :val')
-//            ->setParameter('val', $value)
-//            ->orderBy('q.id', 'ASC')
-//            ->setMaxResults(10)
-//            ->getQuery()
-//            ->getResult()
-//        ;
-//    }
 
-//    public function findOneBySomeField($value): ?Question
-//    {
-//        return $this->createQueryBuilder('q')
-//            ->andWhere('q.exampleField = :val')
-//            ->setParameter('val', $value)
-//            ->getQuery()
-//            ->getOneOrNullResult()
-//        ;
-//    }
+    //    /**
+    //     * @return Question[] Returns an array of Question objects
+    //     */
+    //    public function findByExampleField($value): array
+    //    {
+    //        return $this->createQueryBuilder('q')
+    //            ->andWhere('q.exampleField = :val')
+    //            ->setParameter('val', $value)
+    //            ->orderBy('q.id', 'ASC')
+    //            ->setMaxResults(10)
+    //            ->getQuery()
+    //            ->getResult()
+    //        ;
+    //    }
+
+    public function findOneBySomeField($value): ?Question
+    {
+        return $this->createQueryBuilder('q')
+            ->andWhere('q.exampleField = :val')
+            ->setParameter('val', $value)
+            ->getQuery()
+            ->getOneOrNullResult();
+    }
+    public function getbyid($id): array
+    {
+        $entityManager = $this->getEntityManager();
+
+        $query = $entityManager->createQuery(
+            'SELECT q
+            FROM App\Entity\Question q
+            where q.idQ=:id
+            '
+
+        )->setParameter('id', $id);
+
+        return $query->getResult();
+    }
+
+    public function getbyname($nom): ?Question
+    {
+        $entityManager = $this->getEntityManager();
+
+        $query = $entityManager->createQuery(
+            'SELECT q
+            FROM App\Entity\Question q
+            where q.contenuQ=:nom
+            '
+
+        )->setParameter('nom', $nom);
+
+        return $query->getOneOrNullResult();
+    }
+    public function getVotesForQuestion($questionName)
+    {
+        $query = $this->createQueryBuilder('q')
+            ->select('q.voteQ')
+            ->andWhere('q.contenuQ = :name')
+            ->setParameter('name', $questionName)
+            ->getQuery();
+
+        return $query->getSingleScalarResult();
+    }
+
 }

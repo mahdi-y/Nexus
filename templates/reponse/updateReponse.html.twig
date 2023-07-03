@@ -1,0 +1,32 @@
+{% extends 'front.html.twig' %}
+
+{% block body %}
+ <div  style="align-items: center;justify-content: center;margin-top: 50px;">
+
+            <div class="card">
+                <div class="card-body">
+                    <h3 class="card-title" style="position:relative; left:20px;">Ajouter une Reponse</h3>
+
+                    <!-- General Form Elements -->
+                    {{ form_start(f,{attr:{novalidate:'novalidate'}}) }}
+                        <label for="inputText" class="col-sm-15 col-form-label fa fa-info mr-2"> Contenu de la Reponse :</label>
+                        <div class="col-sm-10">
+                            {{ form_widget(f.contenuR,{'attr':{'placeholder':'ecrire ici !'}}) }}
+
+                        </div>
+                    {{ form_errors(f.contenuR,{'attr':{'class':'text-danger'}}) }}
+                   
+                    <br/>
+                    <div class="col-sm-10" style="display: flex;align-items: center;justify-content: center;position:relative; left:20px;">
+
+                        {{ form_widget(f.Ajouter,{'attr':{'class':'btn btn-primary'}}) }}
+                    </div>
+
+                    {{ form_end(f) }}
+
+                </div>
+            </div>
+
+        </div>
+
+{% endblock %}

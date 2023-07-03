@@ -2,6 +2,14 @@
 
 namespace App\Controller;
 
+
+use App\Form\LoginFormType;
+
+use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
+use Symfony\Component\HttpFoundation\Request;
+use Symfony\Component\Routing\Annotation\Route;
+use Symfony\Component\Security\Http\Authentication\AuthenticationUtils;
+
 use App\Entity\Utilisateur;
 use DateTimeImmutable;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
@@ -11,9 +19,11 @@ use Symfony\Component\Security\Core\Encoder\UserPasswordEncoderInterface;
 use Symfony\Component\Security\Http\Authentication\AuthenticationUtils;
 use Symfony\Component\Security\Http\Logout\LogoutSuccessHandlerInterface;
 
+
 class SecurityController extends AbstractController
 {
     /**
+
      * @Route("/login", name="login")
      */
     public function login(AuthenticationUtils $authenticationUtils)
@@ -27,10 +37,12 @@ class SecurityController extends AbstractController
         return $this->render('security/login.html.twig', [
             'last_username' => $lastUsername,
             'error' => $error,
+
         ]);
     }
 
     /**
+
      * @Route("/logout", name="logout")
      */
     public function logout(Request $request, LogoutSuccessHandlerInterface $logoutSuccessHandler)
@@ -80,5 +92,6 @@ class SecurityController extends AbstractController
         }
 
         return $this->render('security/register.html.twig');
-    }
+
+ }
 }

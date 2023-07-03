@@ -39,6 +39,7 @@ class QuestionRepository extends ServiceEntityRepository
         }
     }
 
+
     //    /**
     //     * @return Question[] Returns an array of Question objects
     //     */
@@ -101,4 +102,5 @@ class QuestionRepository extends ServiceEntityRepository
 
         return $query->getSingleScalarResult();
     }
+
 }

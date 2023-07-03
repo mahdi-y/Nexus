@@ -6,6 +6,7 @@ use Doctrine\DBAL\Types\Types;
 use Doctrine\ORM\Mapping as ORM;
 use App\Repository\ReponseRepository;
 use DateTime;
+
 use Symfony\Component\Serializer\Annotation\Groups;
 use Symfony\Component\Validator\Constraints as Assert;
 
@@ -65,6 +66,8 @@ class Reponse
      * @ORM\JoinColumn(name="id_u", referencedColumnName="id_u", nullable=true)
      * @Groups("reponses")
      */
+
+  
     private ?Utilisateur $idU = null;
 
     public function getIdR(): ?int
@@ -77,19 +80,25 @@ class Reponse
         return $this->contenuR;
     }
 
+
     public function setContenuR(string $contenuR): self
+
     {
         $this->contenuR = $contenuR;
 
         return $this;
     }
 
+
     public function getDateAjoutR(): ?DateTime
+
     {
         return $this->dateAjoutR;
     }
 
+
     public function setDateAjoutR(DateTime $dateAjoutR): self
+
     {
         $this->dateAjoutR = $dateAjoutR;
 
@@ -101,7 +110,9 @@ class Reponse
         return $this->voteR;
     }
 
+
     public function setVoteR(int $voteR): self
+
     {
         $this->voteR = $voteR;
 
@@ -113,7 +124,9 @@ class Reponse
         return $this->etatR;
     }
 
+
     public function setEtatR(int $etatR): self
+
     {
         $this->etatR = $etatR;
 
@@ -125,7 +138,9 @@ class Reponse
         return $this->signaleR;
     }
 
+
     public function setSignaleR(int $signaleR): self
+
     {
         $this->signaleR = $signaleR;
 
@@ -137,7 +152,9 @@ class Reponse
         return $this->idQ;
     }
 
+
     public function setIdQ(?Question $idQ): self
+
     {
         $this->idQ = $idQ;
 
@@ -149,7 +166,9 @@ class Reponse
         return $this->idU;
     }
 
+
     public function setIdU(?Utilisateur $idU): self
+
     {
         $this->idU = $idU;
 

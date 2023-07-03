@@ -54,18 +54,14 @@ class QuestionRepository extends ServiceEntityRepository
     //        ;
     //    }
 
-    //    public function findOneBySomeField($value): ?Question
-    //    {
-    //        return $this->createQueryBuilder('q')
-    //            ->andWhere('q.exampleField = :val')
-    //            ->setParameter('val', $value)
-    //            ->getQuery()
-    //            ->getOneOrNullResult()
-    //        ;
-    //    }
-
-
-
+    public function findOneBySomeField($value): ?Question
+    {
+        return $this->createQueryBuilder('q')
+            ->andWhere('q.exampleField = :val')
+            ->setParameter('val', $value)
+            ->getQuery()
+            ->getOneOrNullResult();
+    }
     public function getbyid($id): array
     {
         $entityManager = $this->getEntityManager();
@@ -73,11 +69,36 @@ class QuestionRepository extends ServiceEntityRepository
         $query = $entityManager->createQuery(
             'SELECT q
             FROM App\Entity\Question q
-            where q.id_Q=:id
+            where q.idQ=:id
             '
 
         )->setParameter('id', $id);
 
         return $query->getResult();
+    }
+
+    public function getbyname($nom): ?Question
+    {
+        $entityManager = $this->getEntityManager();
+
+        $query = $entityManager->createQuery(
+            'SELECT q
+            FROM App\Entity\Question q
+            where q.contenuQ=:nom
+            '
+
+        )->setParameter('nom', $nom);
+
+        return $query->getOneOrNullResult();
+    }
+    public function getVotesForQuestion($questionName)
+    {
+        $query = $this->createQueryBuilder('q')
+            ->select('q.voteQ')
+            ->andWhere('q.contenuQ = :name')
+            ->setParameter('name', $questionName)
+            ->getQuery();
+
+        return $query->getSingleScalarResult();
     }
 }

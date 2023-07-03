@@ -71,6 +71,20 @@ class ReponseRepository extends ServiceEntityRepository
         $query = $entityManager->createQuery(
             'SELECT r
             FROM App\Entity\Reponse r
+            where r.idU=:id
+            '
+
+        )->setParameter('id', $id);
+
+        return $query->getResult();
+    }
+    public function getbyidquest($id): array
+    {
+        $entityManager = $this->getEntityManager();
+
+        $query = $entityManager->createQuery(
+            'SELECT r
+            FROM App\Entity\Reponse r
             where r.idQ=:id
             '
 

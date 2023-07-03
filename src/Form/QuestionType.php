@@ -2,19 +2,14 @@
 
 namespace App\Form;
 
-
 use App\Entity\Question;
+use App\Entity\Utilisateur;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 use Symfony\Component\Form\Extension\Core\Type\TextType;
 use Symfony\Component\Form\Extension\Core\Type\ChoiceType;
-use Symfony\Component\Form\Extension\Core\Type\DateTimeType;
 use Symfony\Bridge\Doctrine\Form\Type\EntityType;
-use Symfony\Component\Form\Extension\Core\Type\HiddenType;
-
-
-
 
 class QuestionType extends AbstractType
 {
@@ -28,19 +23,23 @@ class QuestionType extends AbstractType
                 'choices' => [
                     'Bug' => 'Bug',
                     'Error' => 'Error',
-                    // Add more options if needed
+                   
                 ],
             ])
-            ->add('idU', EntityType::class, [
-                'class' => 'App\Entity\Utilisateur',
+            ->add('idU', EntityType::class,[
+                'class' => Utilisateur::class,
                 'choice_label' => 'username',
+                'data' => $options['user'],
+                
             ]);
     }
+    
 
     public function configureOptions(OptionsResolver $resolver)
     {
         $resolver->setDefaults([
             'data_class' => Question::class,
+            'user' => null,
         ]);
     }
 }

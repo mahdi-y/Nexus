@@ -19,6 +19,7 @@ class AfficherquestionController extends AbstractController
 {
     $questions = $entityManager->getRepository(Question::class)->findAll();
     //$user = $entityManager->getRepository(Utilisateur::class)->find(question);
+    
     return $this->render('afficherquestion/index.html.twig', [
         'questions' => $questions,
     ]);

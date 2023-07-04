@@ -7,67 +7,33 @@ use Doctrine\ORM\Mapping as ORM;
 use App\Repository\QuestionRepository;
 use DateTime;
 
-
-/**
- * @ORM\Entity(repositoryClass="App\Repository\QuestionRepository")
- */
+#[ORM\Entity(repositoryClass: QuestionRepository::class)]
 class Question
 {
-    /**
-     * @var int
-     *
-     * @ORM\Column(name="id_Q", type="integer", nullable=false)
-     * @ORM\Id
-     * @ORM\GeneratedValue(strategy="IDENTITY")
-     */
+    #[ORM\Id]
+    #[ORM\GeneratedValue]
+    #[ORM\Column]
     private ?int $idQ = null;
 
-    /**
-     * @var string
-     *
-     * @ORM\Column(name="Titre_Q", type="text", length=65535, nullable=false)
-     */
-    private $titreQ;
+    #[ORM\Column(length: 150)]
+    private ?string $titreQ = null;
 
+    #[ORM\Column(length: 150)]
+    private ?string $contenuQ = null;
 
-    /**
-     * @var string
-     *
-     * @ORM\Column(name="Contenu_Q", type="text", length=65535, nullable=false)
-     */
-    private $contenuQ;
+    #[ORM\Column(length: 150)]
+    private ?string $typeQ = null;
 
-    /**
-     * @var string
-     *
-     * @ORM\Column(name="Type_Q", type="string", length=40, nullable=false)
-     */
-    private $typeQ;
+    #[ORM\Column]
+    private ?DateTime $dateAjoutQ = null;
 
-    /**
-     * @var \DateTime
-     *
-     * @ORM\Column(name="Date_Ajout_Q", type="date", nullable=false)
-     */
-    private $dateAjoutQ;
+    #[ORM\Column]
+    private ?int $voteQ = 0;
 
-    /**
-     * @var int
-     *
-     * @ORM\Column(name="Vote_Q", type="integer", nullable=false)
-     */
-    private $voteQ = '0';
+    #[ORM\Column]
+    private ?int $signaleQ = 0;
 
-    /**
-     * @var int
-     *
-     * @ORM\Column(name="Signale_Q", type="integer", nullable=false)
-     */
-    private $signaleQ = '0';
-
-    #[ORM\ManyToOne(targetEntity: Utilisateur::class, inversedBy: 'Questions')]
-    #[ORM\JoinColumn(name: 'idU', referencedColumnName: 'idU')]
-
+    #[ORM\ManyToOne(inversedBy: 'Questions')]
     private ?Utilisateur $idU = null;
 
     public function getIdQ(): ?int
@@ -111,9 +77,7 @@ class Question
         return $this;
     }
 
-
-    public function getdateAjoutQ(): ?\DateTimeInterface
-
+    public function getDateAjoutQ(): ?\DateTimeInterface
     {
         return $this->dateAjoutQ;
     }
@@ -154,9 +118,7 @@ class Question
         return $this->idU;
     }
 
-
-    public function setIdU(?Utilisateur $idU): self
-
+    public function setIdU(?Utilisateur $idU): static
     {
         $this->idU = $idU;
 

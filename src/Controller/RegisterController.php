@@ -26,7 +26,7 @@ use Symfony\Component\Security\Core\Encoder\PasswordEncoderInterface;
 
 class RegisterController extends AbstractController
 {
-    #[Route('/register', name: 'app_register')]
+    #[Route('/registerRRRRRRRRRRRRRRRRR', name: 'app_registerRRRRRRRRRRRRR')]
     public function register(Request $request, UserPasswordHasherInterface $userPasswordHasher, EntityManagerInterface $entityManager): Response
     {
         $user = new Utilisateur();
@@ -35,7 +35,7 @@ class RegisterController extends AbstractController
 
         if ($form->isSubmitted() && $form->isValid()) {
             // Encode the plain password
-            $plainPassword = $form->get('mdp')->getData();
+            $plainPassword = $form->get('Mdp')->getData();
 
             // Hash the password
             $hashedPassword = password_hash($plainPassword, PASSWORD_DEFAULT);
@@ -53,7 +53,7 @@ class RegisterController extends AbstractController
             'form' => $form->createView(),
         ]);
     }
-    #[Route('/', name: 'app_home')]
+    #[Route('/kzefkzfzl', name: 'app_home')]
     public function home(): Response
     {
         return $this->render('front.html.twig', [

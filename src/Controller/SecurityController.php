@@ -2,7 +2,6 @@
 
 namespace App\Controller;
 
-
 use App\Form\LoginFormType;
 
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
@@ -10,41 +9,41 @@ use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\Routing\Annotation\Route;
 use Symfony\Component\Security\Http\Authentication\AuthenticationUtils;
 
-use App\Entity\Utilisateur;
-use DateTimeImmutable;
-
-use Symfony\Component\Security\Core\Encoder\UserPasswordEncoderInterface;
-
-use Symfony\Component\Security\Http\Logout\LogoutSuccessHandlerInterface;
-
-
 class SecurityController extends AbstractController
 {
     /**
-
-     * @Route("/login", name="login")
+     * @Route("/login", name="app_login")
      */
-    public function login(AuthenticationUtils $authenticationUtils)
+    public function login(AuthenticationUtils $authenticationUtils, Request $request)
     {
-        // Get the login error if there is one
-        $error = $authenticationUtils->getLastAuthenticationError();
+        $form = $this->createForm(LoginFormType::class);
 
-        // Get the last username entered by the user
-        $lastUsername = $authenticationUtils->getLastUsername();
+        // Handle form submission
+        $form->handleRequest($request);
+        if ($form->isSubmitted() && $form->isValid()) {
+            // Retrieve the submitted form data
+            $formData = $form->getData();
+
+            // Perform authentication and login logic here
+
+            // Redirect the user after successful login
+            return $this->redirectToRoute('app_home');
+        }
 
         return $this->render('security/login.html.twig', [
-            'last_username' => $lastUsername,
-            'error' => $error,
-
+            'form' => $form->createView(),
         ]);
     }
 
     /**
-
-     * @Route("/logout", name="logout")
+     * @Route("/logout", name="app_logout")
      */
-    public function logout(Request $request, LogoutSuccessHandlerInterface $logoutSuccessHandler)
+    public function logout()
     {
+<<<<<<< Updated upstream
+        // This method can be empty because it will be intercepted by the logout key on your firewall
+        throw new \Exception('This method should not be called directly.');
+=======
         // This method will not be executed.
         throw new \Exception('This should not be reached.');
     }
@@ -85,10 +84,11 @@ class SecurityController extends AbstractController
             $entityManager->persist($utilisateur);
             $entityManager->flush();
 
-            // Redirect to the login page
-            return $this->redirectToRoute('login');
+            // Redirect to the landingpage page
+            return $this->redirectToRoute('landingpage');
         }
 
         return $this->render('security/register.html.twig');
+>>>>>>> Stashed changes
     }
 }

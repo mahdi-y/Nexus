@@ -15,11 +15,5 @@ class ProfileController extends AbstractController
             'controller_name' => 'ProfileController',
         ]);
     }
-    #[Route('/landing_page', name: 'app_landing_page')]
-    public function index2(): Response
-    {
-        return $this->render('profile/landin.html.twig', [
-            'controller_name' => 'ProfileController',
-        ]);
-    }
+    
 }

@@ -7,67 +7,33 @@ use Doctrine\ORM\Mapping as ORM;
 use App\Repository\ReponseRepository;
 use DateTime;
 
-use Symfony\Component\Serializer\Annotation\Groups;
-use Symfony\Component\Validator\Constraints as Assert;
-
-/**
- * @ORM\Entity(repositoryClass="App\Repository\ReponseRepository")
- */
+#[ORM\Entity(repositoryClass: ReponseRepository::class)]
 class Reponse
 {
-    /**
-     * @ORM\Id
-     * @ORM\GeneratedValue
-     * @ORM\Column(name="id_R", type="integer", nullable=false)
-     * @Groups("reponses")
-     */
+    #[ORM\Id]
+    #[ORM\GeneratedValue]
+    #[ORM\Column]
     private ?int $idR = null;
 
-    /**
-     * @ORM\Column(length=150)
-     * @Groups("reponses")
-     */
-    #[Assert\NotBlank(message: "Le contenu est obligatoire!")]
+    #[ORM\Column(length: 150)]
     private ?string $contenuR = null;
 
-    /**
-     * @ORM\Column(type="datetime")
-     * @Groups("reponses")
-     */
+    #[ORM\Column]
     private ?DateTime $dateAjoutR = null;
 
-    /**
-     * @ORM\Column(type="integer")
-     * @Groups("reponses")
-     */
+    #[ORM\Column]
     private ?int $voteR = 0;
 
-    /**
-     * @ORM\Column(type="integer")
-     * @Groups("reponses")
-     */
+    #[ORM\Column]
     private ?int $etatR = 0;
 
-    /**
-     * @ORM\Column(type="integer")
-     * @Groups("reponses")
-     */
+    #[ORM\Column]
     private ?int $signaleR = 0;
 
-    /**
-     * @ORM\ManyToOne(targetEntity=Question::class)
-     * @ORM\JoinColumn(name="Id_Q", referencedColumnName="id_Q", nullable=true)
-     * @Groups("reponses")
-     */
+    #[ORM\ManyToOne(inversedBy: 'Reponses')]
     private ?Question $idQ = null;
 
-    /**
-     * @ORM\ManyToOne(targetEntity=Utilisateur::class)
-     * @ORM\JoinColumn(name="id_u", referencedColumnName="id_u", nullable=true)
-     * @Groups("reponses")
-     */
-
-  
+    #[ORM\ManyToOne(inversedBy: 'Reponses')]
     private ?Utilisateur $idU = null;
 
     public function getIdR(): ?int
@@ -80,25 +46,19 @@ class Reponse
         return $this->contenuR;
     }
 
-
-    public function setContenuR(string $contenuR): self
-
+    public function setContenuR(string $contenuR): static
     {
         $this->contenuR = $contenuR;
 
         return $this;
     }
 
-
-    public function getDateAjoutR(): ?DateTime
-
+    public function getDateAjoutR(): ?\DateTimeInterface
     {
         return $this->dateAjoutR;
     }
 
-
-    public function setDateAjoutR(DateTime $dateAjoutR): self
-
+    public function setDateAjoutR(\DateTimeInterface $dateAjoutR): static
     {
         $this->dateAjoutR = $dateAjoutR;
 
@@ -110,9 +70,7 @@ class Reponse
         return $this->voteR;
     }
 
-
-    public function setVoteR(int $voteR): self
-
+    public function setVoteR(int $voteR): static
     {
         $this->voteR = $voteR;
 
@@ -124,9 +82,7 @@ class Reponse
         return $this->etatR;
     }
 
-
-    public function setEtatR(int $etatR): self
-
+    public function setEtatR(int $etatR): static
     {
         $this->etatR = $etatR;
 
@@ -138,9 +94,7 @@ class Reponse
         return $this->signaleR;
     }
 
-
-    public function setSignaleR(int $signaleR): self
-
+    public function setSignaleR(int $signaleR): static
     {
         $this->signaleR = $signaleR;
 
@@ -152,9 +106,7 @@ class Reponse
         return $this->idQ;
     }
 
-
-    public function setIdQ(?Question $idQ): self
-
+    public function setIdQ(?Question $idQ): static
     {
         $this->idQ = $idQ;
 
@@ -166,9 +118,7 @@ class Reponse
         return $this->idU;
     }
 
-
-    public function setIdU(?Utilisateur $idU): self
-
+    public function setIdU(?Utilisateur $idU): static
     {
         $this->idU = $idU;
 

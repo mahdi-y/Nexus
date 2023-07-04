@@ -1,15 +1,60 @@
 {% extends 'front.html.twig' %}
 
-    
 {% block body %}
-{% block content %}
-    <h1>Edit Question</h1>
+	{% block content %}
+		<div class="container">
+			<h1 class="mt-4 mb-4">Edit Question</h1>
 
-    {{ form_start(questionForm) }}
-        {{ form_row(questionForm.titreQ) }}
-        {{ form_row(questionForm.contenuQ) }}
-        {{ form_row(questionForm.typeQ) }}
-        <button type="submit">Update Question</button>
-    {{ form_end(questionForm) }}
-{% endblock %}
+			<div class="card">
+				<div class="card-body">
+					{{ form_start(questionForm, {'attr': {'class': 'needs-validation', 'novalidate': 'novalidate'}}) }}
+					<div class="form-group">
+						{{ form_label(questionForm.titreQ, 'Title') }}
+						{{ form_widget(questionForm.titreQ, {'attr': {'class': 'form-control', 'required': 'required'}}) }}
+						<div class="invalid-feedback">
+							Please provide a title for the question.
+						</div>
+					</div>
+
+					<div class="form-group">
+						{{ form_label(questionForm.contenuQ, 'Content') }}
+						{{ form_widget(questionForm.contenuQ, {'attr': {'class': 'form-control', 'rows': '5', 'required': 'required'}}) }}
+						<div class="invalid-feedback">
+							Please provide the content of the question.
+						</div>
+					</div>
+
+					<div class="form-group">
+						{{ form_label(questionForm.typeQ, 'Type') }}
+						{{ form_widget(questionForm.typeQ, {'attr': {'class': 'form-control', 'required': 'required'}}) }}
+						<div class="invalid-feedback">
+							Please select a type for the question.
+						</div>
+					</div>
+
+					<button type="submit" class="btn btn-primary">Update Question</button>
+					{{ form_end(questionForm) }}
+				</div>
+			</div>
+		</div>
+
+		<script>
+			// Bootstrap validation
+(function () {
+'use strict';
+window.addEventListener('load', function () {
+var forms = document.getElementsByClassName('needs-validation');
+var validation = Array.prototype.filter.call(forms, function (form) {
+form.addEventListener('submit', function (event) {
+if (form.checkValidity() === false) {
+event.preventDefault();
+event.stopPropagation();
+}
+form.classList.add('was-validated');
+}, false);
+});
+}, false);
+})();
+		</script>
+	{% endblock %}
 {% endblock %}

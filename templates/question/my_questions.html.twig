@@ -1,31 +1,38 @@
 {% extends 'front.html.twig' %}
 
 {% block body %}
-    
-{% block content %}
-    <div class="container" style="margin-top: 1%">
-        <h1>My Questions</h1>
 
-        {% if questions is empty %}
-            <p>No questions found.</p>
-        {% else %}
-            <ul class="list-group">
-                {% for question in questions %}
-                    <li class="list-group-item">
-                        <h3>{{ question.getTitreQ() }}</h3>
-                        <p>{{ question.getContenuQ() }}</p>
-                        <p>Posted on: {{ question.getdateAjoutQ()|date('Y-m-d') }}</p>
-                        <div class="btn-group" role="group">
-                            <a href="{{ path('app_question_edit', {'id': question.idQ}) }}" class="btn btn-secondary" style="width: 15vh">Edit</a>
-                            <form action="{{ path('app_question_delete', {'id': question.idQ}) }}" method="post">
-                                <input type="hidden" name="_token" value="{{ csrf_token('delete' ~ question.idQ) }}">
-                                <button type="submit" class="btn btn-danger" style="margin-left: 30%; width: 15vh">Delete</button>
-                            </form>
-                        </div>
-                    </li>
-                {% endfor %}
-            </ul>
-        {% endif %}
-    </div>
-{% endblock %}
+	{% block content %}
+		<div class="container" style="margin-top: 1%">
+			<div class="text-center">
+
+				<div class="card-body">
+					<h1 class="card-title">My Questions</h1>
+				</div>
+
+			</div>
+
+			{% if questions is empty %}
+				<p>No questions found.</p>
+			{% else %}
+				<ul class="list-group">
+					{% for question in questions %}
+						<li class="list-group-item">
+							<h3 class="question-title">{{ question.getTitreQ() }}</h3>
+							<p class="question-content">{{ question.getContenuQ() }}</p>
+							<p class="question-date">Posted on:
+								{{ question.getdateAjoutQ()|date('Y-m-d') }}</p>
+							<div class="btn-group" role="group">
+								<a href="{{ path('app_question_edit', {'id': question.idQ}) }}" class="btn btn-secondary" style="width: 15vh">Edit</a>
+								<form action="{{ path('app_question_delete', {'id': question.idQ}) }}" method="post">
+									<input type="hidden" name="_token" value="{{ csrf_token('delete' ~ question.idQ) }}">
+									<button type="submit" class="btn btn-danger" style="margin-left: 30%; width: 15vh">Delete</button>
+								</form>
+							</div>
+						</li>
+					{% endfor %}
+				</ul>
+			{% endif %}
+		</div>
+	{% endblock %}
 {% endblock %}

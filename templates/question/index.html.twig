@@ -1,34 +1,76 @@
 {% extends 'front.html.twig' %}
 
 {% block body %}
-    
-{% block content %}
-    <div class="container" style="margin-top: 1%">
-        <h1 style="width: 100vh;">Ask Nexus members..</h1>
 
-        {{ form_start(questionForm, {'attr': {'class': 'form-vertical'}}) }}
-        <div class="form-group">
-            {{ form_label(questionForm.titreQ, 'Title') }}
-            {{ form_widget(questionForm.titreQ, {'attr': {'class': 'form-control'}}) }}
-        </div>
+	{% block content %}
+		<style>
+			.btn-animation {
+				transition: transform 0.3s ease-in-out;
+			}
 
-        <div class="form-group">
-            {{ form_label(questionForm.contenuQ, 'Content') }}
-            {{ form_widget(questionForm.contenuQ, {'attr': {'class': 'form-control', 'style': 'height: 200px;'}}) }}
-        </div>
+			.btn-animation:hover {
+				transform: translateY(-5px);
+			}
 
-        <div class="form-group">
-            {{ form_label(questionForm.typeQ, 'Type') }}
-            {{ form_widget(questionForm.typeQ, {'attr': {'class': 'form-control'}}) }}
-        </div>
+			.form-control-textarea {
+				height: 200px;
+				resize: vertical;
+			}
 
-        {# <div class="form-group">
-            {{ form_label(questionForm.idU, 'User') }}
-            {{ form_widget(questionForm.idU, {'attr': {'class': 'form-control'}}) }}
-        </div> #}
+			.is-valid {
+				background-color: #d4edda;
+				border-color: #c3e6cb;
+			}
 
-        <button type="submit" class="btn btn-primary" style="margin-top: 0%">Create</button>
-        {{ form_end(questionForm) }}
-    </div>
-{% endblock %}
+			.is-invalid {
+				background-color: #f8d7da;
+				border-color: #f5c6cb;
+			}
+		</style>
+
+		<div class="container" style="margin-top: 1%">
+			<h1 class="mb-4">Ask Nexus members...</h1>
+
+			<div class="card">
+				<div class="card-body">
+					{{ form_start(questionForm, {'attr': {'class': 'needs-validation', 'novalidate': 'novalidate'}}) }}
+
+					<div class="form-group">
+						{{ form_label(questionForm.titreQ, 'Title') }}
+						{{ form_widget(questionForm.titreQ, {'attr': {'class': 'form-control', 'placeholder': 'Enter the title', 'required': 'required'}}) }}
+						<div class="valid-feedback">
+							Looks good!
+						</div>
+						<div class="invalid-feedback">
+							Please provide a title.
+						</div>
+					</div>
+
+					<div class="form-group">
+						{{ form_label(questionForm.contenuQ, 'Content') }}
+						{{ form_widget(questionForm.contenuQ, {'attr': {'class': 'form-control form-control-textarea', 'placeholder': 'Enter the content', 'required': 'required'}}) }}
+						<div class="valid-feedback">
+							Looks good!
+						</div>
+						<div class="invalid-feedback">
+							Please provide content.
+						</div>
+					</div>
+
+					<div class="form-group">
+						{{ form_label(questionForm.typeQ, 'Type') }}
+						{{ form_widget(questionForm.typeQ, {'attr': {'class': 'form-control', 'required': 'required'}}) }}
+						<div class="valid-feedback">
+							Looks good!
+						</div>
+						<div class="invalid-feedback">
+							Please select a type.
+						</div>
+					</div>
+					<button type="submit" class="btn btn-primary btn-animation">Create</button>
+					{{ form_end(questionForm) }}
+				</div>
+			</div>
+		</div>
+	{% endblock %}
 {% endblock %}

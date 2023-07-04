@@ -64,9 +64,13 @@ class Question
      */
     private $signaleQ = '0';
 
-    #[ORM\ManyToOne(targetEntity: Utilisateur::class, inversedBy: 'Question')]
-    #[ORM\JoinColumn(name: 'id_U', referencedColumnName: 'id_U')]
+
+    /**
+     * @ORM\ManyToOne(targetEntity="App\Entity\Utilisateur", inversedBy="questions")
+     * @ORM\JoinColumn(name="id_U", referencedColumnName="id_U")
+     */
     private ?Utilisateur $idU = null;
+
 
     public function getIdQ(): ?int
     {

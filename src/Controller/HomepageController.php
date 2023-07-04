@@ -53,14 +53,11 @@ class HomepageController extends AbstractController
                 $questionEntities = $repo->findBy(['contenuQ' => $question]);
                 if (!empty($questionEntities)) {
                     $questionEntity = $questionEntities[0]; // Access the first element of the array
-                    // $userId = $questionEntity->getIdU();
-                    $out = new ConsoleOutput();
-                    //$out->writeln($userId);
-                    $userEntity = $repouti->find(1);
+                    $questionuserid = $repo->getUIDbyname($questionEntity->getContenuQ());
                     $questionData[$question] = [
                         'Date_Ajout_Q' => $this->calculateDaysAgo($questionEntity->getdateAjoutQ()),
-                        'id_U' => $userEntity->getIdU(),
-                        'nom_U' => $userEntity->getPrenomU()
+                        'id_U' => $questionuserid->getIdU(),
+                        'nom_U' => $questionuserid->getPrenomU()
                     ];
                 }
             }

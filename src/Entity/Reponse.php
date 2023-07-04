@@ -61,8 +61,8 @@ class Reponse
     private ?Question $idQ = null;
 
     /**
-     * @ORM\ManyToOne(targetEntity=Utilisateur::class)
-     * @ORM\JoinColumn(name="id_u", referencedColumnName="id_u", nullable=true)
+     * @ORM\ManyToOne(targetEntity="App\Entity\Utilisateur", inversedBy="questions")
+     * @ORM\JoinColumn(name="id_U", referencedColumnName="id_U")
      * @Groups("reponses")
      */
     private ?Utilisateur $idU = null;

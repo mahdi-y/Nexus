@@ -1,0 +1,29 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}SymRecipe - Modification du mot de passe de l'utilisateur{% endblock %}
+
+{% block body %}
+
+    <div class="container">
+        <h1 class="mt-4">Formulaire de modification de mot de passe de l'utilisateur</h1>
+
+        {% for message in app.flashes('warning') %}
+            <div class="alert alert-warning mt-4">
+                {{ message }}
+            </div>
+        {% endfor %}
+
+        <div class="card mt-4">
+            <div class="card-body">
+                <h5 class="card-title">Modifier le mot de passe</h5>
+
+                <form action="{{ path('user.edit.password', {'id': app.user.idU}) }}" method="POST">
+                    {{ form_widget(form2) }}
+                    
+                    <div class="text-center mt-4">
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+{% endblock %}

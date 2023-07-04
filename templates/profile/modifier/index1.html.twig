@@ -1,0 +1,51 @@
+{% extends 'base.html.twig' %}
+
+{% block body %}
+    <div class="container">
+        <div class="row justify-content-center">
+            <div class="col-md-6">
+                <h1 class="text-center">Modification du profil de {{ app.user.prenomU }}</h1>
+                <form action="{{ path('app_modifier') }}" method="POST">
+                    {{ form_start(ModifierType, {'attr': {'class': 'form'}}) }}
+                    <div class="form-group">
+                        {{ form_label(ModifierType.emailU, null, {'label_attr': {'class': 'form-label'}}) }}
+                        {{ form_widget(ModifierType.emailU, {'attr': {'class': 'form-control', 'style': 'margin-bottom: 10px'}}) }}
+                        {{ form_errors(ModifierType.emailU) }}
+                    </div>
+                    <div class="form-group">
+                        {{ form_label(ModifierType.NomU, null, {'label_attr': {'class': 'form-label'}}) }}
+                        {{ form_widget(ModifierType.NomU, {'attr': {'class': 'form-control', 'style': 'margin-bottom: 10px'}}) }}
+                        {{ form_errors(ModifierType.NomU) }}
+                    </div>
+                    <div class="form-group">
+                        {{ form_label(ModifierType.prenomU, null, {'label_attr': {'class': 'form-label'}}) }}
+                        {{ form_widget(ModifierType.prenomU, {'attr': {'class': 'form-control', 'style': 'margin-bottom: 10px'}}) }}
+                        {{ form_errors(ModifierType.prenomU) }}
+                    </div>
+                    <div class="form-group">
+                        {{ form_label(ModifierType.sexeU, null, {'label_attr': {'class': 'form-label'}}) }}
+                        {{ form_widget(ModifierType.sexeU, {'attr': {'class': 'form-control', 'style': 'margin-bottom: 10px'}}) }}
+                        {{ form_errors(ModifierType.sexeU) }}
+                    </div>
+                     <div class="form-group">
+                        {{ form_label(ModifierType.DateNaissanceU, null, {'label_attr': {'class': 'form-label'}}) }}
+                        {{ form_widget(ModifierType.DateNaissanceU, {'attr': {'class': 'form-control', 'style': 'margin-bottom: 10px'}}) }}
+                        {{ form_errors(ModifierType.DateNaissanceU) }}
+                    </div>
+                    
+                    <!-- Add other form fields here -->
+                   
+                    <div class="form-group">
+                        {{ form_widget(ModifierType.Modifier, {'attr': {'class': 'form-control', 'style': 'margin-bottom: 10px'}}) }}
+                    </div>
+                    <div class="form-group">
+                       
+                    </div>
+                    {{ form_end(ModifierType) }}
+                     <a href="{{ path('user.delete', {'id': app.user.idU}) }}" onclick="return confirm('Are you sure you want to delete this user?')" class="btn btn-danger">Supprimer</a>
+                        <a href="{{ path('user.edit.password', {'id': app.user.idU}) }}" class="btn btn-info">Modifier le mot de passe</a>
+                </form>
+            </div>
+        </div>
+    </div>
+{% endblock %}

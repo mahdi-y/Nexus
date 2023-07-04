@@ -34,7 +34,7 @@ class QuestionController extends AbstractController
             $entityManager->persist($question);
             $entityManager->flush();
 
-            return $this->redirectToRoute('app_homepage');
+            return $this->redirectToRoute('homepage');
         }
 
         return $this->render('question/index.html.twig', [

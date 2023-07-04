@@ -3,23 +3,111 @@
 {% block title %}Login{% endblock %}
 
 {% block body %}
-    <h1>Login</h1>
 
-    {% if error %}
-        <div>{{ error.messageKey|trans(error.messageData, 'security') }}</div>
-    {% endif %}
+    
+
+    
 
     <form method="post">
-        <div>
+     <link
+      href="https://unpkg.com/tailwindcss@^1.0/dist/tailwind.min.css"
+      rel="stylesheet"
+    />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;900&display=swap"
+      rel="stylesheet"
+    />
+    <meta
+      name="viewport"
+      content="width=device-width,initial-scale=1,maximum-scale=1"
+    />
+   {% if error %}
+  <div class="bg-red-100 text-red-900 px-4 py-3 rounded-lg mb-4 shadow">
+    <p>{{ error.messageKey|trans(error.messageData, 'security') }}</p>
+  </div>
+{% endif %}
+
+{% if app.user %}
+  <div class="mb-4">
+    <p class="text-gray-700">
+      You are logged in as <span class="font-semibold">{{ app.user.userIdentifier }}</span>,
+      <a href="{{ path('logout') }}" class="text-indigo-500 hover:text-indigo-700 hover:underline">Logout</a>
+    </p>
+  </div>
+{% endif %}
+
+
+
+<body style="width: 90%; height:200%" class="mt-12">
+
+  <div class="m-10 sm:m-2 bg-white shadow sm:rounded-lg flex justify-center flex-1" style="margin-left:12%">
+    <div class="lg:w-full xl:w-5/12 p-6 sm:p-12">
+
+      <div>
+        
+      </div>
+      <div class="mt-20 flex flex-col items-center">
+        <h1 class="text-2xl xl:text-3xl font-extrabold">
+          Sign In
+        </h1>
+        <div class="w-full flex-1 mt-20">
+          <div class="flex flex-col items-center"></div>
+
+          
+
+          <div class="mx-auto max-w-xs">
+           <div>
             <label for="email">Email:</label>
-            <input type="text" id="email" name="_username" value="{{ last_username }}" required autofocus>
+            <input  class="w-full px-8 py-4 rounded-lg font-medium bg-gray-100 border border-gray-200 placeholder-gray-500 text-sm focus:outline-none focus:border-gray-400 focus:bg-white" type="text" id="email" name="_username" value="{{ last_username }}" required autofocus class="form-control">
         </div>
         <div>
-            <label for="password">Password:</label>
-            <input type="password" id="password" name="_password" required>
+          <label style="padding-top:15px" for="password">Password:</label>
+            <input class="w-full px-8 py-4 rounded-lg font-medium bg-gray-100 border border-gray-200 placeholder-gray-500 text-sm focus:outline-none focus:border-gray-400 focus:bg-white"
+ type="password" id="password" name="_password" required class="form-control"  >
+           </div>
+            <button
+              class="mt-5 tracking-wide font-semibold bg-indigo-500 text-gray-100 w-full py-4 rounded-lg hover:bg-indigo-700 transition-all duration-300 ease-in-out flex items-center justify-center focus:shadow-outline focus:outline-none"
+            >
+              <svg
+                class="w-6 h-6 -ml-2"
+                fill="none"
+                stroke="currentColor"
+                stroke-width="2"
+                stroke-linecap="round"
+                stroke-linejoin="round"
+              >
+                <path d="M16 21v-2a4 4 0 00-.4-4H5a4 4 0 00-4 4v2" />
+                <circle cx="8.5" cy="7" r="4" />
+                <path d="M20 8v6M23 11h-6" />
+              </svg>
+              <span class="ml-3">
+                Sign In
+              </span>
+            </button>
+
+            <p class="mt-3 text-gray-600">
+  Don't have an account? 
+  <a href="{{ path('register') }}" class="text-indigo-500 hover:text-indigo-700">
+    Sign Up
+  </a>
+</p>
+           
+            </p>
+          </div>
         </div>
-        <div>
-            <button type="submit">Login</button>
-        </div>
-    </form>
+      </div>
+    </div>
+    <div class="flex-1 bg-indigo-100 text-center hidden lg:flex">
+  <div class="bg-contain bg-center bg-no-repeat">
+    <img src="assets/img/ai.png" alt="AI Image" style="width: 100%; height: 100%; object-fit: cover;" />
+  </div>
+</div>
+
+
+  </div>
+</body>
+</form>
 {% endblock %}
+
+
+ 

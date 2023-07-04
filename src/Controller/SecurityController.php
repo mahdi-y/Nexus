@@ -2,20 +2,19 @@
 
 namespace App\Controller;
 
-
-use App\Form\LoginFormType;
-
+use App\Entity\Utilisateur;
+use DateTimeImmutable;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\Routing\Annotation\Route;
-use Symfony\Component\Security\Http\Authentication\AuthenticationUtils;
-
-use App\Entity\Utilisateur;
-use DateTimeImmutable;
-
 use Symfony\Component\Security\Core\Encoder\UserPasswordEncoderInterface;
-
+use Symfony\Component\Security\Http\Authentication\AuthenticationUtils;
 use Symfony\Component\Security\Http\Logout\LogoutSuccessHandlerInterface;
+use Symfony\Component\Security\Http\Authentication\AuthenticationSuccessHandlerInterface;
+use Symfony\Component\Security\Http\HttpUtils;
+use Symfony\Component\Mailer\MailerInterface;
+
+
 
 
 class SecurityController extends AbstractController
@@ -46,11 +45,17 @@ class SecurityController extends AbstractController
         // This method will not be executed.
         throw new \Exception('This should not be reached.');
     }
+    private $mailer;
+
+    public function __construct(MailerInterface $mailer)
+    {
+        $this->mailer = $mailer;
+    }
 
     /**
      * @Route("/register", name="register")
      */
-    public function register(Request $request, UserPasswordEncoderInterface $passwordEncoder)
+    public function register(Request $request, UserPasswordEncoderInterface $passwordEncoder,MailerService $mailer)
     {
         if ($request->isMethod('POST')) {
             $entityManager = $this->getDoctrine()->getManager();
@@ -80,10 +85,13 @@ class SecurityController extends AbstractController
             $utilisateur->setMdp($encodedPassword);
 
             // Save the utilisateur to the database
+
             $entityManager->persist($utilisateur);
             $entityManager->flush();
 
             // Redirect to the login page
+            $mailer->sendConfirmationEmail($email, $nom);
+
             return $this->redirectToRoute('landingpage');
         }
 

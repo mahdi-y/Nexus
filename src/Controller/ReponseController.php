@@ -10,7 +10,11 @@ use App\Repository\QuestionRepository;
 use App\Repository\ReponseRepository;
 use App\Repository\UtilisateurRepository;
 use Doctrine\Persistence\ManagerRegistry;
+use phpDocumentor\Reflection\Types\Null_;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
+use Symfony\Component\Console\Output\ConsoleOutput;
+use Symfony\Component\Console\Output\OutputInterface;
+use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
@@ -34,14 +38,14 @@ class ReponseController extends AbstractController
             'controller_name' => 'ReponseController',
         ]);
     }
-    #[Route('/reponse/add', name: 'reponseadd')]
-    public function reponseadd(ManagerRegistry $doctrine, Request $req, UtilisateurRepository $utirep, QuestionRepository $quesrep): Response
+    #[Route('/reponse/add/{id}', name: 'reponseadd')]
+    public function reponseadd($id, ManagerRegistry $doctrine, Request $req, UtilisateurRepository $utirep, QuestionRepository $quesrep): Response
     {
         $user = $this->security->getUser();
         $date = new \DateTime('@' . strtotime('now'));
         $em = $doctrine->getManager();
         $question = new Question();
-        $question = $quesrep->find(1);
+        $question = $quesrep->find($id);
         $reponse = new Reponse();
         $form = $this->createForm(ReponseType::class, $reponse);
         $form->handleRequest($req);
@@ -54,7 +58,7 @@ class ReponseController extends AbstractController
             $reponse->setIdU($user);
             $em->persist($reponse);
             $em->flush();
-            return $this->redirectToRoute('afficherreponse');
+            return $this->redirectToRoute('afficherreponseUC');
         }
 
         return $this->renderForm('reponse/addReponse.html.twig', ['f' => $form]);
@@ -66,22 +70,27 @@ class ReponseController extends AbstractController
         if ($user instanceof Utilisateur) {
             $reponses = $repository->getbyid($user->getIdU());
         }
-        return $this->render('reponse/afficherallReponse.html.twig', [
+        return $this->render('reponse/afficher_reponse1.html.twig', [
 
             'r' => $reponses
         ]);
     }
-    #[Route('/reponse/afficher/{id}', name: 'afficherreponse')]
-    public function afficherreponse(ManagerRegistry $doctrine, Request $request, QuestionRepository $repo, $id, ReponseRepository $repository): Response
+    #[Route('/reponse/afficher/{question}', name: 'afficherreponse')]
+    public function afficherreponse(ManagerRegistry $doctrine, Request $request, QuestionRepository $repo, $question, ReponseRepository $repository): Response
     {
 
-        $question = $repo->getbyname($id);
-        var_dump($question);
-        $reponses = $repository->getbyid($question->getIdQ());
+        $question1 = $repo->getbyname($question);
+        $reponses = $repository->getbyidquest($question1->getIdQ());
+        $user = $this->security->getUser();
+        if ($user instanceof Utilisateur) {
+            $idU = $user->getIdU();
+        }
 
         return $this->render('reponse/afficherallReponse.html.twig', [
 
-            'r' => $reponses
+            'r' => $reponses,
+            'id' => $question1->getIdQ(),
+            'idU' => $idU
         ]);
     }
     #[Route('/reponse/afficher/{id}', name: 'afficherreponse1')]
@@ -97,21 +106,17 @@ class ReponseController extends AbstractController
     #[Route('/reponse/modifier/{id}', name: 'modifierreponse')]
     public function modifierreponse($id, ManagerRegistry $doctrine, Request $request, UtilisateurRepository $utirep, QuestionRepository $quesrep, ReponseRepository $repo): Response
     {
+        $user = $this->security->getUser();
         $reponses = $repo->find($id);
         $form = $this->createForm(ReponseType::class, $reponses);
         $form->handleRequest($request);
-        $question = new Question();
-        $utilisateur = new Utilisateur();
-        $question = $quesrep->find(1);
-        $utilisateur = $utirep->find(1);
         $date = new \DateTime('@' . strtotime('now'));
         if ($form->isSubmitted() && $form->isValid()) {
             $reponses->setDateAjoutR($date);
             $reponses->setEtatR(0);
             $reponses->setVoteR(0);
             $reponses->setSignaleR(0);
-            $reponses->setIdQ($question);
-            $reponses->setIdU($utilisateur);
+            $reponses->setIdU($user);
             $manager = $doctrine->getManager();
 
 
@@ -119,7 +124,7 @@ class ReponseController extends AbstractController
             $manager->flush();
 
 
-            return $this->redirectToRoute('afficherreponse1', ['id' => $reponses->getIdQ()->getIdQ()]);
+            return $this->redirectToRoute('afficherreponseUC');
         }
 
         return $this->render('reponse/updateReponse.html.twig', ['f' => $form->createView()]);
@@ -132,6 +137,42 @@ class ReponseController extends AbstractController
         $manager->remove($reponse);
         $manager->flush();
 
-        return $this->redirectToRoute('afficherreponse1', ['id' => $reponse->getIdQ()->getIdQ()]);
+        return $this->redirectToRoute('afficherreponseUC');
+    }
+
+    #[Route('/update-vote', name: 'update_vote')]
+    public function updateVote(Request $request, QuestionRepository $repoquest, ManagerRegistry $doctrine): JsonResponse
+    {
+        $out = new ConsoleOutput();
+        if ($request->isMethod('POST')) {
+            $question = $request->request->get('question');
+            $action = $request->request->get('action');
+            $out->writeln($question);
+            $out->writeln($action);
+            // Retrieve the question from the database
+            $questionEntity = $repoquest->getbyname($question);
+
+            $out->writeln($questionEntity->getIdQ());
+
+            if ($questionEntity == null) {
+                return new JsonResponse(['error' => 'Question not found'], 404);
+            }
+
+            // Update the vote count based on the action (up or down)
+            if ($action === 'up') {
+                $questionEntity->setVoteQ($questionEntity->getVoteQ() + 1);
+            } elseif ($action === 'down') {
+                $questionEntity->setVoteQ($questionEntity->getVoteQ() - 1);
+            } else {
+                return new JsonResponse(['error' => 'Invalid action'], 400);
+            }
+
+            // Persist the changes to the database
+            $entityManager = $doctrine->getManager();
+            $entityManager->flush();
+        }
+
+        // Return the updated vote count in the response
+        return new JsonResponse(['voteCount' => $questionEntity->getVoteQ()]);
     }
 }

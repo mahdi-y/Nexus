@@ -85,6 +85,7 @@ class Question
     }
 
 
+
     public function getIdQ(): ?int
     {
         return $this->idQ;

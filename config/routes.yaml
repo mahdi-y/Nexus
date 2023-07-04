@@ -1,12 +1,15 @@
-#index:
-#    path: /
-#    controller: App\Controller\DefaultController::index
+landingpage:
+  path: /
+  controller: App\Controller\LandingpageController::landingpage
+
 login:
   path: /login
   controller: App\Controller\SecurityController::login
+
 register:
   path: /register
   controller: App\Controller\SecurityController::register
+
 logout:
   path: /logout
   controller: App\Controller\SecurityController::logout
@@ -14,3 +17,7 @@ my_questions:
   path: /my-questions
   controller: App\Controller\QuestionController::myQuestions
   methods: GET
+
+homepage:
+  path: /homepage
+  controller: App\Controller\HomepageController::homepage

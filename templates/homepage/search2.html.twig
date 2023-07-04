@@ -1,0 +1,366 @@
+{% block stylesheets %}
+<link rel="manifest" href="{{asset('assets/images/favicons/site.webmanifest')}}">
+              
+
+    <!-- plugin scripts -->
+    <link href="https://fonts.googleapis.com/css?family=Rubik:300,400,500,700,900display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="{{asset('assets/css/animate.min.css')}}">
+    <link rel="stylesheet" href="{{asset('assets/css/bootstrap.min.css')}}">
+    <link rel="stylesheet" href="{{asset('assets/css/owl.carousel.min.css')}}">
+    <link rel="stylesheet" href="{{asset('assets/css/owl.theme.default.min.css')}}">
+    <link rel="stylesheet" href="{{asset('assets/css/magnific-popup.css')}}">
+    <link rel="stylesheet" href="{{asset('assets/css/font-awesome.min.css')}}">
+    <link rel="stylesheet" href="{{asset('assets/css/swiper.min.css')}}">
+    <link rel="stylesheet" href="{{asset('assets/plugins/dimon-icons/style.css')}}">
+
+    <!-- template styles -->
+    <link rel="stylesheet" href="{{asset('assets/css/style.css')}}">
+    <link rel="stylesheet" href="{{asset('assets/css/responsive.css')}}">
+
+
+
+
+<!--template2 back-->
+     <!-- Fonts -->
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Open+Sans:300,400,600,700">
+  <!-- Icons -->
+  <link rel="stylesheet" href="{{asset('assets/vendor/nucleo/css/nucleo.css')}}" type="text/css">
+  <link rel="stylesheet" href="{{asset('assets/vendor/@fortawesome/fontawesome-free/css/all.min.css')}}" type="text/css">
+  <!-- Page plugins -->
+  <!-- Argon CSS -->
+  <link rel="stylesheet" href="{{asset('assets/css/argon.css?v=1.2.0')}}" type="text/css">
+  <style>
+  @import url("https://fonts.googleapis.com/css2?family=Poppins:weight@100;200;300;400;500;600;700;800&display=swap");
+
+
+       body{
+        background-color:#eee;
+        font-family: "Poppins", sans-serif;
+        font-weight: 300;
+       }
+
+       .height{
+        height: 50vh;
+       }
+       
+
+       .search{
+       position: relative;
+       box-shadow: 0 0 40px rgba(51, 51, 51, .1);
+         
+       }
+
+       .search input{
+
+        height: 60px;
+        text-indent: 25px;
+        border: 2px solid #d6d4d4;
+
+
+       }
+
+
+       .search input:focus{
+
+        box-shadow: none;
+        border: 2px solid blue;
+
+
+       }
+
+       .search .fa-search{
+
+        position: absolute;
+        top: 20px;
+        left: 16px;
+
+       }
+
+       .search button{
+
+        position: absolute;
+        top: 5px;
+        right: 5px;
+        height: 50px;
+        width: 110px;
+        background: blue;
+
+       }</style>
+{% endblock %}
+
+ {% block javascripts %}
+      <script src="{{asset('assets/js/jquery.min.js')}}"></script>
+    <script src="{{asset('assets/js/bootstrap.bundle.min.js')}}"></script>
+    <script src="{{asset('assets/js/owl.carousel.min.js')}}"></script>
+    <script src="{{asset('assets/js/waypoints.min.js')}}"></script>
+    <script src="{{asset('assets/js/jquery.counterup.min.js')}}"></script>
+    <script src="{{asset('assets/js/TweenMax.min.js')}}"></script>
+    <script src="{{asset('assets/js/wow.js')}}"></script>
+    <script src="{{asset('assets/js/jquery.magnific-popup.min.js')}}"></script>
+    <script src="{{asset('assets/js/jquery.ajaxchimp.min.js')}}"></script>
+    <script src="{{asset('assets/js/swiper.min.js')}}"></script>
+    <script src="{{asset('assets/js/jquery.easing.min.js')}}"></script>
+
+    <!-- template scripts -->
+    <script src="{{asset('assets/js/theme.js')}}"></script>
+
+
+
+
+<!--template2 back-->
+
+<script src="{{asset('assets/vendor/jquery/dist/jquery.min.js')}}"></script>
+ <script src="{{asset('assets/vendor/bootstrap/dist/js/bootstrap.bundle.min.js')}}"></script>
+ <script src="{{asset('assets/vendor/js-cookie/js.cookie.js')}}"></script>
+  <script src="{{asset('assets/vendor/jquery.scrollbar/jquery.scrollbar.min.js')}}"></script>
+  <script src="{{asset('assets/vendor/jquery-scroll-lock/dist/jquery-scrollLock.min.js')}}"></script>
+  <!-- Optional JS -->
+  <script src="{{asset('assets/vendor/chart.js/dist/Chart.min.js')}}"></script>
+  <script src="{{asset('assets/vendor/chart.js/dist/Chart.extension.js')}}"></script>
+  <!-- Argon JS -->
+  <script src="{{asset('assets/js/argon.js?v=1.2.0')}}"></script>
+
+        {% endblock %}  
+
+
+{% block body %} 
+{% block header %}
+  <!-- Main content -->
+  
+  <header>
+  <div class="collapse bg-dark" id="navbarHeader" bis_skin_checked="1">
+    <div class="container" bis_skin_checked="1">
+      <div class="row" bis_skin_checked="1">
+        <div class="col-sm-8 col-md-7 py-4" bis_skin_checked="1">
+          <h4 class="text-white">About</h4>
+          <p class="text-muted">Add some information about the album below, the author, or any other background context. Make it a few sentences long so folks can pick up some informative tidbits. Then, link them off to some social networking sites or contact information.</p>
+        </div>
+        <div class="col-sm-4 offset-md-1 py-4" bis_skin_checked="1">
+          <h4 class="text-white">Contact</h4>
+          <ul class="list-unstyled">
+            <li><a href="#" class="text-white">Follow on Twitter</a></li>
+            <li><a href="#" class="text-white">Like on Facebook</a></li>
+            <li><a href="#" class="text-white">Email me</a></li>
+          </ul>
+        </div>
+      </div>
+    </div>
+  </div>
+  <div class="navbar navbar-dark bg-dark shadow-sm" bis_skin_checked="1">
+    <div class="container d-flex justify-content-between" bis_skin_checked="1">
+      <a href="/" class="navbar-brand d-flex align-items-center">
+        <img src="{{asset('assets/img/brand/brand1.png')}}" class="navbar-brand-img" alt="..." style="width:35%;height:35%">
+      
+      </a>
+      <div class="navbar-nav ml-auto action-buttons">
+			<div class="nav-item dropdown" style="margin-right:10px">
+			
+             
+						<a href="login" class="btn btn-primary btn-block">Login</a>
+
+						
+                </div>
+			</div>
+			<div class="nav-item dropdown">
+				
+						<a href="register" class="btn btn-primary btn-block">Sign up</a>
+					
+				</div>
+			</div>
+        </div>
+	</div>
+    </div>
+  </div>
+</header>
+
+     {% endblock %}
+<style>
+        body{
+  
+    background:#eee;
+    color: #708090;
+}
+.icon-1x {
+    font-size: 24px !important;
+}
+a{
+    text-decoration:none;    
+}
+.text-primary, a.text-primary:focus, a.text-primary:hover {
+    color: #00ADBB!important;
+}
+.text-black, .text-hover-black:hover {
+    color: #000 !important;
+}
+.font-weight-bold {
+    font-weight: 700 !important;
+}
+    </style>
+    {% if jsonOutput is defined %}
+<link href="https://code.ionicframework.com/ionicons/2.0.1/css/ionicons.min.css" rel="stylesheet">
+<div class="container">
+      <div class="row">
+        <!-- Main content -->
+        <div class="col-lg-9 mb-3">
+          <div class="row text-left mb-5">
+            
+          </div>
+          <!-- End of post 1 -->
+          {% for item in jsonOutput %}
+        {% set question = item.question %}
+        {% set reponse = item.answer %}
+          <div class="card row-hover pos-relative py-3 px-3 mb-3 border-warning border-top-0 border-right-0 border-bottom-0 rounded-0">
+            <div class="row align-items-center">
+              <div class="col-md-8 mb-3 mb-sm-0">
+                <h5>
+                  <a href="#" class="text-primary">{{question}}</a>
+                </h5>
+                <p class="text-sm"><span class="op-6">Posted</span> <a class="text-black" href="#">20 minutes</a> <span class="op-6">ago by</span> <a class="text-black" href="#">KenyeW</a></p>
+                <div class="text-sm op-5"> <a class="text-black mr-2" href="#">#C++</a> <a class="text-black mr-2" href="#">#AppStrap Theme</a> <a class="text-black mr-2" href="#">#Wordpress</a> </div>
+              </div>
+              <div class="col-md-4 op-7">
+                <div class="row text-center op-7">
+                  <div class="col px-1"> <i class="ion-connection-bars icon-1x"></i> <span class="d-block text-sm">{{ votes[question] }}</span> </div>
+                  <div class="col px-1"> <i class="ion-ios-chatboxes-outline icon-1x"></i> <a href="{{ path('afficherreponse',{'question' : question}) }}" class="d-block text-sm">Replays</a> </div>
+                 <div class="col px-1">
+            <i class="ion-arrow-up-c icon-1x vote-arrow" data-question="{{ question }}"></i>
+            <i class="ion-arrow-down-c icon-1x vote-arrow" data-question="{{ question }}"></i>
+            
+        </div>
+       
+                </div>
+              </div>
+            </div>
+          </div>
+          <!-- /End of post 1 -->
+          {% endfor %}
+          <!-- /End of post 20 -->
+        </div>
+        <!-- Sidebar content -->
+        <div class="col-lg-3 mb-4 mb-lg-0 px-lg-0 mt-lg-0">
+          <div style="visibility: hidden; display: none; width: 285px; height: 801px; margin: 0px; float: none; position: static; inset: 85px auto auto;"></div><div data-settings="{&quot;parent&quot;:&quot;#content&quot;,&quot;mind&quot;:&quot;#header&quot;,&quot;top&quot;:10,&quot;breakpoint&quot;:992}" data-toggle="sticky" class="sticky" style="top: 85px;"><div class="sticky-inner">
+            <a class="btn btn-lg btn-block btn-success rounded-0 py-4 mb-3 bg-op-6 roboto-bold" href="#">Ask Question</a>
+            <div class="bg-white mb-3">
+              <h4 class="px-3 py-4 op-5 m-0">
+                Active Topics
+              </h4>
+              <hr class="m-0">
+              <div class="pos-relative px-3 py-3">
+                <h6 class="text-primary text-sm">
+                  <a href="#" class="text-primary">Why Bootstrap 4 is so awesome? </a>
+                </h6>
+                <p class="mb-0 text-sm"><span class="op-6">Posted</span> <a class="text-black" href="#">39 minutes</a> <span class="op-6">ago by</span> <a class="text-black" href="#">AppStrapMaster</a></p>
+              </div>
+              <hr class="m-0">
+              <div class="pos-relative px-3 py-3">
+                <h6 class="text-primary text-sm">
+                  <a href="#" class="text-primary">Custom shortcut or command to launch command in terminal? </a>
+                </h6>
+                <p class="mb-0 text-sm"><span class="op-6">Posted</span> <a class="text-black" href="#">58 minutes</a> <span class="op-6">ago by</span> <a class="text-black" href="#">DanielD</a></p>
+              </div>
+              <hr class="m-0">
+              <div class="pos-relative px-3 py-3">
+                <h6 class="text-primary text-sm">
+                  <a href="#" class="text-primary">HELP! My Windows XP machine is down </a>
+                </h6>
+                <p class="mb-0 text-sm"><span class="op-6">Posted</span> <a class="text-black" href="#">48 minutes</a> <span class="op-6">ago by</span> <a class="text-black" href="#">DanielD</a></p>
+              </div>
+              <hr class="m-0">
+              <div class="pos-relative px-3 py-3">
+                <h6 class="text-primary text-sm">
+                  <a href="#" class="text-primary">HELP! My Windows XP machine is down </a>
+                </h6>
+                <p class="mb-0 text-sm"><span class="op-6">Posted</span> <a class="text-black" href="#">38 minutes</a> <span class="op-6">ago by</span> <a class="text-black" href="#">DanielD</a></p>
+              </div>
+              <hr class="m-0">
+            </div>
+            <div class="bg-white text-sm">
+              <h4 class="px-3 py-4 op-5 m-0 roboto-bold">
+                Stats
+              </h4>
+              <hr class="my-0">
+              <div class="row text-center d-flex flex-row op-7 mx-0">
+                <div class="col-sm-6 flex-ew text-center py-3 border-bottom border-right"> <a class="d-block lead font-weight-bold" href="#">58</a> Topics </div>
+                <div class="col-sm-6 col flex-ew text-center py-3 border-bottom mx-0"> <a class="d-block lead font-weight-bold" href="#">1.856</a> Posts </div>
+              </div>
+              <div class="row d-flex flex-row op-7">
+                <div class="col-sm-6 flex-ew text-center py-3 border-right mx-0"> <a class="d-block lead font-weight-bold" href="#">300</a> Members </div>
+                <div class="col-sm-6 flex-ew text-center py-3 mx-0"> <a class="d-block lead font-weight-bold" href="#">DanielD</a> Newest Member </div>
+              </div>
+            </div>
+          </div></div>
+        </div>
+      </div>
+    </div>
+    {% else %}
+        <p>No output available.</p>
+    {% endif %}
+    {% endblock %}
+   
+ <div class="container px-4 py-5" id="hanging-icons">
+    <h2 class="pb-2 border-bottom">Capabilities of Nexus</h2>
+    <div class="row g-4 py-5 row-cols-1 row-cols-lg-3">
+      <div class="col d-flex align-items-start">
+        <div class="icon-square text-body-emphasis bg-body-secondary d-inline-flex align-items-center justify-content-center fs-4 flex-shrink-0 me-3" style="border-radius: 8px; width: 45px; height: 45px">
+          <svg xmlns="http://www.w3.org/2000/svg" width="35" height="35" fill="currentColor" class="bi bi-compass" viewBox="0 0 16 16">
+  <path d="M8 16.016a7.5 7.5 0 0 0 1.962-14.74A1 1 0 0 0 9 0H7a1 1 0 0 0-.962 1.276A7.5 7.5 0 0 0 8 16.016zm6.5-7.5a6.5 6.5 0 1 1-13 0 6.5 6.5 0 0 1 13 0z"/>
+  <path d="m6.94 7.44 4.95-2.83-2.83 4.95-4.949 2.83 2.828-4.95z"/>
+</svg>
+          
+        </div>
+        <div>
+          <h3 class="fs-2 text-body-emphasis">Explore</h3>
+          <p>Discover random questions and their appropriate answers provided by users this can take you anywhere!</p>
+          <a href="#" class="btn btn-primary">
+            Primary button
+          </a>
+        </div>
+      </div>
+      <div class="col d-flex align-items-start">
+        <div class="icon-square text-body-emphasis bg-body-secondary d-inline-flex align-items-center justify-content-center fs-4 flex-shrink-0 me-3"
+        style="border-radius: 8px; width: 45px; height: 45px">
+          <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-stars" viewBox="0 0 16 16">
+  <path d="M7.657 6.247c.11-.33.576-.33.686 0l.645 1.937a2.89 2.89 0 0 0 1.829 1.828l1.936.645c.33.11.33.576 0 .686l-1.937.645a2.89 2.89 0 0 0-1.828 1.829l-.645 1.936a.361.361 0 0 1-.686 0l-.645-1.937a2.89 2.89 0 0 0-1.828-1.828l-1.937-.645a.361.361 0 0 1 0-.686l1.937-.645a2.89 2.89 0 0 0 1.828-1.828l.645-1.937zM3.794 1.148a.217.217 0 0 1 .412 0l.387 1.162c.173.518.579.924 1.097 1.097l1.162.387a.217.217 0 0 1 0 .412l-1.162.387A1.734 1.734 0 0 0 4.593 5.69l-.387 1.162a.217.217 0 0 1-.412 0L3.407 5.69A1.734 1.734 0 0 0 2.31 4.593l-1.162-.387a.217.217 0 0 1 0-.412l1.162-.387A1.734 1.734 0 0 0 3.407 2.31l.387-1.162zM10.863.099a.145.145 0 0 1 .274 0l.258.774c.115.346.386.617.732.732l.774.258a.145.145 0 0 1 0 .274l-.774.258a1.156 1.156 0 0 0-.732.732l-.258.774a.145.145 0 0 1-.274 0l-.258-.774a1.156 1.156 0 0 0-.732-.732L9.1 2.137a.145.145 0 0 1 0-.274l.774-.258c.346-.115.617-.386.732-.732L10.863.1z"/>
+</svg>
+        </div>
+        <div>
+          <h3 class="fs-2 text-body-emphasis">Popular now</h3>
+          <p>See what's taking the spotlight and what's grabing the attention of users this moment.</p>
+          <a href="#" class="btn btn-primary">
+            Primary button
+          </a>
+        </div>
+      </div>
+      <div class="col d-flex align-items-start">
+        <div class="icon-square text-body-emphasis bg-body-secondary d-inline-flex align-items-center justify-content-center fs-4 flex-shrink-0 me-3"
+        style="border-radius: 8px; width: 45px; height: 45px">
+            <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-terminal-x" viewBox="0 0 16 16">
+  <path d="M2 3a1 1 0 0 0-1 1v8a1 1 0 0 0 1 1h5.5a.5.5 0 0 1 0 1H2a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h11a2 2 0 0 1 2 2v4a.5.5 0 0 1-1 0V4a1 1 0 0 0-1-1H2Z"/>
+  <path d="M3.146 5.146a.5.5 0 0 1 .708 0L5.177 6.47a.75.75 0 0 1 0 1.06L3.854 8.854a.5.5 0 1 1-.708-.708L4.293 7 3.146 5.854a.5.5 0 0 1 0-.708ZM5.5 9a.5.5 0 0 1 .5-.5h2a.5.5 0 0 1 0 1H6a.5.5 0 0 1-.5-.5ZM16 12.5a3.5 3.5 0 1 1-7 0 3.5 3.5 0 0 1 7 0Zm-4.854-1.354a.5.5 0 0 0 0 .708l.647.646-.647.646a.5.5 0 0 0 .708.708l.646-.647.646.647a.5.5 0 0 0 .708-.708l-.647-.646.647-.646a.5.5 0 0 0-.708-.708l-.646.647-.646-.647a.5.5 0 0 0-.708 0Z"/>
+</svg>        </div>
+        <div>
+          <h3 class="fs-2 text-body-emphasis">Unsolved</h3>
+          <p>Be an active member of Nexus and help users by suggesting solutions
+          to their most triggering problems/bugs.</p>
+          <a href="#" class="btn btn-primary">
+            Primary button
+          </a>
+        </div>
+      </div>
+    </div>
+  </div>
+ {% block footer %}
+      <footer class="py-3 my-4" >
+
+    <ul class="nav justify-content-center border-bottom pb-3 mb-3">
+      <li class="nav-item"><a href="#" class="nav-link px-2 text-body-secondary">Home</a></li>
+      <li class="nav-item"><a href="#" class="nav-link px-2 text-body-secondary">Features</a></li>
+      <li class="nav-item"><a href="#" class="nav-link px-2 text-body-secondary">Pricing</a></li>
+      <li class="nav-item"><a href="#" class="nav-link px-2 text-body-secondary">FAQs</a></li>
+      <li class="nav-item"><a href="#" class="nav-link px-2 text-body-secondary">About</a></li>
+    </ul>
+    <p class="text-center text-body-secondary">© 2023 Company, Inc</p>
+
+  </footer>
+        
+{% endblock %}

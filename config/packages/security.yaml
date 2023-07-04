@@ -20,7 +20,7 @@ security:
       form_login:
         login_path: login
         check_path: login
-        default_target_path: /
+        default_target_path: /homepage # Redirect to the homepage after login
       logout:
         path: logout
         target: /
@@ -28,9 +28,9 @@ security:
         secret: "%kernel.secret%"
         lifetime: 604800 # 1 week
   access_control:
-    - { path: ^/login$, roles: IS_AUTHENTICATED_ANONYMOUSLY }
+    - { path: ^/login, roles: IS_AUTHENTICATED_ANONYMOUSLY }
     - { path: ^/register, roles: IS_AUTHENTICATED_ANONYMOUSLY }
-    - { path: ^/, roles: ROLE_USER }
+    - { path: ^/homepage, roles: ROLE_USER }
 
 when@test:
   security:

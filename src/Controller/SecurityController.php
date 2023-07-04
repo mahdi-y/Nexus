@@ -2,18 +2,26 @@
 
 namespace App\Controller;
 
-use App\Entity\Utilisateur;
-use DateTimeImmutable;
+
+use App\Form\LoginFormType;
+
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\Routing\Annotation\Route;
-use Symfony\Component\Security\Core\Encoder\UserPasswordEncoderInterface;
 use Symfony\Component\Security\Http\Authentication\AuthenticationUtils;
+
+use App\Entity\Utilisateur;
+use DateTimeImmutable;
+
+use Symfony\Component\Security\Core\Encoder\UserPasswordEncoderInterface;
+
 use Symfony\Component\Security\Http\Logout\LogoutSuccessHandlerInterface;
+
 
 class SecurityController extends AbstractController
 {
     /**
+
      * @Route("/login", name="login")
      */
     public function login(AuthenticationUtils $authenticationUtils)
@@ -76,7 +84,7 @@ class SecurityController extends AbstractController
             $entityManager->flush();
 
             // Redirect to the login page
-            return $this->redirectToRoute('login');
+            return $this->redirectToRoute('landingpage');
         }
 
         return $this->render('security/register.html.twig');

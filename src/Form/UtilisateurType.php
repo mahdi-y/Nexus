@@ -20,8 +20,7 @@ class UtilisateurType extends AbstractType
             ->add('roleU')
             ->add('Mdp')
             ->add('verifieU')
-            ->add('actifU')
-        ;
+            ->add('actifU');
     }
 
     public function configureOptions(OptionsResolver $resolver): void

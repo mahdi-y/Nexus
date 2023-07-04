@@ -31,7 +31,7 @@ class HomepageController extends AbstractController
             $escapedSearchQuery = escapeshellarg($searchQuery);
 
             // Command to execute
-            $command = 'echo ' . $escapedSearchQuery . ' | java -jar "D:/Esprit/3eme/vermeg stage project/web application/Nexus/NLP/test.jar"';
+            $command = 'echo ' . $escapedSearchQuery . ' | java -jar "D:/Esprit/3eme/vermeg stage project/web application/Nexus/NLP/dist/dist/test.jar"';
 
             // Execute the command and store the output in the $output variable
             $output = [];

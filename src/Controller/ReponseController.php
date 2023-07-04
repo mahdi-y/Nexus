@@ -10,7 +10,11 @@ use App\Repository\QuestionRepository;
 use App\Repository\ReponseRepository;
 use App\Repository\UtilisateurRepository;
 use Doctrine\Persistence\ManagerRegistry;
+use phpDocumentor\Reflection\Types\Null_;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
+use Symfony\Component\Console\Output\ConsoleOutput;
+use Symfony\Component\Console\Output\OutputInterface;
+use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
@@ -134,5 +138,41 @@ class ReponseController extends AbstractController
         $manager->flush();
 
         return $this->redirectToRoute('afficherreponseUC');
+    }
+
+    #[Route('/update-vote', name: 'update_vote')]
+    public function updateVote(Request $request, QuestionRepository $repoquest, ManagerRegistry $doctrine): JsonResponse
+    {
+        $out = new ConsoleOutput();
+        if ($request->isMethod('POST')) {
+            $question = $request->request->get('question');
+            $action = $request->request->get('action');
+            $out->writeln($question);
+            $out->writeln($action);
+            // Retrieve the question from the database
+            $questionEntity = $repoquest->getbyname($question);
+
+            $out->writeln($questionEntity->getIdQ());
+
+            if ($questionEntity == null) {
+                return new JsonResponse(['error' => 'Question not found'], 404);
+            }
+
+            // Update the vote count based on the action (up or down)
+            if ($action === 'up') {
+                $questionEntity->setVoteQ($questionEntity->getVoteQ() + 1);
+            } elseif ($action === 'down') {
+                $questionEntity->setVoteQ($questionEntity->getVoteQ() - 1);
+            } else {
+                return new JsonResponse(['error' => 'Invalid action'], 400);
+            }
+
+            // Persist the changes to the database
+            $entityManager = $doctrine->getManager();
+            $entityManager->flush();
+        }
+
+        // Return the updated vote count in the response
+        return new JsonResponse(['voteCount' => $questionEntity->getVoteQ()]);
     }
 }

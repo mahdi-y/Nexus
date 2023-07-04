@@ -3,6 +3,7 @@
 namespace App\Repository;
 
 use App\Entity\Question;
+use App\Entity\Utilisateur;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
 use Doctrine\Persistence\ManagerRegistry;
 
@@ -38,7 +39,6 @@ class QuestionRepository extends ServiceEntityRepository
             $this->getEntityManager()->flush();
         }
     }
-
 
     //    /**
     //     * @return Question[] Returns an array of Question objects
@@ -102,5 +102,21 @@ class QuestionRepository extends ServiceEntityRepository
 
         return $query->getSingleScalarResult();
     }
+    public function getUIDbyname($nom): ?Utilisateur
+    {
+        $entityManager = $this->getEntityManager();
 
+        $query = $entityManager->createQuery(
+            'SELECT u
+        FROM App\Entity\Utilisateur u
+        WHERE EXISTS (
+            SELECT q
+            FROM App\Entity\Question q
+            WHERE q.contenuQ = :nom
+            AND q.idU = u.idU
+        )'
+        )->setParameter('nom', $nom);
+
+        return $query->getOneOrNullResult();
+    }
 }

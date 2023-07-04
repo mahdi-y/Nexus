@@ -2,7 +2,9 @@
 
 namespace App\Entity;
 
-
+use Doctrine\Common\Collections\ArrayCollection;
+use Doctrine\Common\Collections\Collection;
+use Doctrine\DBAL\Types\Types;
 use Doctrine\ORM\Mapping as ORM;
 use Symfony\Component\Security\Core\User\PasswordAuthenticatedUserInterface;
 use Symfony\Component\Security\Core\User\UserInterface;
@@ -18,7 +20,7 @@ class Utilisateur implements UserInterface, PasswordAuthenticatedUserInterface
     /**
      * @var int
      *
-     * @ORM\Column(type="integer")
+     * @ORM\Column(name="id_U", type="integer")
      * @ORM\Id
      * @ORM\GeneratedValue(strategy="IDENTITY")
      */
@@ -87,6 +89,23 @@ class Utilisateur implements UserInterface, PasswordAuthenticatedUserInterface
      */
     private $actifU = '0';
 
+    /**
+     * @ORM\OneToMany(targetEntity="App\Entity\Question", mappedBy="idU")
+     */
+    private Collection $questions;
+
+    public function __construct()
+    {
+        $this->questions = new ArrayCollection();
+    }
+
+    /**
+     * @return Collection|Question[]
+     */
+    public function getQuestions(): Collection
+    {
+        return $this->questions;
+    }
 
     public function getIdU(): ?int
     {
@@ -98,9 +117,7 @@ class Utilisateur implements UserInterface, PasswordAuthenticatedUserInterface
         return $this->nomU;
     }
 
-
     public function setNomU(string $nomU): self
-
     {
         $this->nomU = $nomU;
 
@@ -112,9 +129,7 @@ class Utilisateur implements UserInterface, PasswordAuthenticatedUserInterface
         return $this->prenomU;
     }
 
-
     public function setPrenomU(string $prenomU): self
-
     {
         $this->prenomU = $prenomU;
 
@@ -126,9 +141,7 @@ class Utilisateur implements UserInterface, PasswordAuthenticatedUserInterface
         return $this->emailU;
     }
 
-
     public function setEmailU(string $emailU): self
-
     {
         $this->emailU = $emailU;
 
@@ -140,9 +153,7 @@ class Utilisateur implements UserInterface, PasswordAuthenticatedUserInterface
         return $this->dateNaissanceU;
     }
 
-
     public function setDateNaissanceU(\DateTimeInterface $dateNaissanceU): self
-
     {
         $this->dateNaissanceU = $dateNaissanceU;
 
@@ -154,15 +165,12 @@ class Utilisateur implements UserInterface, PasswordAuthenticatedUserInterface
         return $this->sexeU;
     }
 
-
     public function setSexeU(string $sexeU): self
-
     {
         $this->sexeU = $sexeU;
 
         return $this;
     }
-
 
     public function getMdp(): ?string
     {
@@ -185,7 +193,6 @@ class Utilisateur implements UserInterface, PasswordAuthenticatedUserInterface
     {
         $this->roleU = $roleU;
 
-
         return $this;
     }
 
@@ -194,9 +201,7 @@ class Utilisateur implements UserInterface, PasswordAuthenticatedUserInterface
         return $this->verifieU;
     }
 
-
     public function setVerifieU(int $verifieU): self
-
     {
         $this->verifieU = $verifieU;
 
@@ -208,15 +213,12 @@ class Utilisateur implements UserInterface, PasswordAuthenticatedUserInterface
         return $this->actifU;
     }
 
-
     public function setActifU(int $actifU): self
-
     {
         $this->actifU = $actifU;
 
         return $this;
     }
-
 
     // Implement methods from UserInterface and PasswordAuthenticatedUserInterface
 
@@ -256,5 +258,4 @@ class Utilisateur implements UserInterface, PasswordAuthenticatedUserInterface
     {
         return $this->emailU;
     }
-
 }

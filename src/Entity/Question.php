@@ -7,7 +7,6 @@ use Doctrine\ORM\Mapping as ORM;
 use App\Repository\QuestionRepository;
 use DateTime;
 
-
 /**
  * @ORM\Entity(repositoryClass="App\Repository\QuestionRepository")
  */
@@ -65,10 +64,13 @@ class Question
      */
     private $signaleQ = '0';
 
-    #[ORM\ManyToOne(targetEntity: Utilisateur::class, inversedBy: 'Questions')]
-    #[ORM\JoinColumn(name: 'idU', referencedColumnName: 'idU')]
 
+    /**
+     * @ORM\ManyToOne(targetEntity="App\Entity\Utilisateur", inversedBy="questions")
+     * @ORM\JoinColumn(name="id_U", referencedColumnName="id_U")
+     */
     private ?Utilisateur $idU = null;
+
 
     public function getIdQ(): ?int
     {
@@ -111,9 +113,7 @@ class Question
         return $this;
     }
 
-
     public function getdateAjoutQ(): ?\DateTimeInterface
-
     {
         return $this->dateAjoutQ;
     }
@@ -154,9 +154,7 @@ class Question
         return $this->idU;
     }
 
-
     public function setIdU(?Utilisateur $idU): self
-
     {
         $this->idU = $idU;
 

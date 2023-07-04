@@ -1,4 +1,3 @@
-
 landingpage:
   path: /
   controller: App\Controller\LandingpageController::landingpage
@@ -18,4 +17,3 @@ logout:
 homepage:
   path: /homepage
   controller: App\Controller\HomepageController::homepage
-

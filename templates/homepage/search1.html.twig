@@ -22,6 +22,58 @@ a{
     font-weight: 700 !important;
 }
     </style>
+<script>
+   // Function triggered when up arrow is clicked
+function upVoteFunction(question) {
+    // Make an AJAX request to update the vote_q field in the database
+    const url = '/update-vote';
+    const data = new FormData();
+    data.append('question', question);
+    data.append('action', 'up');
+
+    fetch(url, {
+        method: 'POST',
+        body: data,
+    })
+        .then(response => response.json())
+        .then(data => {
+            // Update the vote count in the DOM
+            const voteCountElement = document.getElementById(`vote-count-${question}`);
+            voteCountElement.innerText = data.voteCount;
+        })
+        .catch(error => {
+            console.error('Error:', error);
+        });
+}
+
+// Function triggered when down arrow is clicked
+function downVoteFunction(question) {
+    // Make an AJAX request to update the vote_q field in the database
+    const url = '/update-vote';
+    const data = new FormData();
+    data.append('question', question);
+    data.append('action', 'down');
+
+    fetch(url, {
+        method: 'POST',
+        body: data,
+    })
+        .then(response => response.json())
+        .then(data => {
+            // Update the vote count in the DOM
+            const voteCountElement = document.getElementById(`vote-count-${question}`);
+            voteCountElement.innerText = data.voteCount;
+        })
+        .catch(error => {
+            console.error('Error:', error);
+        });
+}
+
+
+
+    
+</script>
+
     {% if jsonOutput is defined %}
 <link href="https://code.ionicframework.com/ionicons/2.0.1/css/ionicons.min.css" rel="stylesheet">
 <div class="container">
@@ -41,18 +93,25 @@ a{
                 <h5>
                   <a href="#" class="text-primary">{{question}}</a>
                 </h5>
-                <p class="text-sm"><span class="op-6">Posted</span> <a class="text-black" href="#">20 minutes</a> <span class="op-6">ago by</span> <a class="text-black" href="#">KenyeW</a></p>
-                <div class="text-sm op-5"> <a class="text-black mr-2" href="#">#C++</a> <a class="text-black mr-2" href="#">#AppStrap Theme</a> <a class="text-black mr-2" href="#">#Wordpress</a> </div>
+                <p class="text-sm"><span class="op-6">Posted</span> <a class="text-black" >{{questionData[question].Date_Ajout_Q}} days</a> <span class="op-6">ago by</span> <a class="text-black" >{{questionData[question].nom_U}}</a></p>
+                <div class="text-sm op-5"> <a class="text-black mr-2" >#C++</a> <a class="text-black mr-2" >#AppStrap Theme</a> <a class="text-black mr-2" >#Wordpress</a> </div>
               </div>
+              
               <div class="col-md-4 op-7">
                 <div class="row text-center op-7">
-                  <div class="col px-1"> <i class="ion-connection-bars icon-1x"></i> <span class="d-block text-sm">{{ votes[question] }}</span> </div>
-                  <div class="col px-1"> <i class="ion-ios-chatboxes-outline icon-1x"></i> <a href="{{ path('afficherreponse',{'question' : question}) }}" class="d-block text-sm">Replays</a> </div>
-                 <div class="col px-1">
-            <i class="ion-arrow-up-c icon-1x vote-arrow" data-question="{{ question }}"></i>
-            <i class="ion-arrow-down-c icon-1x vote-arrow" data-question="{{ question }}"></i>
-            
-        </div>
+                  <div class="col px-1">
+    <i class="ion-connection-bars icon-1x"></i>
+    <span class="d-block text-sm" id="vote-count-{{ question }}">{{ votes[question] }}</span>
+</div>
+<div class="col px-1">
+    <i class="ion-ios-chatboxes-outline icon-1x"></i>
+    <a href="{{ path('afficherreponse', {'question': question}) }}" class="d-block text-sm">Replays</a>
+</div>
+<div class="col px-1">
+    <i class="ion-arrow-up-c icon-1x vote-arrow" data-question="{{ question }}" onclick="upVoteFunction('{{ question }}')"></i>
+    <i class="ion-arrow-down-c icon-1x vote-arrow" data-question="{{ question }}" onclick="downVoteFunction('{{ question }}')"></i>
+</div>
+
        
                 </div>
               </div>

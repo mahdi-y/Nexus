@@ -91,4 +91,13 @@ class QuestionRepository extends ServiceEntityRepository
 
         return $query->getOneOrNullResult();
     }
+
+    public function findByUser($user)
+{
+    return $this->createQueryBuilder('q')
+        ->andWhere('q.idU = :user')
+        ->setParameter('user', $user)
+        ->getQuery()
+        ->getResult();
+}
 }

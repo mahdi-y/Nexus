@@ -1,0 +1,15 @@
+{% extends 'front.html.twig' %}
+
+    
+{% block body %}
+{% block content %}
+    <h1>Edit Question</h1>
+
+    {{ form_start(questionForm) }}
+        {{ form_row(questionForm.titreQ) }}
+        {{ form_row(questionForm.contenuQ) }}
+        {{ form_row(questionForm.typeQ) }}
+        <button type="submit">Update Question</button>
+    {{ form_end(questionForm) }}
+{% endblock %}
+{% endblock %}

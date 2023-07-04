@@ -1,67 +1,70 @@
 {% extends 'front.html.twig' %}
 
 {% block body %}
-    {% block content %}
-        <div class="container">
-            <h1 class="mt-4 mb-4">Asked Questions</h1>
-            <style>
-                .card {
-                    position: relative;
-                }
-                .asked-by {
-                    margin-bottom: 0;
-                }
-                .asked-on {
-                    margin-top: 0;
-                    font-size: 14px;
-                }
-                .date {
-                    position: absolute;
-                    bottom: 0;
-                    right: 0;
-                    margin: 0;
-                }
-                .card-text:not(:last-child) {
-                    margin-bottom: 0.5rem;
-                }
-            </style>
-            {% for question in questions %}
-                <div class="card mb-4">
-                    <div class="card-body d-flex justify-content-between">
-                        <div>
-                            <h3 class="card-title">{{ question.getTitreQ() }}</h3>
-                            <p class="card-text"><strong>Contenu:</strong></p>
-                            <p class="card-text">{{ question.getContenuQ() }}</p>
-                            <p class="card-text"><strong>Type:</strong></p>
-                            <p class="card-text">{{ question.getTypeQ() }}</p>
-                            <p class="card-text">
-                                <strong>Asked by:</strong> {{ question.getIdU() is not null ? question.getIdU().getEmailU() : 'Unknown User' }} 
-                                <span class="asked-on"><strong>On:</strong>  {{ question.getdateAjoutQ()|date('Y-m-d') }}</span>
-                            </p>
-                        </div>
-                        <div>
-                            <button type="button" class="btn btn-link vote-btn" onclick="toggleRotation(this)">
-                                <svg xmlns="http://www.w3.org/2000/svg" width="25" height="25" fill="currentColor" class="bi bi-caret-up-fill upvote" viewBox="0 0 16 16">
-                                    <path d="m7.247 4.86-4.796 5.481c-.566.647-.106 1.659.753 1.659h9.592a1 1 0 0 0 .753-1.659l-4.796-5.48a1 1 0 0 0-1.506 0z"/>
-                                </svg>
-                            </button>
-                            <button type="button" class="btn btn-link vote-btn" onclick="toggleRotation(this)">
-                                <svg xmlns="http://www.w3.org/2000/svg" width="25" height="25" fill="currentColor" class="bi bi-caret-down downvote" viewBox="0 0 16 16">
-                                    <path d="M3.204 5h9.592L8 10.481 3.204 5zm-.753.659 4.796 5.48a1 1 0 0 0 1.506 0l4.796-5.48c.566-.647.106-1.659-.753-1.659H3.204a1 1 0 0 0-.753 1.659z"/>
-                                </svg>
-                            </button>
-                            <button type="button" class="btn btn-secondary">Report</button>
-                        </div>
-                    </div>
-                </div>
-            {% endfor %}    
-        </div>
-        <script>
-            function toggleRotation(btn) {
-                btn.classList.toggle('clicked');
-                btn.querySelector('.upvote').classList.toggle('rotate');
-                btn.querySelector('.downvote').classList.toggle('rotate');
-            }
-        </script>
-    {% endblock %}
+	{% block content %}
+		<div class="container">
+			<h1 class="mt-4 mb-4">Asked Questions</h1>
+			<style>
+				.upvote.rotate {
+					animation: rotateAnimation 1s linear infinite;
+				}
+
+				@keyframes rotateAnimation {
+					0% {
+						transform: rotate(0deg);
+					}
+					100% {
+						transform: rotate(360deg);
+					}
+				}
+			</style>
+
+			{% for question in questions %}
+				<div class="card mb-4">
+					<div class="card-body d-flex justify-content-between">
+						<div>
+							<h3 class="card-title">{{ question.getTitreQ() }}</h3>
+							<p class="card-text">
+								<strong>Contenu:</strong>
+							</p>
+							<p class="card-text">{{ question.getContenuQ() }}</p>
+							<p class="card-text">
+								<strong>Type:</strong>
+							</p>
+							<p class="card-text">{{ question.getTypeQ() }}</p>
+							<p class="card-text">
+								<strong>Asked by:</strong>
+								{{ question.getIdU() is not null ? question.getIdU().getEmailU() : 'Unknown User' }}
+								<span class="asked-on">
+									<strong>On:</strong>
+									{{ question.getdateAjoutQ()|date('Y-m-d') }}</span>
+							</p>
+						</div>
+						<div>
+							<button type="button" class="btn btn-link vote-btn" onclick="toggleRotation(this)">
+								<svg xmlns="http://www.w3.org/2000/svg" width="25" height="25" fill="currentColor" class="bi bi-caret-up-fill upvote" viewbox="0 0 16 16">
+									<path d="m7.247 4.86-4.796 5.481c-.566.647-.106 1.659.753 1.659h9.592a1 1 0 0 0 .753-1.659l-4.796-5.48a1 1 0 0 0-1.506 0"/>
+								</svg>
+							</button>
+
+							<button type="button" class="btn btn-link vote-btn" onclick="toggleRotation(this)">
+								<svg xmlns="http://www.w3.org/2000/svg" width="25" height="25" fill="currentColor" class="bi bi-caret-down downvote" viewbox="0 0 16 16">
+									<path d="M3.204 5h9.592L8 10.481 3.204 5zm-.753.659 4.796 5.48a1 1 0 0 0 1.506 0l4.796-5.48c.566-.647.106-1.659-.753-1.659H3.204a1 1 0 0 0-.753 1.659z"/>
+								</svg>
+							</button>
+							<button type="button" class="btn btn-secondary">Report</button>
+						</div>
+					</div>
+				</div>
+			{% endfor %}
+		</div>
+		<script>
+			function toggleRotation(btn) {
+btn.classList.toggle('clicked');
+btn.querySelector('.upvote').classList.toggle('rotate');
+btn.querySelector('.downvote').classList.toggle('rotate');
+}
+		</script>
+
+	{% endblock %}
 {% endblock %}

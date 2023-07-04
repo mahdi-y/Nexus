@@ -10,3 +10,7 @@ register:
 logout:
   path: /logout
   controller: App\Controller\SecurityController::logout
+my_questions:
+  path: /my-questions
+  controller: App\Controller\QuestionController::myQuestions
+  methods: GET

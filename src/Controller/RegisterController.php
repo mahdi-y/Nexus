@@ -26,7 +26,7 @@ use Symfony\Component\Security\Core\Encoder\PasswordEncoderInterface;
 
 class RegisterController extends AbstractController
 {
-    #[Route('/register', name: 'app_register')]
+    #[Route('/sdkjfsdfks', name: 'app_register')]
     public function register(Request $request, UserPasswordHasherInterface $userPasswordHasher, EntityManagerInterface $entityManager): Response
     {
         $user = new Utilisateur();
@@ -53,7 +53,7 @@ class RegisterController extends AbstractController
             'form' => $form->createView(),
         ]);
     }
-    #[Route('/', name: 'app_home')]
+    #[Route('/dkfsdfsdfksdf', name: 'app_home')]
     public function home(): Response
     {
         return $this->render('front.html.twig', [

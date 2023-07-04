@@ -86,7 +86,7 @@ class SecurityController extends AbstractController
             $entityManager->flush();
 
             // Redirect to the login page
-            return $this->redirectToRoute('login');
+            return $this->redirectToRoute('landingpage');
         }
 
         return $this->render('security/register.html.twig');

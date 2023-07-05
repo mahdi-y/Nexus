@@ -258,4 +258,30 @@ class Utilisateur implements UserInterface, PasswordAuthenticatedUserInterface
     {
         return $this->emailU;
     }
+
+    public function addQuestion(Question $question): static
+    {
+        if (!$this->questions->contains($question)) {
+            $this->questions->add($question);
+            $question->setIdU($this);
+        }
+
+        return $this;
+    }
+
+    public function removeQuestion(Question $question): static
+    {
+        if ($this->questions->removeElement($question)) {
+            // set the owning side to null (unless already changed)
+            if ($question->getIdU() === $this) {
+                $question->setIdU(null);
+            }
+        }
+
+        return $this;
+    }
+    public function __toString()
+    {
+        return $this->prenomU;
+    }
 }

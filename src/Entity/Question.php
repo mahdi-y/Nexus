@@ -65,10 +65,11 @@ class Question
     private $signaleQ = '0';
 
     /**
-     * @ORM\ManyToOne(targetEntity="App\Entity\Utilisateur")
-     * @ORM\JoinColumn(name="id_u", referencedColumnName="id_u")
+     * @ORM\ManyToOne(targetEntity="App\Entity\Utilisateur", inversedBy="questions")
+     * @ORM\JoinColumn(name="id_U", referencedColumnName="id_U")
      */
-    private $idU;
+    private ?Utilisateur $idU = null;
+
 
     // ...
 
@@ -162,7 +163,4 @@ class Question
 
         return $this;
     }
-
-    
-    
 }

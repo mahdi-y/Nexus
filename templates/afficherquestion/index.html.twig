@@ -4,15 +4,13 @@
 	{% block content %}
 		<div class="container">
 			<div class="text-center">
-
 				<div class="card-body">
 					<h1 class="card-title">Asked questions</h1>
 				</div>
-
 			</div>
 			<style>
 				.upvote.rotate {
-					animation: rotateAnimation 0.4s linear 0.3s;
+					animation: rotateAnimation 0.4s linear 0.1s;
 				}
 
 				@keyframes rotateAnimation {
@@ -47,13 +45,15 @@
 							</p>
 						</div>
 						<div>
-							<button type="button" class="btn btn-link vote-btn" onclick="toggleRotation(this)">
+							<button type="button" class="btn btn-link vote-btn" onclick="voteQuestion({{ question.getIdQ() }}, 'upvote', this)">
 								<svg xmlns="http://www.w3.org/2000/svg" width="25" height="25" fill="currentColor" class="bi bi-caret-up-fill upvote" viewbox="0 0 16 16">
 									<path d="m7.247 4.86-4.796 5.481c-.566.647-.106 1.659.753 1.659h9.592a1 1 0 0 0 .753-1.659l-4.796-5.48a1 1 0 0 0-1.506 0"/>
 								</svg>
 							</button>
 
-							<button type="button" class="btn btn-link vote-btn" onclick="toggleRotation(this)">
+							<span class="vote-count" id="vote-count-{{ question.getIdQ() }}">{{ question.getVoteQ() }}</span>
+
+							<button type="button" class="btn btn-link vote-btn" onclick="voteQuestion({{ question.getIdQ() }}, 'downvote', this)">
 								<svg xmlns="http://www.w3.org/2000/svg" width="25" height="25" fill="currentColor" class="bi bi-caret-down downvote" viewbox="0 0 16 16">
 									<path d="M3.204 5h9.592L8 10.481 3.204 5zm-.753.659 4.796 5.48a1 1 0 0 0 1.506 0l4.796-5.48c.566-.647.106-1.659-.753-1.659H3.204a1 1 0 0 0-.753 1.659z"/>
 								</svg>
@@ -65,12 +65,46 @@
 			{% endfor %}
 		</div>
 		<script>
-			function toggleRotation(btn) {
+
+			function voteQuestion(questionId, voteType, btn) { // Create a new AJAX request
+var xhr = new XMLHttpRequest();
+
+// Define the request URL
+var url = '/question/' + questionId + '/vote';
+
+// Set the request method (POST) and content type
+xhr.open('POST', url);
+xhr.setRequestHeader('Content-Type', 'application/x-www-form-urlencoded');
+
+// Set the callback function to handle the response
+xhr.onload = function () {
+if (xhr.status === 200) { // Update the vote count on the page
+var voteCountElement = document.getElementById('vote-count-' + questionId);
+voteCountElement.textContent = xhr.responseText;
+
+// Toggle the active class on the clicked button
+btn.classList.toggle('clicked');
+
+// Toggle the rotation class on the upvote/downvote icons
+btn.querySelector('.upvote').classList.toggle('rotate');
+btn.querySelector('.downvote').classList.toggle('rotate');
+} else {
+console.error('Vote request failed. Status: ' + xhr.status);
+}
+};
+
+// Prepare the request data
+var data = 'voteType=' + encodeURIComponent(voteType);
+
+// Send the request
+xhr.send(data);
+}
+
+function toggleRotation(btn) {
 btn.classList.toggle('clicked');
 btn.querySelector('.upvote').classList.toggle('rotate');
 btn.querySelector('.downvote').classList.toggle('rotate');
 }
 		</script>
-
 	{% endblock %}
 {% endblock %}

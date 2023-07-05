@@ -11,6 +11,8 @@ use Symfony\Component\Routing\Annotation\Route;
 use Symfony\Component\Security\Core\Security;
 use Doctrine\ORM\EntityManagerInterface;
 use App\Repository\QuestionRepository;
+use App\Repository\VoteRepository;
+
 
 class QuestionController extends AbstractController
 {
@@ -97,5 +99,39 @@ public function deleteQuestion(EntityManagerInterface $entityManager, $id): Resp
     // Redirect to a success page or any other desired action
     return $this->redirectToRoute('app_my_questions');
 }
+
+// ...
+
+#[Route('/question/{id}/vote', name: 'app_question_vote', methods: ['POST'])]
+public function voteQuestion(Request $request, EntityManagerInterface $entityManager, $id): Response
+{
+    $question = $entityManager->getRepository(Question::class)->find($id);
+
+    if (!$question) {
+        throw $this->createNotFoundException('Question not found.');
+    }
+
+    $voteType = $request->request->get('voteType');
+
+    // Perform the vote update based on the vote type
+    if ($voteType === 'upvote') {
+        $question->setVoteQ($question->getVoteQ() + 1);
+    } elseif ($voteType === 'downvote') {
+        $question->setVoteQ($question->getVoteQ() - 1);
+    } else {
+        // Invalid vote type, return an error response
+        return new Response('Invalid vote type.', Response::HTTP_BAD_REQUEST);
+    }
+
+    // Persist the changes to the database
+    $entityManager->flush();
+
+    // Return the updated vote count as the response
+    return new Response((string) $question->getVoteQ(), Response::HTTP_OK);
+}
+
+// ...
+
+
 
 }

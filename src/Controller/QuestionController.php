@@ -3,6 +3,7 @@
 namespace App\Controller;
 
 use App\Entity\Question;
+use App\Entity\Vote;
 use App\Form\QuestionType;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
@@ -103,7 +104,7 @@ public function deleteQuestion(EntityManagerInterface $entityManager, $id): Resp
 // ...
 
 #[Route('/question/{id}/vote', name: 'app_question_vote', methods: ['POST'])]
-public function voteQuestion(Request $request, EntityManagerInterface $entityManager, $id): Response
+public function voteQuestion(Request $request, EntityManagerInterface $entityManager, VoteRepository $voteRepository, $id): Response
 {
     $question = $entityManager->getRepository(Question::class)->find($id);
 
@@ -111,27 +112,66 @@ public function voteQuestion(Request $request, EntityManagerInterface $entityMan
         throw $this->createNotFoundException('Question not found.');
     }
 
+    // Retrieve the currently logged-in user
+    $user = $this->getUser();
+
+    // Check if the user has already voted on this question
+    $existingVote = $voteRepository->findOneBy(['IdQ' => $question, 'IdU' => $user]);
+
+    // Retrieve the vote type from the request
     $voteType = $request->request->get('voteType');
 
-    // Perform the vote update based on the vote type
-    if ($voteType === 'upvote') {
-        $question->setVoteQ($question->getVoteQ() + 1);
-    } elseif ($voteType === 'downvote') {
-        $question->setVoteQ($question->getVoteQ() - 1);
+    // Check if the user has already voted on this question
+    if ($existingVote) {
+        $existingVoteType = $existingVote->getVoteType();
+
+        // Compare the existing vote type with the new vote type
+        if ($existingVoteType === $voteType) {
+            // User has already voted with the same vote type, do nothing
+            return $this->redirectToRoute('app_my_questions');
+        }
+
+        // Update the vote count based on the switch in vote type
+        if ($existingVoteType === 'upvote') {
+            $question->setVoteQ($question->getVoteQ() - 1);
+        } elseif ($existingVoteType === 'downvote') {
+            $question->setVoteQ($question->getVoteQ() + 1);
+        }
+
+        // Update the existing vote with the new vote type
+        $existingVote->setVoteType($voteType);
+        $entityManager->flush();
+
+        // Update the vote count on the page
+        $response = (string) $question->getVoteQ();
     } else {
-        // Invalid vote type, return an error response
-        return new Response('Invalid vote type.', Response::HTTP_BAD_REQUEST);
+        // User has not voted on this question before, proceed with adding a new vote
+
+        // Perform the vote update based on the vote type
+        if ($voteType === 'upvote') {
+            $question->setVoteQ($question->getVoteQ() + 1);
+        } elseif ($voteType === 'downvote') {
+            $question->setVoteQ($question->getVoteQ() - 1);
+        } else {
+            // Invalid vote type, return an error response
+            return new Response('Invalid vote type.', Response::HTTP_BAD_REQUEST);
+        }
+
+        // Create a new Vote entity and associate it with the question and user
+        $vote = new Vote();
+        $vote->setQuestion($question);
+        $vote->setUtilisateur($user);
+        $vote->setVoteType($voteType);
+
+        $entityManager->persist($vote);
+        $entityManager->flush();
+
+        // Update the vote count on the page
+        $response = (string) $question->getVoteQ();
     }
 
-    // Persist the changes to the database
-    $entityManager->flush();
-
     // Return the updated vote count as the response
-    return new Response((string) $question->getVoteQ(), Response::HTTP_OK);
+    return new Response($response, Response::HTTP_OK);
 }
-
-// ...
-
-
 
 }

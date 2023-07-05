@@ -2,6 +2,7 @@
 
 namespace App\Entity;
 
+use Doctrine\DBAL\Types\Types;
 use Doctrine\ORM\Mapping as ORM;
 
 /**
@@ -18,15 +19,15 @@ class Vote
 
     /**
      * @ORM\ManyToOne(targetEntity="App\Entity\Utilisateur")
-     * @ORM\JoinColumn(name="user_id", referencedColumnName="Id_U", nullable=false)
+     * @ORM\JoinColumn(name="user_id", referencedColumnName="id_u")
      */
-    private $utilisateur;
+    private $IdU;
 
     /**
-     * @ORM\ManyToOne(targetEntity="App\Entity\Question")
-     * @ORM\JoinColumn(name="question_id", referencedColumnName="Id_Q", nullable=false)
+     * @ORM\ManyToOne(targetEntity=Question::class)
+     * @ORM\JoinColumn(name="question_Id", referencedColumnName="id_Q")
      */
-    private $question;
+    private $IdQ;
 
     /**
      * @ORM\Column(type="string", length=255)
@@ -47,24 +48,24 @@ class Vote
 
     public function getUtilisateur(): ?Utilisateur
     {
-        return $this->utilisateur;
+        return $this->IdU;
     }
 
-    public function setUtilisateur(?Utilisateur $utilisateur): self
+    public function setUtilisateur(?Utilisateur $IdU): self
     {
-        $this->utilisateur = $utilisateur;
+        $this->IdU = $IdU;
 
         return $this;
     }
 
     public function getQuestion(): ?Question
     {
-        return $this->question;
+        return $this->IdQ;
     }
 
-    public function setQuestion(?Question $question): self
+    public function setQuestion(?Question $IdQ): self
     {
-        $this->question = $question;
+        $this->IdQ = $IdQ;
 
         return $this;
     }
@@ -89,6 +90,30 @@ class Vote
     public function setCreatedAt(\DateTimeInterface $created_at): self
     {
         $this->created_at = $created_at;
+
+        return $this;
+    }
+
+    public function getIdU(): ?Utilisateur
+    {
+        return $this->IdU;
+    }
+
+    public function setIdU(?Utilisateur $IdU): static
+    {
+        $this->IdU = $IdU;
+
+        return $this;
+    }
+
+    public function getIdQ(): ?Question
+    {
+        return $this->IdQ;
+    }
+
+    public function setIdQ(?Question $IdQ): static
+    {
+        $this->IdQ = $IdQ;
 
         return $this;
     }

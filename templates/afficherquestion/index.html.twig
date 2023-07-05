@@ -45,7 +45,7 @@
 							</p>
 						</div>
 						<div>
-							<button type="button" class="btn btn-link vote-btn" onclick="voteQuestion({{ question.getIdQ() }}, 'upvote', this)">
+							<button type="button" class="btn btn-link vote-btn" onclick="voteQuestion('{{ question.getIdQ() }}', 'upvote', this)">
 								<svg xmlns="http://www.w3.org/2000/svg" width="25" height="25" fill="currentColor" class="bi bi-caret-up-fill upvote" viewbox="0 0 16 16">
 									<path d="m7.247 4.86-4.796 5.481c-.566.647-.106 1.659.753 1.659h9.592a1 1 0 0 0 .753-1.659l-4.796-5.48a1 1 0 0 0-1.506 0"/>
 								</svg>
@@ -53,7 +53,8 @@
 
 							<span class="vote-count" id="vote-count-{{ question.getIdQ() }}">{{ question.getVoteQ() }}</span>
 
-							<button type="button" class="btn btn-link vote-btn" onclick="voteQuestion({{ question.getIdQ() }}, 'downvote', this)">
+							<button type="button" class="btn btn-link vote-btn" onclick="voteQuestion('{{ question.getIdQ() }}', 'downvote', this)">
+
 								<svg xmlns="http://www.w3.org/2000/svg" width="25" height="25" fill="currentColor" class="bi bi-caret-down downvote" viewbox="0 0 16 16">
 									<path d="M3.204 5h9.592L8 10.481 3.204 5zm-.753.659 4.796 5.48a1 1 0 0 0 1.506 0l4.796-5.48c.566-.647.106-1.659-.753-1.659H3.204a1 1 0 0 0-.753 1.659z"/>
 								</svg>
@@ -65,8 +66,24 @@
 			{% endfor %}
 		</div>
 		<script>
+			function voteQuestion(questionId, voteType, btn) { // Disable both upvote and downvote buttons temporarily
+var upvoteBtn = btn.parentNode.querySelector('.upvote');
+var downvoteBtn = btn.parentNode.querySelector('.downvote');
+upvoteBtn.disabled = true;
+downvoteBtn.disabled = true;
 
-			function voteQuestion(questionId, voteType, btn) { // Create a new AJAX request
+// Check if the button already has the 'clicked' class
+var isClicked = btn.classList.contains('clicked');
+
+// Prepare the request data
+var data = 'voteType=' + encodeURIComponent(voteType);
+
+// If the button is already clicked, update the voteType to remove the vote
+if (isClicked) {
+data += '&removeVote=true';
+}
+
+// Create a new AJAX request
 var xhr = new XMLHttpRequest();
 
 // Define the request URL
@@ -91,14 +108,16 @@ btn.querySelector('.downvote').classList.toggle('rotate');
 } else {
 console.error('Vote request failed. Status: ' + xhr.status);
 }
-};
 
-// Prepare the request data
-var data = 'voteType=' + encodeURIComponent(voteType);
+// Enable both upvote and downvote buttons
+upvoteBtn.disabled = false;
+downvoteBtn.disabled = false;
+};
 
 // Send the request
 xhr.send(data);
 }
+
 
 function toggleRotation(btn) {
 btn.classList.toggle('clicked');

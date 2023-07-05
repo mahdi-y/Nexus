@@ -92,4 +92,18 @@ class ReponseRepository extends ServiceEntityRepository
 
         return $query->getResult();
     }
+    public function getbyiduniq($id): ?Reponse
+    {
+        $entityManager = $this->getEntityManager();
+
+        $query = $entityManager->createQuery(
+            'SELECT r
+            FROM App\Entity\Reponse r
+            where r.idR=:id
+            '
+
+        )->setParameter('id', $id);
+
+        return $query->getOneOrNullResult();
+    }
 }

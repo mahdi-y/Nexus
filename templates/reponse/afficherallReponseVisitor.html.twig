@@ -174,186 +174,268 @@
 </header>
 
      {% endblock %}
-<style>
-        body{
-  
-    background:#eee;
-    color: #708090;
-}
-.icon-1x {
-    font-size: 24px !important;
-}
-a{
-    text-decoration:none;    
-}
-.text-primary, a.text-primary:focus, a.text-primary:hover {
-    color: #00ADBB!important;
-}
-.text-black, .text-hover-black:hover {
-    color: #000 !important;
-}
-.font-weight-bold {
-    font-weight: 700 !important;
-}
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.2.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <style type="text/css">
+        body {
+            margin-top: 0px;
+            background:#eee;
+            color: #708090;
+        }
+
+        .shadow {
+            box-shadow: 0 0 3px rgb(53 64 78 / 20%) !important;
+        }
+
+        .rounded {
+            border-radius: 5px !important;
+        }
+
+        .bg-light {
+            background-color: #f7f8fa !important;
+        }
+
+        .bg-primary,
+        .btn-primary,
+        .btn-outline-primary:hover,
+        .btn-outline-primary:focus,
+        .btn-outline-primary:active,
+        .btn-outline-primary.active,
+        .btn-outline-primary.focus,
+        .btn-outline-primary:not(:disabled):not(.disabled):active,
+        .badge-primary,
+        .nav-pills .nav-link.active,
+        .pagination .active a,
+        .custom-control-input:checked~.custom-control-label:before,
+        #preloader #status .spinner>div,
+        .social-icon li a:hover,
+        .back-to-top:hover,
+        .back-to-home a,
+        ::selection,
+        #topnav .navbar-toggle.open span:hover,
+        .owl-theme .owl-dots .owl-dot.active span,
+        .owl-theme .owl-dots.clickable .owl-dot:hover span,
+        .watch-video a .play-icon-circle,
+        .sidebar .widget .tagcloud>a:hover,
+        .flatpickr-day.selected,
+        .flatpickr-day.selected:hover,
+        .tns-nav button.tns-nav-active,
+        .form-check-input.form-check-input:checked {
+            background-color: #5e72e4 !important;
+        }
+
+        .badge {
+            padding: 5px 8px;
+            border-radius: 3px;
+            letter-spacing: 0.5px;
+            font-size: 12px;
+        }
+
+        .btn-primary,
+        .btn-outline-primary:hover,
+        .btn-outline-primary:focus,
+        .btn-outline-primary:active,
+        .btn-outline-primary.active,
+        .btn-outline-primary.focus,
+        .btn-outline-primary:not(:disabled):not(.disabled):active {
+            box-shadow: 0 3px 7px rgb(109 199 122 / 50%) !important;
+        }
+
+        .btn-primary,
+        .btn-outline-primary,
+        .btn-outline-primary:hover,
+        .btn-outline-primary:focus,
+        .btn-outline-primary:active,
+        .btn-outline-primary.active,
+        .btn-outline-primary.focus,
+        .btn-outline-primary:not(:disabled):not(.disabled):active,
+        .bg-soft-primary .border,
+        .alert-primary,
+        .alert-outline-primary,
+        .badge-outline-primary,
+        .nav-pills .nav-link.active,
+        .pagination .active a,
+        .form-group .form-control:focus,
+        .form-group .form-control.active,
+        .custom-control-input:checked~.custom-control-label:before,
+        .custom-control-input:focus~.custom-control-label::before,
+        .form-control:focus,
+        .social-icon li a:hover,
+        #topnav .has-submenu.active.active .menu-arrow,
+        #topnav.scroll .navigation-menu>li:hover>.menu-arrow,
+        #topnav.scroll .navigation-menu>li.active>.menu-arrow,
+        #topnav .navigation-menu>li:hover>.menu-arrow,
+        .flatpickr-day.selected,
+        .flatpickr-day.selected:hover,
+        .form-check-input:focus,
+        .form-check-input.form-check-input:checked,
+        .container-filter li.active,
+        .container-filter li:hover {
+            border-color: #5e72e4 !important;
+        }
+
+        .bg-primary,
+        .btn-primary,
+        .btn-outline-primary:hover,
+        .btn-outline-primary:focus,
+        .btn-outline-primary:active,
+        .btn-outline-primary.active,
+        .btn-outline-primary.focus,
+        .btn-outline-primary:not(:disabled):not(.disabled):active,
+        .badge-primary,
+        .nav-pills .nav-link.active,
+        .pagination .active a,
+        .custom-control-input:checked~.custom-control-label:before,
+        #preloader #status .spinner>div,
+        .social-icon li a:hover,
+        .back-to-top:hover,
+        .back-to-home a,
+        ::selection,
+        #topnav .navbar-toggle.open span:hover,
+        .owl-theme .owl-dots .owl-dot.active span,
+        .owl-theme .owl-dots.clickable .owl-dot:hover span,
+        .watch-video a .play-icon-circle,
+        .sidebar .widget .tagcloud>a:hover,
+        .flatpickr-day.selected,
+        .flatpickr-day.selected:hover,
+        .tns-nav button.tns-nav-active,
+        .form-check-input.form-check-input:checked {
+            background-color: #5e72e4 !important;
+        }
+
+        .btn {
+            padding: 8px 20px;
+            outline: none;
+            text-decoration: none;
+            font-size: 16px;
+            letter-spacing: 0.5px;
+            transition: all 0.3s;
+            font-weight: 600;
+            border-radius: 5px;
+        }
+
+        .btn-primary {
+            background-color: #5e72e4 !important;
+            border: 1px solid #5e72e4 !important;
+            color: #fff !important;
+            box-shadow: 0 3px 7px rgb(109 199 122 / 50%);
+        }
+
+        a {
+            text-decoration: none;
+        }
+        .icon-1x {
+            font-size: 24px !important;
+        }
+
+        .text-primary, a.text-primary:focus, a.text-primary:hover {
+            color: #00ADBB!important;
+        }
+        .text-black, .text-hover-black:hover {
+            color: #000 !important;
+        }
+        .font-weight-bold {
+        font-weight: 700 !important;
+        }
     </style>
-<script>
-   // Function triggered when up arrow is clicked
-function upVoteFunction(question) {
-    // Make an AJAX request to update the vote_q field in the database
-    const url = '/update-vote';
+    <script>
+    function upVoteFunction(reponse) {
+    // Make an AJAX request to update the vote count
+    const url = '/update-voterep';
     const data = new FormData();
-    data.append('question', question);
+    data.append('reponse', reponse);
     data.append('action', 'up');
 
     fetch(url, {
         method: 'POST',
         body: data,
     })
-        .then(response => response.json())
-        .then(data => {
-            // Update the vote count in the DOM
-            const voteCountElement = document.getElementById(`vote-count-${question}`);
-            voteCountElement.innerText = data.voteCount;
-        })
-        .catch(error => {
-            console.error('Error:', error);
-        });
+    .then(response => response.json())
+    .then(data => {
+        // Update the vote count in the DOM
+        const voteCountElement = document.getElementById(`vote-count-${reponse}`);
+        voteCountElement.innerText = data.voteCount;
+    })
+    .catch(error => {
+        console.error('Error:', error);
+    });
 }
 
-// Function triggered when down arrow is clicked
-function downVoteFunction(question) {
-    // Make an AJAX request to update the vote_q field in the database
-    const url = '/update-vote';
+function downVoteFunction(reponse) {
+    // Make an AJAX request to update the vote count
+    const url = '/update-voterep';
     const data = new FormData();
-    data.append('question', question);
+    data.append('reponse', reponse);
     data.append('action', 'down');
 
     fetch(url, {
         method: 'POST',
         body: data,
     })
-        .then(response => response.json())
-        .then(data => {
-            // Update the vote count in the DOM
-            const voteCountElement = document.getElementById(`vote-count-${question}`);
-            voteCountElement.innerText = data.voteCount;
-        })
-        .catch(error => {
-            console.error('Error:', error);
-        });
+    .then(response => response.json())
+    .then(data => {
+        // Update the vote count in the DOM
+        const voteCountElement = document.getElementById(`vote-count-${reponse}`);
+        voteCountElement.innerText = data.voteCount;
+    })
+    .catch(error => {
+        console.error('Error:', error);
+    });
 }
 
+    </script>
+</head>
 
+<body>
 
-    
-</script>
+    <link href="https://maxcdn.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css" rel="stylesheet" />
 
-    {% if jsonOutput is defined %}
-<link href="https://code.ionicframework.com/ionicons/2.0.1/css/ionicons.min.css" rel="stylesheet">
-<div class="container">
-      <div class="row">
-        <!-- Main content -->
-        <div class="col-lg-9 mb-3">
-          <div class="row text-left mb-5">
-            
-          </div>
-          <!-- End of post 1 -->
-          {% for item in jsonOutput %}
-        {% set question = item.question %}
-        {% set reponse = item.answer %}
-          <div class="card row-hover pos-relative py-3 px-3 mb-3 border-warning border-top-0 border-right-0 border-bottom-0 rounded-0">
-            <div class="row align-items-center">
-              <div class="col-md-8 mb-3 mb-sm-0">
-                <h5>
-                  <a href="#" class="text-primary">{{question}}</a>
-                </h5>
-                <p class="text-sm"><span class="op-6">Posted</span> <a class="text-black" >{{questionData[question].Date_Ajout_Q}} days</a> <span class="op-6">ago by</span> <a class="text-black" >{{questionData[question].nom_U}}</a></p>
-                <div class="text-sm op-5"> <a class="text-black mr-2" >#C++</a> <a class="text-black mr-2" >#AppStrap Theme</a> <a class="text-black mr-2" >#Wordpress</a> </div>
-              </div>
-              
-              <div class="col-md-4 op-7">
-                <div class="row text-center op-7">
-                  <div class="col px-1">
-    <i class="ion-connection-bars icon-1x"></i>
-    <span class="d-block text-sm" id="vote-count-{{ question }}">{{ votes[question] }}</span>
-</div>
-<div class="col px-1">
-    <i class="ion-ios-chatboxes-outline icon-1x"></i>
-    <a href="{{ path('afficherreponsevisitor', {'question': question}) }}" class="d-block text-sm">Replays</a>
-</div>
-<div class="col px-1">
-    <i class="ion-arrow-up-c icon-1x vote-arrow" data-question="{{ question }}" onclick="upVoteFunction('{{ question }}')"></i>
-    <i class="ion-arrow-down-c icon-1x vote-arrow" data-question="{{ question }}" onclick="downVoteFunction('{{ question }}')"></i>
-</div>
-
-       
+    <div class="container mt-5 pt-4">
+   
+        <div class="row align-items-end mb-4 pb-2">
+            <div class="col-md-8">
+                <div class="section-title text-center text-md-start">
                 </div>
-              </div>
             </div>
-          </div>
-          <!-- /End of post 1 -->
-          {% endfor %}
-          <!-- /End of post 20 -->
+            <div class="col-md-4 mt-4 mt-sm-0 d-none d-md-block">
+                <div class="text-center text-md-end">
+                </div>
+            </div>
         </div>
-        <!-- Sidebar content -->
-        <div class="col-lg-3 mb-4 mb-lg-0 px-lg-0 mt-lg-0">
-          <div style="visibility: hidden; display: none; width: 285px; height: 801px; margin: 0px; float: none; position: static; inset: 85px auto auto;"></div><div data-settings="{&quot;parent&quot;:&quot;#content&quot;,&quot;mind&quot;:&quot;#header&quot;,&quot;top&quot;:10,&quot;breakpoint&quot;:992}" data-toggle="sticky" class="sticky" style="top: 85px;"><div class="sticky-inner">
-            <a class="btn btn-lg btn-block btn-success rounded-0 py-4 mb-3 bg-op-6 roboto-bold" href="#">Ask Question</a>
-            <div class="bg-white mb-3">
-              <h4 class="px-3 py-4 op-5 m-0">
-                Active Topics
-              </h4>
-              <hr class="m-0">
-              <div class="pos-relative px-3 py-3">
-                <h6 class="text-primary text-sm">
-                  <a href="#" class="text-primary">Why Bootstrap 4 is so awesome? </a>
-                </h6>
-                <p class="mb-0 text-sm"><span class="op-6">Posted</span> <a class="text-black" href="#">39 minutes</a> <span class="op-6">ago by</span> <a class="text-black" href="#">AppStrapMaster</a></p>
-              </div>
-              <hr class="m-0">
-              <div class="pos-relative px-3 py-3">
-                <h6 class="text-primary text-sm">
-                  <a href="#" class="text-primary">Custom shortcut or command to launch command in terminal? </a>
-                </h6>
-                <p class="mb-0 text-sm"><span class="op-6">Posted</span> <a class="text-black" href="#">58 minutes</a> <span class="op-6">ago by</span> <a class="text-black" href="#">DanielD</a></p>
-              </div>
-              <hr class="m-0">
-              <div class="pos-relative px-3 py-3">
-                <h6 class="text-primary text-sm">
-                  <a href="#" class="text-primary">HELP! My Windows XP machine is down </a>
-                </h6>
-                <p class="mb-0 text-sm"><span class="op-6">Posted</span> <a class="text-black" href="#">48 minutes</a> <span class="op-6">ago by</span> <a class="text-black" href="#">DanielD</a></p>
-              </div>
-              <hr class="m-0">
-              <div class="pos-relative px-3 py-3">
-                <h6 class="text-primary text-sm">
-                  <a href="#" class="text-primary">HELP! My Windows XP machine is down </a>
-                </h6>
-                <p class="mb-0 text-sm"><span class="op-6">Posted</span> <a class="text-black" href="#">38 minutes</a> <span class="op-6">ago by</span> <a class="text-black" href="#">DanielD</a></p>
-              </div>
-              <hr class="m-0">
-            </div>
-            <div class="bg-white text-sm">
-              <h4 class="px-3 py-4 op-5 m-0 roboto-bold">
-                Stats
-              </h4>
-              <hr class="my-0">
-              <div class="row text-center d-flex flex-row op-7 mx-0">
-                <div class="col-sm-6 flex-ew text-center py-3 border-bottom border-right"> <a class="d-block lead font-weight-bold" href="#">58</a> Topics </div>
-                <div class="col-sm-6 col flex-ew text-center py-3 border-bottom mx-0"> <a class="d-block lead font-weight-bold" href="#">1.856</a> Posts </div>
-              </div>
-              <div class="row d-flex flex-row op-7">
-                <div class="col-sm-6 flex-ew text-center py-3 border-right mx-0"> <a class="d-block lead font-weight-bold" href="#">300</a> Members </div>
-                <div class="col-sm-6 flex-ew text-center py-3 mx-0"> <a class="d-block lead font-weight-bold" href="#">DanielD</a> Newest Member </div>
-              </div>
-            </div>
-          </div></div>
+
+
+        <div class="row">
+            {% for reponse in r %}
+                <div class="col-lg-4 col-md-6 col-12 mt-2 pt-2">
+                    <div class="card border-0 bg-light rounded shadow">
+                        <div class="card-body p-4">
+                            <h5 style="text-align:center;">{{reponse.contenuR}}</h5>
+                            <div class="mt-3"style="text-align:center;"">
+                                <span class="text-muted d-block" ><i class="fa fa-calendar" aria-hidden="true" ></i> <a
+                                    href="#" target="_blank"
+                                    class="text-muted" >{{reponse.dateAjoutR|date('Y-m-d')}}</a></span>
+                                <span class="text-muted d-block">
+                       <i class="fa fa-arrow-up vote-arrow" aria-hidden="true" onclick="upVoteFunction('{{ reponse.idR }}')"></i>
+                        <span id="vote-count-{{ reponse.idR }}">{{ reponse.voteR }}</span>
+                       <i class="fa fa-arrow-down" aria-hidden="true" onclick="downVoteFunction('{{ reponse.idR }}')"></i>
+                    </span>
+                                    
+                            </div>
+                        
+                        </div>
+                    </div>
+                </div>
+            {% endfor %}
         </div>
-      </div>
     </div>
-    {% else %}
-        <p>No output available.</p>
-    {% endif %}
+    <script src="https://code.jquery.com/jquery-1.10.2.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.0/dist/js/bootstrap.bundle.min.js"></script>
+    <script type="text/javascript">
+
+    </script>
+</body>
     {% endblock %}
    
  <div class="container px-4 py-5" id="hanging-icons">

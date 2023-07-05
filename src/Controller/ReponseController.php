@@ -103,6 +103,21 @@ class ReponseController extends AbstractController
             'r' => $reponses
         ]);
     }
+    #[Route('/reponse/affichervisitor/{question}', name: 'afficherreponsevisitor')]
+    public function afficherreponsevisitor(ManagerRegistry $doctrine, Request $request, QuestionRepository $repo, $question, ReponseRepository $repository): Response
+    {
+
+        $question1 = $repo->getbyname($question);
+        $reponses = $repository->getbyidquest($question1->getIdQ());
+
+
+        return $this->render('reponse/afficherallReponseVisitor.html.twig', [
+
+            'r' => $reponses,
+            'id' => $question1->getIdQ()
+
+        ]);
+    }
     #[Route('/reponse/modifier/{id}', name: 'modifierreponse')]
     public function modifierreponse($id, ManagerRegistry $doctrine, Request $request, UtilisateurRepository $utirep, QuestionRepository $quesrep, ReponseRepository $repo): Response
     {
@@ -174,5 +189,40 @@ class ReponseController extends AbstractController
 
         // Return the updated vote count in the response
         return new JsonResponse(['voteCount' => $questionEntity->getVoteQ()]);
+    }
+    #[Route('/update-voterep', name: 'update_voterep')]
+    public function updateVoterep(Request $request, ReponseRepository $reporep, ManagerRegistry $doctrine): JsonResponse
+    {
+        $out = new ConsoleOutput();
+        if ($request->isMethod('POST')) {
+            $reponse = $request->request->get('reponse');
+            $action = $request->request->get('action');
+            $out->writeln($reponse);
+            $out->writeln($action);
+            // Retrieve the reponse from the database
+            $reponseEntity = $reporep->getbyiduniq($reponse);
+
+            $out->writeln($reponseEntity->getIdR());
+
+            if ($reponseEntity == null) {
+                return new JsonResponse(['error' => 'Question not found'], 404);
+            }
+
+            // Update the vote count based on the action (up or down)
+            if ($action === 'up') {
+                $reponseEntity->setVoteR($reponseEntity->getVoteR() + 1);
+            } elseif ($action === 'down') {
+                $reponseEntity->setVoteR($reponseEntity->getVoteR() - 1);
+            } else {
+                return new JsonResponse(['error' => 'Invalid action'], 400);
+            }
+
+            // Persist the changes to the database
+            $entityManager = $doctrine->getManager();
+            $entityManager->flush();
+        }
+
+        // Return the updated vote count in the response
+        return new JsonResponse(['voteCount' => $reponseEntity->getVoteR()]);
     }
 }

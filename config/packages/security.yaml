@@ -21,6 +21,8 @@ security:
         login_path: login
         check_path: login
         default_target_path: /homepage # Redirect to the homepage after login
+        target_path_parameter: _target_path
+        success_handler: App\Controller\Security\CustomAuthenticationSuccessHandler
       logout:
         path: logout
         target: /
@@ -30,8 +32,8 @@ security:
   access_control:
     - { path: ^/login, roles: IS_AUTHENTICATED_ANONYMOUSLY }
     - { path: ^/register, roles: IS_AUTHENTICATED_ANONYMOUSLY }
-    - { path: ^/homepage, roles: ROLE_USER }
     - { path: ^/admin, roles: ROLE_ADMIN }
+    - { path: ^/homepage, roles: ROLE_USER }
 
 when@test:
   security:

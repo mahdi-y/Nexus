@@ -8,6 +8,8 @@ use Doctrine\DBAL\Types\Types;
 use Doctrine\ORM\Mapping as ORM;
 use Symfony\Component\Security\Core\User\PasswordAuthenticatedUserInterface;
 use Symfony\Component\Security\Core\User\UserInterface;
+use Symfony\Component\Validator\Constraints as Assert;
+use Symfony\Component\Serializer\Annotation\Groups;
 
 /**
  * Utilisateur
@@ -69,11 +71,24 @@ class Utilisateur implements UserInterface, PasswordAuthenticatedUserInterface
     private $mdp;
 
     /**
+     * @var string
+     *
+     * @Assert\NotBlank(groups={"registration"})
+     * @Groups({"registration"})
+     */
+    private ?string $plainPassword = null;
+
+    /**
      * @var int
      *
      * @ORM\Column(name="Role_U", type="integer", nullable=false)
      */
     private $roleU = '0';
+
+    /**
+     * @ORM\Column(type="json")
+     */
+    private $roles = [];
 
     /**
      * @var int
@@ -184,6 +199,18 @@ class Utilisateur implements UserInterface, PasswordAuthenticatedUserInterface
         return $this;
     }
 
+    public function getPlainPassword(): ?string
+    {
+        return $this->plainPassword;
+    }
+
+    public function setPlainPassword(?string $plainPassword): self
+    {
+        $this->plainPassword = $plainPassword;
+
+        return $this;
+    }
+
     public function getRoleU(): ?int
     {
         return $this->roleU;
@@ -231,6 +258,7 @@ class Utilisateur implements UserInterface, PasswordAuthenticatedUserInterface
 
         return ['ROLE_USER'];
     }
+
 
     public function getPassword(): string
     {
@@ -283,5 +311,12 @@ class Utilisateur implements UserInterface, PasswordAuthenticatedUserInterface
     public function __toString()
     {
         return $this->prenomU;
+    }
+
+    public function setRoles(array $roles): static
+    {
+        $this->roles = $roles;
+
+        return $this;
     }
 }

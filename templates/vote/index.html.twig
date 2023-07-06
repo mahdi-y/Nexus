@@ -1,0 +1,35 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Vote index{% endblock %}
+
+{% block body %}
+    <h1>Vote index</h1>
+
+    <table class="table">
+        <thead>
+            <tr>
+                <th>IdV</th>
+                <th>TypeVote</th>
+                <th>actions</th>
+            </tr>
+        </thead>
+        <tbody>
+        {% for vote in votes %}
+            <tr>
+                <td>{{ vote.idV }}</td>
+                <td>{{ vote.typeVote }}</td>
+                <td>
+                    <a href="{{ path('app_vote_show', {'idV': vote.idV}) }}">show</a>
+                    <a href="{{ path('app_vote_edit', {'idV': vote.idV}) }}">edit</a>
+                </td>
+            </tr>
+        {% else %}
+            <tr>
+                <td colspan="3">no records found</td>
+            </tr>
+        {% endfor %}
+        </tbody>
+    </table>
+
+    <a href="{{ path('app_vote_new') }}">Create new</a>
+{% endblock %}

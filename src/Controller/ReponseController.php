@@ -5,10 +5,12 @@ namespace App\Controller;
 use App\Entity\Question;
 use App\Entity\Reponse;
 use App\Entity\Utilisateur;
+use App\Entity\Vote;
 use App\Form\ReponseType;
 use App\Repository\QuestionRepository;
 use App\Repository\ReponseRepository;
 use App\Repository\UtilisateurRepository;
+use App\Repository\VoteRepository;
 use Doctrine\Persistence\ManagerRegistry;
 use phpDocumentor\Reflection\Types\Null_;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
@@ -156,9 +158,14 @@ class ReponseController extends AbstractController
     }
 
     #[Route('/update-vote', name: 'update_vote')]
-    public function updateVote(Request $request, QuestionRepository $repoquest, ManagerRegistry $doctrine): JsonResponse
+    public function updateVote(Request $request, QuestionRepository $repoquest, ManagerRegistry $doctrine, VoteRepository $voterepo): JsonResponse
     {
         $out = new ConsoleOutput();
+        $vote = new Vote();
+        $user = $this->security->getUser();
+        if ($user instanceof Utilisateur) {
+            $idU = $user;
+        }
         if ($request->isMethod('POST')) {
             $question = $request->request->get('question');
             $action = $request->request->get('action');
@@ -176,8 +183,18 @@ class ReponseController extends AbstractController
             // Update the vote count based on the action (up or down)
             if ($action === 'up') {
                 $questionEntity->setVoteQ($questionEntity->getVoteQ() + 1);
+                $vote->setIdQ($questionEntity);
+                $vote->setIdR(null);
+                $vote->setIdU($idU);
+                $vote->setTypeVote('up');
+                $voterepo->save($vote, true);
             } elseif ($action === 'down') {
                 $questionEntity->setVoteQ($questionEntity->getVoteQ() - 1);
+                $vote->setIdQ($questionEntity);
+                $vote->setIdR(null);
+                $vote->setIdU($idU);
+                $vote->setTypeVote('down');
+                $voterepo->save($vote, true);
             } else {
                 return new JsonResponse(['error' => 'Invalid action'], 400);
             }

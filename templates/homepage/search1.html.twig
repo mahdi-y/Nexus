@@ -107,10 +107,37 @@ function downVoteFunction(question) {
     <i class="ion-ios-chatboxes-outline icon-1x"></i>
     <a href="{{ path('afficherreponse', {'question': question}) }}" class="d-block text-sm">Replays</a>
 </div>
-<div class="col px-1">
+{% if voteDB is null %}
+  <div class="col px-1">
     <i class="ion-arrow-up-c icon-1x vote-arrow" data-question="{{ question }}" onclick="upVoteFunction('{{ question }}')"></i>
     <i class="ion-arrow-down-c icon-1x vote-arrow" data-question="{{ question }}" onclick="downVoteFunction('{{ question }}')"></i>
-</div>
+  </div>
+{% else %}
+  {% if voteDB is empty %}
+    <div class="col px-1">
+      <i class="ion-arrow-up-c icon-1x vote-arrow" data-question="{{ question }}" onclick="upVoteFunction('{{ question }}')"></i>
+      <i class="ion-arrow-down-c icon-1x vote-arrow" data-question="{{ question }}" onclick="downVoteFunction('{{ question }}')"></i>
+    </div>
+  {% else %}
+    {% if voteDB[0].idQ.idQ == questionData[question].id_Q and voteDB[0].idU.idU == id_U %}
+      {% if voteDB[0].typeVote == 'up' %}
+        <div class="col px-1">
+          <i class="ion-arrow-up-c icon-1x vote-arrow" onclick="{{ path('app_vote_delete',{'idV' : voteDB[0].idV }) }}"></i>
+          <i class="ion-arrow-down-c icon-1x vote-arrow" data-question="{{ question }}" onclick="downVoteFunction('{{ question }}')"></i>
+        </div>
+      {% else %}
+        <div class="col px-1">  
+          <i class="ion-arrow-up-c icon-1x vote-arrow" data-question="{{ question }}" onclick="upVoteFunction('{{ question }}')"></i>
+        </div>
+      {% endif %}
+    {% else %}
+      <div class="col px-1">
+        <i class="ion-arrow-up-c icon-1x vote-arrow" data-question="{{ question }}" onclick="upVoteFunction('{{ question }}')"></i>
+        <i class="ion-arrow-down-c icon-1x vote-arrow" data-question="{{ question }}" onclick="downVoteFunction('{{ question }}')"></i>
+      </div>
+    {% endif %}
+  {% endif %}
+{% endif %}
 
        
                 </div>

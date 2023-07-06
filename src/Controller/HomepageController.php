@@ -2,17 +2,28 @@
 
 namespace App\Controller;
 
+use App\Entity\Utilisateur;
 use App\Repository\QuestionRepository;
 use App\Repository\UtilisateurRepository;
+use App\Repository\VoteRepository;
 use DateTime;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\Console\Output\ConsoleOutput;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
+use Symfony\Component\Security\Core\Security;
 
 class HomepageController extends AbstractController
 {
+
+    private $security;
+
+    public function __construct(Security $security)
+    {
+        $this->security = $security;
+    }
+
     #[Route('/homepage', name: 'homepage')]
     public function homepage(): Response
     {
@@ -21,8 +32,13 @@ class HomepageController extends AbstractController
         ]);
     }
     #[Route('/searchroute', name: 'search_route')]
-    public function searchroute(Request $request, QuestionRepository $repo, UtilisateurRepository $repouti): Response
+    public function searchroute(Request $request, QuestionRepository $repo, UtilisateurRepository $repouti, VoteRepository $voterepo): Response
     {
+        $out = new ConsoleOutput();
+        $user = $this->security->getUser();
+        if ($user instanceof Utilisateur) {
+            $idU = $user->getIdU();
+        }
         if ($request->isMethod('POST')) {
             $searchQuery = $request->request->get('search_query');
 
@@ -42,6 +58,7 @@ class HomepageController extends AbstractController
             $jsonString = implode('', $output); // Convert array to a single string
             $output = json_decode($jsonString, true); // Decode the JSON string into an array
             $votes = [];
+            $voteDB = $voterepo->findAll();
             foreach ($output as $item) {
                 $question = $item['question'];
                 $votes[$question] = $repo->getVotesForQuestion($question);
@@ -57,7 +74,8 @@ class HomepageController extends AbstractController
                     $questionData[$question] = [
                         'Date_Ajout_Q' => $this->calculateDaysAgo($questionEntity->getdateAjoutQ()),
                         'id_U' => $questionuserid->getIdU(),
-                        'nom_U' => $questionuserid->getPrenomU()
+                        'nom_U' => $questionuserid->getPrenomU(),
+                        'id_Q' => $questionEntity->getIdQ()
                     ];
                 }
             }
@@ -69,7 +87,9 @@ class HomepageController extends AbstractController
             [
                 'jsonOutput' => $output,
                 'votes' => $votes,
-                'questionData' => $questionData
+                'questionData' => $questionData,
+                'voteDB' => $voteDB,
+                'id_U' => $idU
             ]
         );
     }

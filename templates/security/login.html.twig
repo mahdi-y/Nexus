@@ -27,14 +27,7 @@
   </div>
 {% endif %}
 
-{% if app.user %}
-  <div class="mb-4">
-    <p class="text-gray-700">
-      You are logged in as <span class="font-semibold">{{ app.user.userIdentifier }}</span>,
-      <a href="{{ path('logout') }}" class="text-indigo-500 hover:text-indigo-700 hover:underline">Logout</a>
-    </p>
-  </div>
-{% endif %}
+
 
 
 
@@ -47,6 +40,7 @@
         
       </div>
       <div class="mt-20 flex flex-col items-center">
+      
         <h1 class="text-2xl xl:text-3xl font-extrabold">
           Sign In
         </h1>
@@ -84,7 +78,12 @@
                 Sign In
               </span>
             </button>
-
+            <p class="mt-3 text-gray-600">
+ 
+  <a href="{{ path('app_reset') }}" class="text-indigo-500 hover:text-indigo-700">
+     Forgot your password? 
+  </a>
+</p>
             <p class="mt-3 text-gray-600">
   Don't have an account? 
   <a href="{{ path('register') }}" class="text-indigo-500 hover:text-indigo-700">
@@ -93,6 +92,15 @@
 </p>
            
             </p>
+            <hr></hr><hr></hr><hr></hr><hr></hr>
+            {% if app.user %}
+  <div class="mb-4">
+    <p class="text-gray-700">
+      You are logged in as <span class="font-semibold">{{ app.user.userIdentifier }}</span>,
+      <a href="{{ path('logout') }}" class="text-indigo-500 hover:text-indigo-700 hover:underline">Logout</a>
+    </p>
+  </div>
+{% endif %}
           </div>
         </div>
       </div>

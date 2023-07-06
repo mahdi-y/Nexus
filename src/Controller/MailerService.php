@@ -44,7 +44,7 @@ class MailerService
         // Create the mailer instance
         $mailer = new Mailer($transport);
 
-        $baseURL = 'https://10.1.143.127:8000';
+        $baseURL = 'https://10.1.143.33:8000';
         $confirmationLink = $baseURL . $this->urlGenerator->generate('confirm_email', ['email' => $recipientEmail], UrlGeneratorInterface::ABSOLUTE_PATH);
              
 
@@ -63,7 +63,35 @@ class MailerService
         // Return a response or perform other actions
         return new Response('Confirmation email sent!');
     }
-   
+    public function sendReset($recipientEmail)
+    {
+        // Create the Gmail SMTP transport
+        $transport = new EsmtpTransport('smtp.gmail.com', 587);
+        $transport->setUsername('youssef.azzouz@esprit.tn');
+        $transport->setPassword('ncolrbbujrynyerw'); // Replace with your app-specific password
+    
+        // Create the mailer instance
+        $mailer = new Mailer($transport);
+
+        $baseURL = 'https://10.1.143.33:8000';
+    $confirmationLink = $baseURL . $this->urlGenerator->generate('user.edit.password1', ['email' => $recipientEmail], UrlGeneratorInterface::ABSOLUTE_PATH);
+             
+
+
+        // Create the email
+        $sender = new Address('youssef.azzouz@esprit.tn', 'Nexus');
+        $email = (new Email())
+            ->addFrom($sender)
+            ->to($recipientEmail)
+            ->subject('Confirmation Email')
+            ->text('Click this link to select your new password '. $confirmationLink);
+    
+        // Send the email
+        $mailer->send($email);
+    
+        // Return a response or perform other actions
+        return new Response('Confirmation email sent!');
+    }
  
 }
 

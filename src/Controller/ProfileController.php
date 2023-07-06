@@ -5,16 +5,18 @@ namespace App\Controller;
 use App\Entity\Utilisateur;
 use App\Form\ChangePasswordFormType;
 use App\Form\ModifierType;
+use App\Form\ResetpasswordType;
 use App\Repository\UtilisateurRepository;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
+use Symfony\Component\Security\Core\Security;
 use App\Security\AppCustomAuthenticator;
+use Symfony\Component\HttpFoundation\RedirectResponse;
+
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Component\Security\Core\Encoder\UserPassworEncoderInterface;
 use Symfony\Component\PasswordHasher\Hasher\UserPasswordHasherInterface;
-
-
 use Symfony\Component\HttpFoundation\Request;
 
 use Symfony\Component\Security\Http\Authentication\UserAuthenticatorInterface;
@@ -57,7 +59,7 @@ public function editProfile(Request $request, EntityManagerInterface $entityMana
         
     }
 
-    return $this->render('profile/modifier/modif.html.twig', [
+    return $this->render('profile/modifier/index1.html.twig', [
         'ModifierType' => $form->createView(),
     ]);
 }
@@ -152,5 +154,56 @@ public function confirmEmail($email,Request $request, EntityManagerInterface $em
 
    // TODO: Redirect to an error page or perform other actions
    return $this->render('blank.html.twig');
+}
+#[Route('/reset', name: 'app_reset')]
+public function i(MailerService $mailerService, Request $request): Response
+{
+    if ($request->isMethod('POST')) {
+        // Get the form data
+        $email = $request->request->get('email');
+        $mailerService->sendReset($email);
+        
+        // Redirect to the login page
+        return new RedirectResponse($this->generateUrl('login'));
+    }
+    
+    return $this->render('reset/email.html.twig', [
+        'controller_name' => 'ProfileController',
+    ]);
+}
+#[Route('/edition-mot-de-passe1/{email}', name: 'user.edit.password1', methods: ['GET', 'POST'])]
+public function editPassword1(
+    string $email,
+    Request $request,
+    EntityManagerInterface $manager,
+    UserPasswordHasherInterface $hasher,
+    UtilisateurRepository $userRepository,
+    
+): Response {
+    $user = $userRepository->findOneBy(['emailU' => $email]);
+
+
+    $form = $this->createForm(ResetpasswordType::class);
+
+    $form->handleRequest($request);
+    if ($form->isSubmitted() && $form->isValid()) {
+        $hashedPassword = $hasher->hashPassword($user, $form->getData()['newPassword']);
+        $user->setMdp($hashedPassword);
+
+        $this->addFlash(
+            'success',
+            'Le mot de passe a été modifié.'
+        );
+
+        $manager->persist($user);
+        $manager->flush();
+
+        return $this->redirectToRoute('login');
+    }
+
+    return $this->render('profile/modifier/modif.html.twig', [
+        'form3' => $form->createView(),
+        'email'=>$email,
+    ]);
 }}
 

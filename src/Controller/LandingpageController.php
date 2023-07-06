@@ -14,7 +14,9 @@ class LandingpageController extends AbstractController
 {
     #[Route('/', name: 'landingpage')]
     public function landingpage(): Response
-    {
+    {if ($this->isGranted('IS_AUTHENTICATED_FULLY')) {
+        return $this->redirectToRoute('homepage');
+    }
         return $this->render('landingpage/index.html.twig');
     }
     #[Route('/searchroutevisitor', name: 'search_routevisitor')]

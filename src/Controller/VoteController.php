@@ -67,7 +67,7 @@ class VoteController extends AbstractController
         ]);
     }
 
-    #[Route('/{idV}', name: 'app_vote_delete', methods: ['POST'])]
+    #[Route('/delete/{idV}', name: 'app_vote_delete', methods: ['POST'])]
     public function delete(Request $request, Vote $vote, VoteRepository $voteRepository): Response
     {
         if ($this->isCsrfTokenValid('delete' . $vote->getIdV(), $request->request->get('_token'))) {

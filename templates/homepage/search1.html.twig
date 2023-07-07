@@ -40,6 +40,7 @@ function upVoteFunction(question) {
             // Update the vote count in the DOM
             const voteCountElement = document.getElementById(`vote-count-${question}`);
             voteCountElement.innerText = data.voteCount;
+            location.reload();
         })
         .catch(error => {
             console.error('Error:', error);
@@ -63,11 +64,39 @@ function downVoteFunction(question) {
             // Update the vote count in the DOM
             const voteCountElement = document.getElementById(`vote-count-${question}`);
             voteCountElement.innerText = data.voteCount;
+            location.reload();
         })
         .catch(error => {
             console.error('Error:', error);
         });
 }
+{% if voteDB is empty %}
+{% else %}
+// Function to delete an existing vote 
+function deleteVote(idV) {
+    const url = `/vote/delete/${idV}`;
+    const data = new FormData();
+    data.append('_method', 'POST');
+    data.append('_token', '{{ csrf_token('delete' ~ voteDB[0].idV) }}');
+
+    fetch(url, {
+        method: 'POST',
+        body: data,
+    })
+        .then(response => response.json())
+        .then(data => {
+            // Handle the response or perform any necessary actions
+            // For example, you can update the UI or reload the page
+            location.reload();
+        })
+        .catch(error => {
+            console.error('Error:', error);
+        });
+}
+{% endif %}
+
+
+
 
 
 
@@ -119,17 +148,27 @@ function downVoteFunction(question) {
       <i class="ion-arrow-down-c icon-1x vote-arrow" data-question="{{ question }}" onclick="downVoteFunction('{{ question }}')"></i>
     </div>
   {% else %}
-    {% if voteDB[0].idQ.idQ == questionData[question].id_Q and voteDB[0].idU.idU == id_U %}
-      {% if voteDB[0].typeVote == 'up' %}
-        <div class="col px-1">
-          <i class="ion-arrow-up-c icon-1x vote-arrow" onclick="{{ path('app_vote_delete',{'idV' : voteDB[0].idV }) }}"></i>
-          <i class="ion-arrow-down-c icon-1x vote-arrow" data-question="{{ question }}" onclick="downVoteFunction('{{ question }}')"></i>
-        </div>
-      {% else %}
-        <div class="col px-1">  
-          <i class="ion-arrow-up-c icon-1x vote-arrow" data-question="{{ question }}" onclick="upVoteFunction('{{ question }}')"></i>
-        </div>
+    {% set hasUpVote = false %}
+    {% set hasDownVote = false %}
+    {% for vote in voteDB %}
+      {% if vote.idQ.idQ == questionData[question].id_Q and vote.idU.idU == id_U %}
+        {% if vote.typeVote == 'up' %}
+          {% set hasUpVote = true %}
+        {% else %}
+          {% set hasDownVote = true %}
+        {% endif %}
       {% endif %}
+    {% endfor %}
+    {% if hasUpVote %}
+      <div class="col px-1">
+        <i class="ion-arrow-up-c icon-1x vote-arrow" onclick="deleteVote('{{ voteDB[0].idV }}')"></i>
+        <i class="ion-arrow-down-c icon-1x vote-arrow" data-question="{{ question }}" onclick="downVoteFunction('{{ question }}')"></i>
+      </div>
+    {% elseif hasDownVote %}
+      <div class="col px-1">
+       <i class="ion-arrow-down-c icon-1x vote-arrow" onclick="deleteVote('{{ voteDB[0].idV }}')"></i>
+        <i class="ion-arrow-up-c icon-1x vote-arrow" data-question="{{ question }}" onclick="upVoteFunction('{{ question }}')"></i>
+      </div>
     {% else %}
       <div class="col px-1">
         <i class="ion-arrow-up-c icon-1x vote-arrow" data-question="{{ question }}" onclick="upVoteFunction('{{ question }}')"></i>
@@ -138,6 +177,7 @@ function downVoteFunction(question) {
     {% endif %}
   {% endif %}
 {% endif %}
+
 
        
                 </div>

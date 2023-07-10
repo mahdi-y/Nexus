@@ -21,6 +21,9 @@ a{
 .font-weight-bold {
     font-weight: 700 !important;
 }
+.darker-color {
+    color: #0BDA51;
+  }
     </style>
 <script>
    // Function triggered when up arrow is clicked
@@ -40,6 +43,9 @@ function upVoteFunction(question) {
             // Update the vote count in the DOM
             const voteCountElement = document.getElementById(`vote-count-${question}`);
             voteCountElement.innerText = data.voteCount;
+             // Change the arrow color to a darker color
+const voteArrowElement = document.getElementById('aro-up');
+voteArrowElement.classList.add('darker-color');
             location.reload();
         })
         .catch(error => {
@@ -64,6 +70,9 @@ function downVoteFunction(question) {
             // Update the vote count in the DOM
             const voteCountElement = document.getElementById(`vote-count-${question}`);
             voteCountElement.innerText = data.voteCount;
+            // Change the arrow color to a darker color
+const voteArrowElement = document.getElementById('aro-down');
+voteArrowElement.classList.add('darker-color');
             location.reload();
         })
         .catch(error => {
@@ -161,13 +170,11 @@ function deleteVote(idV) {
     {% endfor %}
     {% if hasUpVote %}
       <div class="col px-1">
-        <i class="ion-arrow-up-c icon-1x vote-arrow" onclick="deleteVote('{{ voteDB[0].idV }}')"></i>
-        <i class="ion-arrow-down-c icon-1x vote-arrow" data-question="{{ question }}" onclick="downVoteFunction('{{ question }}')"></i>
+        <i class="ion-arrow-up-c icon-1x vote-arrow darker-color" id="aro-up" onclick=""></i>
       </div>
     {% elseif hasDownVote %}
       <div class="col px-1">
-       <i class="ion-arrow-down-c icon-1x vote-arrow" onclick="deleteVote('{{ voteDB[0].idV }}')"></i>
-        <i class="ion-arrow-up-c icon-1x vote-arrow" data-question="{{ question }}" onclick="upVoteFunction('{{ question }}')"></i>
+        <i class="ion-arrow-down-c icon-1x vote-arrow darker-color" id="aro-down" onclick=""></i>
       </div>
     {% else %}
       <div class="col px-1">
@@ -177,6 +184,7 @@ function deleteVote(idV) {
     {% endif %}
   {% endif %}
 {% endif %}
+
 
 
        

@@ -3,6 +3,7 @@
 namespace App\Controller;
 
 use App\Entity\Question;
+use App\Entity\Utilisateur;
 use App\Entity\Vote;
 use App\Form\QuestionType;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
@@ -13,37 +14,47 @@ use Symfony\Component\Security\Core\Security;
 use Doctrine\ORM\EntityManagerInterface;
 use App\Repository\QuestionRepository;
 use App\Repository\VoteRepository;
+use Symfony\Component\HttpFoundation\Session\SessionInterface;
+use Symfony\Component\HttpFoundation\JsonResponse;
+use Doctrine\Persistence\ManagerRegistry;
+use Symfony\Component\Security\Core\Exception\AccessDeniedException;
+
+
 
 
 class QuestionController extends AbstractController
 {
     #[Route('/question', name: 'app_question', methods: ['GET', 'POST'])]
-    public function question(Request $request, Security $security, EntityManagerInterface $entityManager): Response
-    {
-        $date = new \DateTime('@' . strtotime('now'));
-        $question = new Question();
+    public function question(Request $request, ManagerRegistry $doctrine, Security $security): Response
+{
+    $date = new \DateTime('@' . strtotime('now'));
+    $user = $security->getUser();
 
-        // Retrieve the currently logged-in user
-        $user = $security->getUser();
-
-        $form = $this->createForm(QuestionType::class, $question);
-        $form->handleRequest($request);
-
-        if ($form->isSubmitted() && $form->isValid()) {
-            // Set the idU value for the logged-in user
-            $question->setIdU($user);
-            $question->setDateAjoutQ($date);
-
-            $entityManager->persist($question);
-            $entityManager->flush();
-
-            return $this->redirectToRoute('homepage');
-        }
-
-        return $this->render('question/index.html.twig', [
-            'questionForm' => $form->createView(),
-        ]);
+    if (!$user instanceof Utilisateur) {
+        throw new AccessDeniedException('User must be logged in.');
     }
+
+    $question = new Question();
+    $question->setIdU($user); // Set the idU value for the logged-in user
+
+    $form = $this->createForm(QuestionType::class, $question);
+    $form->handleRequest($request);
+
+    if ($form->isSubmitted() && $form->isValid()) {
+        $entityManager = $doctrine->getManager();
+        $question->setDateAjoutQ($date);
+        $entityManager->persist($question);
+        $entityManager->flush();
+
+        return $this->redirectToRoute('homepage');
+    }
+
+    return $this->render('question/index.html.twig', [
+        'questionForm' => $form->createView(),
+    ]);
+}
+
+    
     
     #[Route('/my_questions', name: 'app_my_questions', methods: ['GET'])]
 public function myQuestions(Security $security, QuestionRepository $questionRepository): Response
@@ -173,5 +184,49 @@ public function voteQuestion(Request $request, EntityManagerInterface $entityMan
     // Return the updated vote count as the response
     return new Response($response, Response::HTTP_OK);
 }
+#[Route('/question/{id}/report', name: 'app_question_report', methods: ['POST'])]
+public function reportQuestion(EntityManagerInterface $entityManager, QuestionRepository $questionRepository, $id): Response
+{
+    $question = $questionRepository->find($id);
+
+    if (!$question) {
+        throw $this->createNotFoundException('Question not found.');
+    }
+
+    // Increment the 'Signale_Q' column
+    $question->setSignaleQ($question->getSignaleQ() + 1);
+    $entityManager->flush();
+
+    // Return a success response
+    return new Response('Question reported successfully!', Response::HTTP_OK);
+}
+
+#[Route('/question/{id}/isQuestionReported', name: 'app_question_isQuestionReported', methods: ['GET'])]
+public function isQuestionReported(Request $request, EntityManagerInterface $entityManager, $id): Response
+{
+    $question = $entityManager->getRepository(Question::class)->find($id);
+
+    if (!$question) {
+        throw $this->createNotFoundException('Question not found.');
+    }
+
+    $isReported = $question->getSignaleQ() > 0;
+
+    return new Response($isReported ? 'true' : 'false', Response::HTTP_OK);
+}
+
+    #[Route('/check_session_status', name:'check_session_status', methods:['GET'])]
+    public function checkSessionStatus(SessionInterface $session)
+    {
+        // Check if the session is active
+        $isActive = $session->isStarted();
+
+        // Return a JSON response indicating the session status
+        $response = [
+            'status' => $isActive ? 'active' : 'inactive',
+        ];
+
+        return new JsonResponse($response);
+    }
 
 }

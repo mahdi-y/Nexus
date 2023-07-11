@@ -13,29 +13,70 @@ use Symfony\Component\Security\Http\Logout\LogoutSuccessHandlerInterface;
 use Symfony\Component\Security\Http\Authentication\AuthenticationSuccessHandlerInterface;
 use Symfony\Component\Security\Http\HttpUtils;
 use Symfony\Component\Mailer\MailerInterface;
+use Symfony\Component\Security\Core\Exception\AuthenticationException;
+use Symfony\Component\HttpFoundation\Session\SessionInterface;
+use Symfony\Component\Security\Core\Authorization\AuthorizationCheckerInterface;
+use Symfony\Component\HttpFoundation\RequestStack;
+use Symfony\Component\Routing\Generator\UrlGeneratorInterface;
+use Doctrine\ORM\EntityManagerInterface;
+use Symfony\Component\Security\Core\Authentication\Token\UsernamePasswordToken;
+use Symfony\Component\Security\Http\Event\InteractiveLoginEvent;
+use Symfony\Contracts\EventDispatcher\EventDispatcherInterface;
+use Symfony\Component\Security\Core\Authentication\Token\Storage\TokenStorageInterface;
 
+
+
+
+
+use Symfony\Component\HttpFoundation\JsonResponse;
 
 
 
 class SecurityController extends AbstractController
 {
     /**
+ * @Route("/login", name="login", methods={"GET", "POST"})
+ */
 
-     * @Route("/login", name="login")
-     */
-    public function login(AuthenticationUtils $authenticationUtils)
-    {
-        // Get the login error if there is one
-        $error = $authenticationUtils->getLastAuthenticationError();
 
-        // Get the last username entered by the user
-        $lastUsername = $authenticationUtils->getLastUsername();
+        public function login(
+            EntityManagerInterface $entityManager,
+            AuthenticationUtils $authenticationUtils,
+            Request $request
+        ) {
+            // Get the login error if there is one
+            $error = $authenticationUtils->getLastAuthenticationError();
+        
+            if ($request->getMethod() === 'POST'){
+                
+                $email = $request->request->get('email');
+                $password = $request->request->get('password');
+        
+                // Your logic for validating the login credentials
+                $userRepository = $entityManager->getRepository(Utilisateur::class);
+                $matchedUser = $userRepository->findOneBy(['emailU' => $email, 'mdp' => $password]);
+        
+                if ($matchedUser) {
 
-        return $this->render('security/login.html.twig', [
-            'last_username' => $lastUsername,
-            'error' => $error,
-        ]);
-    }
+                    return new JsonResponse(['success' => true]);
+                } else {
+                    // Login failed, return an error response
+                    return new JsonResponse(['success' => false, 'error' => 'Invalid credentials.']);
+                }
+            }
+        
+            // Get the last username entered by the user
+            $lastUsername = $authenticationUtils->getLastUsername();
+        
+            return $this->render('security/login.html.twig', [
+                'last_username' => $lastUsername,
+                'error' => $error,
+            ]);
+        }
+     
+
+    
+    
 
     /**
      * @Route("/logout", name="logout")
@@ -55,11 +96,11 @@ class SecurityController extends AbstractController
     /**
      * @Route("/register", name="register")
      */
-    public function register(Request $request, UserPasswordEncoderInterface $passwordEncoder,MailerService $mailer)
+    public function register(    TokenStorageInterface $tokenStorage,Request $request, UserPasswordEncoderInterface $passwordEncoder, MailerService $mailer, AuthenticationUtils $authenticationUtils, EventDispatcherInterface $eventDispatcher)
     {
         if ($request->isMethod('POST')) {
             $entityManager = $this->getDoctrine()->getManager();
-
+    
             // Get the form data
             $nom = $request->request->get('nom');
             $prenom = $request->request->get('prenom');
@@ -67,11 +108,10 @@ class SecurityController extends AbstractController
             $DOB = $request->request->get('DateDeNaissance');
             $sexe = $request->request->get('sexe');
             $password = $request->request->get('password');
-
-            //convert date from string to datetimeinterface 
+    
+            // Convert date from string to DateTimeImmutable
             $DOB = DateTimeImmutable::createFromFormat('Y-m-d', $DOB);
-
-
+    
             // Create a new Utilisateur object
             $utilisateur = new Utilisateur();
             $utilisateur->setNomU($nom);
@@ -79,22 +119,30 @@ class SecurityController extends AbstractController
             $utilisateur->setEmailU($email);
             $utilisateur->setDateNaissanceU($DOB);
             $utilisateur->setSexeU($sexe);
-
+    
             // Hash the password
             $encodedPassword = $passwordEncoder->encodePassword($utilisateur, $password);
             $utilisateur->setMdp($encodedPassword);
-
+    
             // Save the utilisateur to the database
-
             $entityManager->persist($utilisateur);
             $entityManager->flush();
-
-            // Redirect to the login page
+    
+            // Automatically log in the user
+            try {
+                $token = new UsernamePasswordToken($utilisateur, null, 'main', $utilisateur->getRoles());
+                $tokenStorage->setToken($token);
+               
+            } catch (AuthenticationException $exception) {
+                // Handle any exception that occurred during authentication
+                return $this->redirectToRoute('login');
+            }
+    
+            // Redirect to the desired page after successful registration
             $mailer->sendConfirmationEmail($email, $nom);
-
-            return $this->redirectToRoute('landingpage');
+            return $this->redirectToRoute('homepage');
         }
-
+    
         return $this->render('security/register.html.twig');
     }
 }

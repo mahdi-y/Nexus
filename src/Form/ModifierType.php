@@ -66,7 +66,7 @@ class ModifierType extends AbstractType
                 ]),
             ],
         ])
-        ->add('Modifier', SubmitType::class);
+       ;
 
     }
 

@@ -44,7 +44,7 @@ class MailerService
         // Create the mailer instance
         $mailer = new Mailer($transport);
 
-        $baseURL = 'https://10.1.143.33:8000';
+        $baseURL = 'https://10.1.143.167:8000';
         $confirmationLink = $baseURL . $this->urlGenerator->generate('confirm_email', ['email' => $recipientEmail], UrlGeneratorInterface::ABSOLUTE_PATH);
              
 
@@ -73,7 +73,7 @@ class MailerService
         // Create the mailer instance
         $mailer = new Mailer($transport);
 
-        $baseURL = 'https://10.1.143.33:8000';
+        $baseURL = 'https://10.1.143.167:8000';
     $confirmationLink = $baseURL . $this->urlGenerator->generate('user.edit.password1', ['email' => $recipientEmail], UrlGeneratorInterface::ABSOLUTE_PATH);
              
 

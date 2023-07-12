@@ -67,7 +67,41 @@
 							Please select a type.
 						</div>
 					</div>
-					<button type="submit" class="btn btn-primary btn-animation">Create</button>
+					<button  id="notificationButton" type="submit" class="btn btn-primary btn-animation">Create</button>
+						<script>
+function handleConfirmation(event, message, title, successNotification) {
+  var confirmResult = confirm(message);
+  
+  if (!confirmResult) {
+    event.preventDefault();
+    return;
+  }
+
+  if (!("Notification" in window)) {
+    console.log('Notifications are not supported in this browser');
+    return;
+  }
+
+  Notification.requestPermission().then(function(permission) {
+    if (permission === "granted") {
+      var notification = new Notification(title, {
+        body: successNotification,
+        icon: "path/to/notification-icon.png"
+      });
+    } else {
+      console.log('Notification permission denied');
+    }
+  });
+}
+
+// Usage example for the "modifier" button
+var modifierButton = document.getElementById('notificationButton');
+modifierButton.addEventListener('click', function(event) {
+  handleConfirmation(event, 'Are you sure you want to Add a question?', 'Addition Confirmation', 'You have successfully Added a question');
+});
+
+
+</script>
 					{{ form_end(questionForm) }}
 				</div>
 			</div>

@@ -1,0 +1,17 @@
+<p class="label"><label for="_auth_code">Authentication Code google:</label></p>
+<img id="imageQRcode" src="{{ qrcode }}" alt="QR CODE" name="imageQRcode" />
+<form class="form" action="/2fa_check" method="post">
+    <p class="widget">
+        <input
+            id="_auth_code"
+            type="text"
+            name="_auth_code"
+            autocomplete="one-time-code"
+            autofocus
+                    />
+    </p>
+
+            <p class="submit"><input type="submit" value="Login" /></p>
+</form>
+
+<p class="cancel"><a href="/logout">Cancel</a></p>

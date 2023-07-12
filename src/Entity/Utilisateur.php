@@ -6,6 +6,7 @@ use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\DBAL\Types\Types;
 use Doctrine\ORM\Mapping as ORM;
+use Scheb\TwoFactorBundle\Model\Google\TwoFactorInterface;
 use Symfony\Component\Security\Core\User\PasswordAuthenticatedUserInterface;
 use Symfony\Component\Security\Core\User\UserInterface;
 use Symfony\Component\Validator\Constraints as Assert;
@@ -17,7 +18,7 @@ use Symfony\Component\Serializer\Annotation\Groups;
  * @ORM\Table(name="utilisateur")
  * @ORM\Entity
  */
-class Utilisateur implements UserInterface, PasswordAuthenticatedUserInterface
+class Utilisateur implements UserInterface, PasswordAuthenticatedUserInterface, TwoFactorInterface
 {
     /**
      * @var int
@@ -34,6 +35,13 @@ class Utilisateur implements UserInterface, PasswordAuthenticatedUserInterface
      * @ORM\Column(name="Nom_U", type="string", length=20, nullable=false)
      */
     private $nomU;
+
+    /**
+     * @var string
+     *
+     * @ORM\Column(name="authcode", type="string",nullable=false)
+     */
+    private $authcode;
 
     /**
      * @var string
@@ -318,5 +326,49 @@ class Utilisateur implements UserInterface, PasswordAuthenticatedUserInterface
         $this->roles = $roles;
 
         return $this;
+    }
+
+    public function isEmailAuthEnabled(): bool
+    {
+        return true;
+    }
+
+    public function getEmailAuthRecipient(): string
+    {
+        return $this->emailU;
+    }
+
+    public function getEmailAuthCode(): ?string
+    {
+        if (null === $this->authcode) {
+            throw new \LogicException('The email authentication code was not sent!');
+        }
+
+        return $this->authcode;
+    }
+
+    public function setEmailAuthCode(string $authCode): void
+    {
+        $this->authcode = $authCode;
+    }
+
+    public function isGoogleAuthenticatorEnabled(): bool
+    {
+        return null !== $this->authcode;
+    }
+
+    public function getGoogleAuthenticatorUsername(): string
+    {
+        return $this->emailU;
+    }
+
+    public function getGoogleAuthenticatorSecret(): ?string
+    {
+        return $this->authcode;
+    }
+
+    public function setGoogleAuthenticatorSecret(?string $authCode): void
+    {
+        $this->authcode = $authCode;
     }
 }

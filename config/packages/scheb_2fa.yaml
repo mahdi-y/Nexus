@@ -1,0 +1,15 @@
+# config/packages/scheb_2fa.yaml
+scheb_two_factor:
+  security_tokens:
+    - Symfony\Component\Security\Core\Authentication\Token\UsernamePasswordToken
+    - Symfony\Component\Security\Http\Authenticator\Token\PostAuthenticationToken
+    #- Acme\AuthenticationBundle\Token\CustomAuthenticationToken
+  email:
+    digits: 6
+    enabled: true
+    sender_email: nexus.vermeg@gmail.com
+    sender_name: nexus
+  google:
+    enabled: true # If Google Authenticator should be enabled, default false
+    digits: 6 # Number of digits in authentication code
+    window: 1

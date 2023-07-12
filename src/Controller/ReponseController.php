@@ -120,6 +120,34 @@ class ReponseController extends AbstractController
 
         ]);
     }
+    #[Route('/reponse/afficher1/{id}', name: 'afficherreponse11')]
+    public function afficherreponse11($id, ManagerRegistry $doctrine, Request $request, ReponseRepository $repository, QuestionRepository $repo): Response
+    {
+
+        $reponses = $repository->getbyidquest($id);
+        $user = $this->security->getUser();
+        if ($user instanceof Utilisateur) {
+            $idU = $user->getIdU();
+        }
+
+        return $this->render('reponse/afficherallReponse.html.twig', [
+
+            'r' => $reponses,
+            'id' => $id,
+            'idU' => $idU
+        ]);
+    }
+    #[Route('/reponse/afficherquest/{id}', name: 'afficherquest')]
+    public function afficherquest($id, ManagerRegistry $doctrine, Request $request, ReponseRepository $repository, QuestionRepository $repo): Response
+    {
+
+        $reponses = $repository->getbyiduniq($id);
+        $question = $repo->getbyid($reponses->getIdQ()->getIdQ());
+
+        return $this->render('/reponse/my_questions.html.twig', [
+            'questions' => $question,
+        ]);
+    }
     #[Route('/reponse/modifier/{id}', name: 'modifierreponse')]
     public function modifierreponse($id, ManagerRegistry $doctrine, Request $request, UtilisateurRepository $utirep, QuestionRepository $quesrep, ReponseRepository $repo): Response
     {

@@ -4,6 +4,8 @@ namespace App\Controller;
 
 use App\Entity\Utilisateur;
 use DateTimeImmutable;
+use Scheb\TwoFactorBundle\Security\TwoFactor\Provider\Google\GoogleAuthenticatorInterface;
+use Scheb\TwoFactorBundle\Security\TwoFactor\Provider\Google\GoogleAuthenticatorTwoFactorProvider;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\Routing\Annotation\Route;
@@ -13,9 +15,9 @@ use Symfony\Component\Security\Http\Logout\LogoutSuccessHandlerInterface;
 use Symfony\Component\Security\Http\Authentication\AuthenticationSuccessHandlerInterface;
 use Symfony\Component\Security\Http\HttpUtils;
 use Symfony\Component\Mailer\MailerInterface;
-
-
-
+use Symfony\Component\Security\Core\Authentication\Token\Storage\TokenStorageInterface;
+use Scheb\TwoFactorBundle\Model\Google\TwoFactorInterface as GoogleAuthenticatorTwoFactorInterface;
+use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
 
 class SecurityController extends AbstractController
 {
@@ -55,9 +57,12 @@ class SecurityController extends AbstractController
     /**
      * @Route("/register", name="register")
      */
-    public function register(Request $request, UserPasswordEncoderInterface $passwordEncoder,MailerService $mailer)
+    public function register(Request $request, UserPasswordEncoderInterface $passwordEncoder, MailerService $mailer, GoogleAuthenticatorInterface $authentificator)
     {
         if ($request->isMethod('POST')) {
+            $secret =  $authentificator->generateSecret();
+
+
             $entityManager = $this->getDoctrine()->getManager();
 
             // Get the form data
@@ -79,6 +84,7 @@ class SecurityController extends AbstractController
             $utilisateur->setEmailU($email);
             $utilisateur->setDateNaissanceU($DOB);
             $utilisateur->setSexeU($sexe);
+            $utilisateur->setGoogleAuthenticatorSecret($secret);
 
             // Hash the password
             $encodedPassword = $passwordEncoder->encodePassword($utilisateur, $password);
@@ -92,9 +98,27 @@ class SecurityController extends AbstractController
             // Redirect to the login page
             $mailer->sendConfirmationEmail($email, $nom);
 
+
             return $this->redirectToRoute('landingpage');
         }
 
         return $this->render('security/register.html.twig');
+    }
+
+    /**
+     * @Route("/2fa", name="2fa_login")
+     */
+    public function check2fa(GoogleAuthenticatorInterface $authentificator, TokenStorageInterface $storage)
+    {
+        $user = $storage->getToken()->getUser();
+        if (!($user instanceof GoogleAuthenticatorTwoFactorInterface)) {
+            throw new NotFoundHttpException('Cannot display QR code');
+        }
+        $code = $authentificator->getQRContent($user);
+        var_dump($code);
+        $qrcode = "https://chart.googleapis.com/chart?cht=qr&chs=150x150&chl=" . $code;
+        return $this->render('Security/2fa_login.html.twig', [
+            'qrcode' => $qrcode
+        ]);
     }
 }

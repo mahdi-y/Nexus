@@ -6,6 +6,7 @@ use Doctrine\DBAL\Types\Types;
 use Doctrine\ORM\Mapping as ORM;
 use App\Repository\QuestionRepository;
 use DateTime;
+use Symfony\Component\Validator\Constraints as Assert;
 
 /**
  * @ORM\Entity(repositoryClass="App\Repository\QuestionRepository")
@@ -26,6 +27,7 @@ class Question
      *
      * @ORM\Column(name="Titre_Q", type="text", length=65535, nullable=false)
      */
+    #[Assert\NotBlank(message: "Le contenu est obligatoire!")]
     private $titreQ;
 
 
@@ -34,6 +36,7 @@ class Question
      *
      * @ORM\Column(name="Contenu_Q", type="text", length=65535, nullable=false)
      */
+    #[Assert\NotBlank(message: "Le contenu est obligatoire!")]
     private $contenuQ;
 
     /**
@@ -41,6 +44,7 @@ class Question
      *
      * @ORM\Column(name="Type_Q", type="string", length=40, nullable=false)
      */
+    #[Assert\NotBlank(message: "Le contenu est obligatoire!")]
     private $typeQ;
 
     /**

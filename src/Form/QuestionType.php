@@ -42,7 +42,6 @@ class QuestionType extends AbstractType
                 'class' => Utilisateur::class,
                 'choice_label' => 'username',
                 'data' => $user,
-                'mapped' => false,
                 'attr' => ['style' => 'display: none;'],
             ]);
         }

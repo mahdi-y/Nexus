@@ -5,68 +5,48 @@
 	{% block content %}
 		<div class="container" style="margin-top: 1%">
 			<div class="text-center">
-
-				<div class="card-body">
-					<h1 class="card-title">My Questions</h1>
+				<div class="card bg-primary text-white">
+					<div class="card-body">
+						<h1 class="card-title display-4">My Questions</h1>
+					</div>
 				</div>
-
 			</div>
 
+
 			{% if questions is empty %}
-				<p>No questions found.</p>
+				<div class="jumbotron text-center">
+					<h1 class="display-4">No questions found.</h1>
+					<p class="lead">You can ask a new question by clicking the button below.</p>
+					<a href="{{ path('app_question') }}" class="btn btn-primary btn-lg">Ask a Question</a>
+				</div>
 			{% else %}
-				<ul class="list-group">
+				<div class="row mt-4">
 					{% for question in questions %}
-						<li class="list-group-item">
-							<h3 class="question-title">{{ question.getTitreQ() }}</h3>
-							<p class="question-content">{{ question.getContenuQ() }}</p>
-							<p class="question-date">Posted on:
-								{{ question.getdateAjoutQ()|date('Y-m-d') }}</p>
-							<div class="btn-group" role="group">
-								<a href="{{ path('app_question_edit', {'id': question.idQ}) }}" class="btn btn-secondary" style="width: 15vh">Edit</a>
-								<form action="{{ path('app_question_delete', {'id': question.idQ}) }}" method="post">
-									<input type="hidden" name="_token" value="{{ csrf_token('delete' ~ question.idQ) }}">
-									<button type="submit" class="btn btn-danger" style="margin-left: 30%; width: 15vh"  id="notificationButton">Delete</button>
-								</form>
+						<div class="col-md-6">
+							<div class="card mb-4">
+								<div class="card-body">
+									<h3 class="card-title text-center">{{ question.getTitreQ() }}</h3>
+									<div class="form-group">
+										<label for="questionContent{{ question.idQ }}">Content</label>
+										<p id="questionContent{{ question.idQ }}" class="card-text">{{ question.getContenuQ() }}</p>
+									</div>
+									<div class="form-group">
+										<label for="questionDate{{ question.idQ }}">Posted on</label>
+										<p id="questionDate{{ question.idQ }}" class="card-text">{{ question.getdateAjoutQ()|date('Y-m-d') }}</p>
+									</div>
+									<div class="btn-group d-flex justify-content-center" role="group">
+										<a href="{{ path('app_question_edit', {'id': question.idQ}) }}" class="btn btn-secondary">Edit</a>
+										<form action="{{ path('app_question_delete', {'id': question.idQ}) }}" method="post">
+											<input type="hidden" name="_token" value="{{ csrf_token('delete' ~ question.idQ) }}">
+											<button type="submit" class="btn btn-danger ml-2">Delete</button>
+										</form>
+									</div>
+								</div>
 							</div>
-						</li>
+						</div>
 					{% endfor %}
-				</ul>
+				</div>
 			{% endif %}
 		</div>
 	{% endblock %}
-	<script>
-function handleConfirmation(event, message, title, successNotification) {
-  var confirmResult = confirm(message);
-  
-  if (!confirmResult) {
-    event.preventDefault();
-    return;
-  }
-
-  if (!("Notification" in window)) {
-    console.log('Notifications are not supported in this browser');
-    return;
-  }
-
-  Notification.requestPermission().then(function(permission) {
-    if (permission === "granted") {
-      var notification = new Notification(title, {
-        body: successNotification,
-        icon: "path/to/notification-icon.png"
-      });
-    } else {
-      console.log('Notification permission denied');
-    }
-  });
-}
-
-// Usage example for the "modifier" button
-var modifierButton = document.getElementById('notificationButton');
-modifierButton.addEventListener('click', function(event) {
-  handleConfirmation(event, 'Are you sure you want to delete a question?', 'Deletion Confirmation', 'You have successfully Deleted a question');
-});
-
-
-</script>
 {% endblock %}

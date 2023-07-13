@@ -4,6 +4,46 @@
 {% endblock %}
 
 {% block body %}
+<script>
+function handleConfirmation(event, message, title, successNotification) {
+  var confirmResult = confirm(message);
+  
+
+  
+  if (!confirmResult) {
+    event.preventDefault();
+    return;
+  }
+
+  if (!("Notification" in window)) {
+    console.log('Notifications are not supported in this browser');
+    return;
+  }
+
+  Notification.requestPermission().then(function(permission) {
+    if (permission === "granted") {
+      var notification = new Notification(title, {
+        body: successNotification,
+        icon: "path/to/notification-icon.png"
+      });
+    } else {
+      console.log('Notification permission denied');
+    }
+  });
+}
+
+// Usage example for the "modifier" button
+var modifierButton = document.getElementById('notificationButton');
+modifierButton.addEventListener('click', function(event) {
+  handleConfirmation(event, 'Are you sure you want to modify Your password?', 'Modification Confirmation', 'You have successfully modified your Password');
+});
+
+
+		{% for message in app.flashes('warning') %}
+			<div class="alert alert-warning mt-4">
+				{{ message }}
+			</div>
+		{% endfor %}
 
 	<div class="container">
 
@@ -20,7 +60,12 @@
 
 				<form action="{{ path('user.edit.password', {'id': app.user.idU}) }}" method="POST">
 					{{ form_widget(form2) }}
-
+                     <div class="form-group">
+                                
+                            <button type="submit" style="margin-top: 7vh" class=" form-control  btn btn-primary" id="notificationButton">modifier</button>
+                            <hr></hr>
+                    </div>
+						
 					<div class="text-center mt-4"></div>
 				</form>
 			</div>

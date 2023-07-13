@@ -43,15 +43,19 @@ function upVoteFunction(question) {
             // Update the vote count in the DOM
             const voteCountElement = document.getElementById(`vote-count-${question}`);
             voteCountElement.innerText = data.voteCount;
-             // Change the arrow color to a darker color
-const voteArrowElement = document.getElementById('aro-up');
-voteArrowElement.classList.add('darker-color');
+            
+            // Change the arrow color to a darker color
+            const voteArrowElement = document.getElementById('aro-up');
+            voteArrowElement.classList.add('darker-color');
+            
+            // Reload the page after the vote is updated
             location.reload();
         })
         .catch(error => {
             console.error('Error:', error);
         });
 }
+
 
 // Function triggered when down arrow is clicked
 function downVoteFunction(question) {
@@ -70,15 +74,19 @@ function downVoteFunction(question) {
             // Update the vote count in the DOM
             const voteCountElement = document.getElementById(`vote-count-${question}`);
             voteCountElement.innerText = data.voteCount;
+            
             // Change the arrow color to a darker color
-const voteArrowElement = document.getElementById('aro-down');
-voteArrowElement.classList.add('darker-color');
+            const voteArrowElement = document.getElementById('aro-down');
+            voteArrowElement.classList.add('darker-color');
+            
+            // Reload the page after the vote is updated
             location.reload();
         })
         .catch(error => {
             console.error('Error:', error);
         });
 }
+
 {% if voteDB is empty %}
 {% else %}
 // Function to delete an existing vote 

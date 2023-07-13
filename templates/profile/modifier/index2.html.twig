@@ -1,36 +1,14 @@
-{% extends 'base.html.twig' %}
+{% extends 'front.html.twig' %}
 
-{% block title %}SymRecipe - Modification du mot de passe de l'utilisateur{% endblock %}
+{% block title %}Modification du mot de passe de l'utilisateur
+{% endblock %}
 
 {% block body %}
-
-    <div class="container">
-        <h1 class="mt-4">Formulaire de modification de mot de passe de l'utilisateur</h1>
-
-        {% for message in app.flashes('warning') %}
-            <div class="alert alert-warning mt-4">
-                {{ message }}
-            </div>
-        {% endfor %}
-
-        <div class="card mt-4">
-            <div class="card-body">
-                <h5 class="card-title">Modifier le mot de passe</h5>
-
-                <form action="{{ path('user.edit.password', {'id': app.user.idU}) }}" method="POST">
-                    {{ form_widget(form2) }}
-<button type="submit" class=" btn btn-primary mt-4 form-control margin-bottom: 10px" id="notificationButton">Change Password</button>
-
-                    
-                    <div class="text-center mt-4">
-                    </div>
-                </form>
-            </div>
-        </div>
-    </div>
-  <script>
+<script>
 function handleConfirmation(event, message, title, successNotification) {
   var confirmResult = confirm(message);
+  
+
   
   if (!confirmResult) {
     event.preventDefault();
@@ -57,10 +35,36 @@ function handleConfirmation(event, message, title, successNotification) {
 // Usage example for the "modifier" button
 var modifierButton = document.getElementById('notificationButton');
 modifierButton.addEventListener('click', function(event) {
-  handleConfirmation(event, 'Are you sure you want to modify Your Password?', 'Modification Confirmation', 'You have successfully modified your Password');
+  handleConfirmation(event, 'Are you sure you want to modify Your password?', 'Modification Confirmation', 'You have successfully modified your Password');
 });
 
 
 </script>
 
+	<div class="container">
+
+
+		{% for message in app.flashes('warning') %}
+			<div class="alert alert-warning mt-4">
+				{{ message }}
+			</div>
+		{% endfor %}
+
+		<div class="card mt-4">
+			<div class="card-body">
+				<h5 class="card-title">Modifier le mot de passe</h5>
+
+				<form action="{{ path('user.edit.password', {'id': app.user.idU}) }}" method="POST">
+					{{ form_widget(form2) }}
+                     <div class="form-group">
+                                
+                            <button type="submit" style="margin-top: 7vh" class=" form-control  btn btn-primary" id="notificationButton">modifier</button>
+                            <hr></hr>
+                    </div>
+						
+					<div class="text-center mt-4"></div>
+				</form>
+			</div>
+		</div>
+	</div>
 {% endblock %}

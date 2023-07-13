@@ -26,11 +26,11 @@ class CustomAuthenticationSuccessHandler implements AuthenticationSuccessHandler
 
         // Check if the user has the ROLE_ADMIN role
         if (in_array('ROLE_ADMIN', $roles, true)) {
-            // Redirect the user to /admin
+            // Redirect the admin user to /admin
             return new RedirectResponse($this->router->generate('admin'));
         }
 
-        // Redirect the user to /homepage
-        return new RedirectResponse($this->router->generate('homepage'));
+        // Redirect other users to /homepage
+        return new RedirectResponse($this->getTargetPath($request->getSession(), 'main') ?: '/homepage');
     }
 }

@@ -160,7 +160,6 @@ class SecurityController extends AbstractController
             throw new NotFoundHttpException('Cannot display QR code');
         }
         $code = $authentificator->getQRContent($user);
-        /* var_dump($code); */
         $qrcode = "https://chart.googleapis.com/chart?cht=qr&chs=150x150&chl=" . $code;
         return $this->render('Security/2fa_login.html.twig', [
             'qrcode' => $qrcode

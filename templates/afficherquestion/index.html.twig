@@ -37,40 +37,33 @@
 				}
 			</style>
 
-			{% if questions is empty %}
-				<div class="jumbotron text-center">
-					<h1 class="display-4">No questions found.</h1>
-					<p class="lead">You can ask a new question by clicking the button below.</p>
-					<a href="{{ path('app_question') }}" class="btn btn-primary btn-lg">Ask a Question</a>
-				</div>
-			{% else %}
-				{% for question in questions %}
-					<div class="card mb-4">
-						<div class="card-body d-flex justify-content-between">
-							<div>
-								<h3 class="card-title">{{ question.getTitreQ() }}</h3>
-								<p class="card-text">
-									<strong>Contenu:</strong>
-								</p>
-								<p class="card-text">{{ question.getContenuQ() }}</p>
-								<p class="card-text">
-									<strong>Type:</strong>
-								</p>
-								<p class="card-text">{{ question.getTypeQ() }}</p>
-								<p class="card-text">
-									<strong>Asked by:</strong>
-									{{ question.getIdU() is not null ? question.getIdU().getEmailU() : 'Unknown User' }}
-									<span class="asked-on">
-										<strong>On:</strong>
-										{{ question.getdateAjoutQ()|date('Y-m-d') }}</span>
-								</p>
-							</div>
-							<div>
-								<button type="button" class="btn btn-link vote-btn" onclick="voteQuestion('{{ question.getIdQ() }}', 'upvote', this)">
-									<svg xmlns="http://www.w3.org/2000/svg" width="25" height="25" fill="currentColor" class="bi bi-caret-up-fill upvote" viewbox="0 0 16 16">
-										<path d="m7.247 4.86-4.796 5.481c-.566.647-.106 1.659.753 1.659h9.592a1 1 0 0 0 .753-1.659l-4.796-5.48a1 1 0 0 0-1.506 0"/>
-									</svg>
-								</button>
+			{% for question in questions %}
+				<div class="card mb-4">
+					<div class="card-body d-flex justify-content-between">
+						<div>
+							<a href="{{ path('afficherreponse11',{'id' : question.idQ}) }}" ><h3 class="card-title" >{{ question.getTitreQ() }}</h3></a>
+							<p class="card-text">
+								<strong>Contenu:</strong>
+							</p>
+							<p class="card-text">{{ question.getContenuQ() }}</p>
+							<p class="card-text">
+								<strong>Type:</strong>
+							</p>
+							<p class="card-text">{{ question.getTypeQ() }}</p>
+							<p class="card-text">
+								<strong>Asked by:</strong>
+								{{ question.getIdU() is not null ? question.getIdU().getEmailU() : 'Unknown User' }}
+								<span class="asked-on">
+									<strong>On:</strong>
+									{{ question.getdateAjoutQ()|date('Y-m-d') }}</span>
+							</p>
+						</div>
+						<div>
+							<button type="button" class="btn btn-link vote-btn" onclick="toggleRotation(this)">
+								<svg xmlns="http://www.w3.org/2000/svg" width="25" height="25" fill="currentColor" class="bi bi-caret-up-fill upvote" viewbox="0 0 16 16">
+									<path d="m7.247 4.86-4.796 5.481c-.566.647-.106 1.659.753 1.659h9.592a1 1 0 0 0 .753-1.659l-4.796-5.48a1 1 0 0 0-1.506 0"/>
+								</svg>
+							</button>
 
 								<span class="vote-count" id="vote-count-{{ question.getIdQ() }}">{{ question.getVoteQ() }}</span>
 

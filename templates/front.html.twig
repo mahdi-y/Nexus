@@ -7,64 +7,52 @@
 			{% endblock %}
 		</title>
 		<link
-		rel="icon" href="data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 128 128%22><text y=%221.2em%22 font-size=%2296%22>⚫️</text></svg>">
+		rel="icon" href="assets/img/logo_icon.png">
 		{# Run `composer require symfony/webpack-encore-bundle` to start using Symfony UX #}
 		{% block stylesheets %}
-			<link
-			rel="manifest" href="{{asset('assets/images/favicons/site.webmanifest')}}">
 
 
 			<!-- plugin scripts -->
 			<link href="https://fonts.googleapis.com/css?family=Rubik:300,400,500,700,900&display=swap" rel="stylesheet">
-			<link rel="stylesheet" href="{{asset('assets/css/animate.min.css')}}">
-			<link rel="stylesheet" href="{{asset('assets/css/bootstrap.min.css')}}">
-			<link rel="stylesheet" href="{{asset('assets/css/owl.carousel.min.css')}}">
-			<link rel="stylesheet" href="{{asset('assets/css/owl.theme.default.min.css')}}">
-			<link rel="stylesheet" href="{{asset('assets/css/magnific-popup.css')}}">
-			<link rel="stylesheet" href="{{asset('assets/css/font-awesome.min.css')}}">
-			<link rel="stylesheet" href="{{asset('assets/css/swiper.min.css')}}">
-			<link
-			rel="stylesheet" href="{{asset('assets/plugins/dimon-icons/style.css')}}">
-
-			<!-- template styles -->
-			<link rel="stylesheet" href="{{asset('assets/css/style.css')}}">
-			<link rel="stylesheet" href="{{asset('assets/css/responsive.css')}}">
-
-
-			<!--template2 back-->
-			<!-- Fonts -->
-			<link
-			rel="stylesheet" href="https://fonts.googleapis.com/css?family=Open+Sans:300,400,600,700"> <!-- Icons -->
-			<link rel="stylesheet" href="{{asset('assets/vendor/nucleo/css/nucleo.css')}}" type="text/css">
-			<link rel="stylesheet" href="{{asset('assets/vendor/@fortawesome/fontawesome-free/css/all.min.css')}}" type="text/css">
-			<!-- Page plugins -->
-			<!-- Argon CSS -->
-		<link rel="stylesheet" href="{{asset('assets/css/argon.css?v=1.2.0')}}" type="text/css"> {% endblock %}
+			{# 			<link rel="stylesheet" href="{{asset('assets/css/animate.min.css')}}">
+																																																		 #}
+			{# <link rel="stylesheet" href="{{asset('assets/css/bootstrap.min.css')}}"> #}
+			{# <link
+																																																											rel="stylesheet" href="{{asset('assets/css/owl.carousel.min.css')}}"> #}
+			{# <link rel="stylesheet" href="{{asset('assets/css/owl.theme.default.min.css')}}"> #}
+			{# <link rel="stylesheet" href="{{asset('assets/css/magnific-popup.css')}}"> <link #}
+			{# rel="stylesheet" href="https://fonts.googleapis.com/css?family=Open+Sans:300,400,600,700"> #}
+			<!-- Icons -->
+			<link rel="stylesheet" href="{{asset('assets/vendor/nucleo/css/nucleo.css')}}" type="text/css"> <link rel="stylesheet" href="{{asset('assets/vendor/@fortawesome/fontawesome-free/css/all.min.css')}}" type="text/css">
+			<link rel="stylesheet" href="{{asset('assets/css/argon.css?v=1.2.0')}}" type="text/css">
+		{% endblock %}
 
 		{% block javascripts %}
-			<script src="{{asset('assets/js/jquery.min.js')}}"></script>
-			<script src="{{asset('assets/js/bootstrap.bundle.min.js')}}"></script>
-			<script src="{{asset('assets/js/owl.carousel.min.js')}}"></script>
-			<script src="{{asset('assets/js/waypoints.min.js')}}"></script>
-			<script src="{{asset('assets/js/jquery.counterup.min.js')}}"></script>
-			<script src="{{asset('assets/js/TweenMax.min.js')}}"></script>
-			<script src="{{asset('assets/js/wow.js')}}"></script>
-			<script src="{{asset('assets/js/jquery.magnific-popup.min.js')}}"></script>
-			<script src="{{asset('assets/js/jquery.ajaxchimp.min.js')}}"></script>
-			<script src="{{asset('assets/js/swiper.min.js')}}"></script>
-			<script src="{{asset('assets/js/jquery.easing.min.js')}}"></script>
+			{# <script src="{{asset('assets/js/jquery.min.js')}}"> #}
+			{# <script src="{{asset('assets/js/bootstrap.bundle.min.js')}}"> #}
+			{# <script src="{{asset('assets/js/owl.carousel.min.js')}}"> </script> #}
+			{# <script src="{{asset('assets/js/waypoints.min.js')}}"></script> #}
+			{# <script src="{{asset('assets/js/jquery.counterup.min.js')}}"></script> #}
+			{# <script src="{{asset('assets/js/TweenMax.min.js')}}"></script> #}
+			{# 			<script src="{{asset('assets/js/wow.js')}}"></script>
+																																																																						 #}
+			{# <script src="{{asset('assets/js/jquery.magnific-popup.min.js')}}"></script> #}
+			{# <script src="{{asset('assets/js/jquery.ajaxchimp.min.js')}}"></script> #}
+			{# 			<script src="{{asset('assets/js/swiper.min.js')}}"></script>
+																																																																						 #}
+			{# <script src="{{asset('assets/js/jquery.easing.min.js')}}"></script> #}
 
 			<!-- template scripts -->
-			<script src="{{asset('assets/js/theme.js')}}"></script>
+			{# <script src="{{asset('assets/js/theme.js')}}"></script> #}
 
 
-			<!--template2 back-->
-
-			<script src="{{asset('assets/vendor/jquery/dist/jquery.min.js')}}"></script>
+			<!--template2 back--><script src="{{asset('assets/vendor/jquery/dist/jquery.min.js')}}"> </script>
 			<script src="{{asset('assets/vendor/bootstrap/dist/js/bootstrap.bundle.min.js')}}"></script>
+			<script src="{{asset('assets/vendor/bootstrap/dist/js/bootstrap.min.js')}}"></script>
+
 			<script src="{{asset('assets/vendor/js-cookie/js.cookie.js')}}"></script>
 			<script src="{{asset('assets/vendor/jquery.scrollbar/jquery.scrollbar.min.js')}}"></script>
-			<script src="{{asset('assets/vendor/jquery-scroll-lock/dist/jquery-scrollLock.min.js')}}"></script>
+			{# <script src="{{asset('assets/vendor/jquery-scroll-lock/dist/jquery-scrollLock.min.js')}}"></script> #}
 			<!-- Optional JS -->
 			<script src="{{asset('assets/vendor/chart.js/dist/Chart.min.js')}}"></script>
 			<script src="{{asset('assets/vendor/chart.js/dist/Chart.extension.js')}}"></script>
@@ -72,6 +60,7 @@
 			<script src="{{asset('assets/js/argon.js?v=1.2.0')}}"></script>
 
 		{% endblock %}
+
 	</head>
 	<body>
 		{% block sidebar %}

@@ -58,7 +58,9 @@
 									<path d="M3.204 5h9.592L8 10.481 3.204 5zm-.753.659 4.796 5.48a1 1 0 0 0 1.506 0l4.796-5.48c.566-.647.106-1.659-.753-1.659H3.204a1 1 0 0 0-.753 1.659z"/>
 								</svg>
 							</button>
-							<button type="button" class="btn btn-secondary">Report</button>
+							<button type="button" class="btn btn-secondary report-btn" id="report-btn-{{ question.getIdQ() }}" data-question-id="{{ question.getIdQ() }}" onclick="reportQuestion('{{ question.getIdQ() }}', this)">
+									Report
+								</button>
 						</div>
 					</div>
 				</div>
@@ -71,6 +73,51 @@ btn.querySelector('.upvote').classList.toggle('rotate');
 btn.querySelector('.downvote').classList.toggle('rotate');
 }
 		</script>
+<script>
+			function showNotification(message) {
+var container = document.getElementById('notification-container');
+var notification = document.createElement('div');
+notification.classList.add('notification');
+notification.textContent = message;
+container.appendChild(notification);
+
+setTimeout(function () {
+container.removeChild(notification);
+}, 90000);
+}
+
+function reportQuestion(questionId, btn) {
+btn.disabled = true;
+btn.classList.add('disable-hover');
+
+var xhr = new XMLHttpRequest();
+
+var url = '/question/' + questionId + '/report';
+xhr.open('POST', url);
+
+xhr.onload = function () {
+if (xhr.status === 200) {
+btn.textContent = 'Reported';
+
+
+setTimeout(function () {
+btn.disabled = false;
+btn.textContent = 'Report';
+btn.classList.remove('disable-hover');
+}, 90000);
+
+showNotification('The question has been reported successfully. We will investigate your request and get back to you soon!');
+} else {
+console.error('Report request failed. Status: ' + xhr.status);
+
+btn.disabled = false;
+btn.classList.remove('disable-hover');
+}
+};
+
+xhr.send();
+}
+		</script>		
 
 	{% endblock %}
 {% endblock %}

@@ -39,14 +39,15 @@ class MailerService
 
     public function sendConfirmationEmail($recipientEmail, $nomU)
     {
-        $console = new ConsoleOutput();
-        $output = [];
-        exec("ipconfig", $output);
-        $jsonString = implode('', $output); // Convert array to a single string
-        $lol = json_decode($jsonString, true); // Decode the JSON string into an array
-        $console->writeln($lol);
-        foreach ($output as $item) {
-        }
+
+        /* $command = "ipconfig /all | findstr /I 10.1.14 | Select -First 1";
+        exec($command, $output);
+
+        $outputString = implode(PHP_EOL, $output); // Convert array to string
+
+        $command2 = $outputString . "\" -split ': ' | Select -Last 1";
+        exec($command2, $out);
+        $outputString1 = implode(PHP_EOL, $out); // Convert array to string*/
         // Create the Gmail SMTP transport
         $transport = new EsmtpTransport('smtp.gmail.com', 587);
         $transport->setUsername('youssef.azzouz@esprit.tn');
@@ -55,8 +56,8 @@ class MailerService
         // Create the mailer instance
         $mailer = new Mailer($transport);
 
-        //$baseURL = 'https://10.1.143.167:8000';
-        $baseURL = $lol;
+        $baseURL = 'http://10.1.143.10:8000';
+        //$baseURL = $out;
         $confirmationLink = $baseURL . $this->urlGenerator->generate('confirm_email', ['email' => $recipientEmail], UrlGeneratorInterface::ABSOLUTE_PATH);
 
 
@@ -77,17 +78,22 @@ class MailerService
     }
     public function sendReset($recipientEmail)
     {
-        $console = new ConsoleOutput();
-        $output = [];
-        $command = "ipconfig /all | findstr /I 10.1.14 | Select -First 1";
-        //exec("ipconfig", $output);
+
+
+        /* $command = "ipconfig /all | findstr /I 10.1.14 | Select -First 1";
         exec($command, $output);
-        //exec(' -split ': '')
-        $jsonString = implode('', $output); // Convert array to a single string
-        $lol = json_decode($jsonString, true); // Decode the JSON string into an array
-        $console->writeln($lol);
-        foreach ($output as $item) {
-        }
+
+        $outputString = implode(PHP_EOL, $output); // Convert array to string
+
+        $command2 = $outputString . "\" -split ': ' | Select -Last 1";
+        exec($command2, $out);
+        $outputString1 = implode(PHP_EOL, $out); // Convert array to string*/
+
+        // $jsonString = implode('', $output); // Convert array to a single string
+        //$lol = json_decode($jsonString, true); // Decode the JSON string into an array
+        //$console->writeln($lol);
+        //foreach ($output as $item) {
+        //}
         // Create the Gmail SMTP transport
         $transport = new EsmtpTransport('smtp.gmail.com', 587);
         $transport->setUsername('youssef.azzouz@esprit.tn');
@@ -96,8 +102,8 @@ class MailerService
         // Create the mailer instance
         $mailer = new Mailer($transport);
 
-        //$baseURL = 'https://10.1.143.167:8000';
-        $baseURL = $lol;
+        $baseURL = 'http://10.1.143.10:8000';
+        // $baseURL = $out;
         $confirmationLink = $baseURL . $this->urlGenerator->generate('user.edit.password1', ['email' => $recipientEmail], UrlGeneratorInterface::ABSOLUTE_PATH);
 
 

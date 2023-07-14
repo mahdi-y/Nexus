@@ -41,61 +41,89 @@ class QuestionController extends AbstractController
             'questionForm' => $form->createView(),
         ]);
     }
-    
+
     #[Route('/my_questions', name: 'app_my_questions', methods: ['GET'])]
-public function myQuestions(Security $security, QuestionRepository $questionRepository): Response
-{
-    
-    $user = $security->getUser();
-    
-    $questions = $questionRepository->findByUser($user);
+    public function myQuestions(Security $security, QuestionRepository $questionRepository): Response
+    {
 
-    return $this->render('question/my_questions.html.twig', [
-        'questions' => $questions,
-    ]);
-    
-}
-#[Route('/question/{id}/edit', name: 'app_question_edit', methods: ['GET', 'POST'])]
-public function editQuestion(Request $request, EntityManagerInterface $entityManager, $id): Response
-{
-    $question = $entityManager->getRepository(Question::class)->find($id);
+        $user = $security->getUser();
 
-    if (!$question) {
-        throw $this->createNotFoundException('Question not found.');
+        $questions = $questionRepository->findByUser($user);
+
+        return $this->render('question/my_questions.html.twig', [
+            'questions' => $questions,
+        ]);
+    }
+    #[Route('/question/{id}/edit', name: 'app_question_edit', methods: ['GET', 'POST'])]
+    public function editQuestion(Request $request, EntityManagerInterface $entityManager, $id): Response
+    {
+        $question = $entityManager->getRepository(Question::class)->find($id);
+
+        if (!$question) {
+            throw $this->createNotFoundException('Question not found.');
+        }
+
+        // Create the form and handle the request
+        $form = $this->createForm(QuestionType::class, $question);
+        $form->handleRequest($request);
+
+        if ($form->isSubmitted() && $form->isValid()) {
+            // Persist the changes to the database
+            $entityManager->flush();
+
+            // Redirect to a success page or any other desired action
+            return $this->redirectToRoute('app_my_questions');
+        }
+
+        return $this->render('question/edit.html.twig', [
+            'questionForm' => $form->createView(),
+        ]);
     }
 
-    // Create the form and handle the request
-    $form = $this->createForm(QuestionType::class, $question);
-    $form->handleRequest($request);
+    #[Route('/question/{id}/delete', name: 'app_question_delete', methods: ['POST'])]
+    public function deleteQuestion(EntityManagerInterface $entityManager, $id): Response
+    {
+        $question = $entityManager->getRepository(Question::class)->find($id);
 
-    if ($form->isSubmitted() && $form->isValid()) {
-        // Persist the changes to the database
+        if (!$question) {
+            throw $this->createNotFoundException('Question not found.');
+        }
+
+        // Delete the question
+        $entityManager->remove($question);
         $entityManager->flush();
 
         // Redirect to a success page or any other desired action
         return $this->redirectToRoute('app_my_questions');
     }
+    #[Route('/question/{id}/report', name: 'app_question_report', methods: ['POST'])]
+    public function reportQuestion(EntityManagerInterface $entityManager, QuestionRepository $questionRepository, $id): Response
+    {
+        $question = $questionRepository->find($id);
 
-    return $this->render('question/edit.html.twig', [
-        'questionForm' => $form->createView(),
-    ]);
-}
+        if (!$question) {
+            throw $this->createNotFoundException('Question not found.');
+        }
 
-#[Route('/question/{id}/delete', name: 'app_question_delete', methods: ['POST'])]
-public function deleteQuestion(EntityManagerInterface $entityManager, $id): Response
-{
-    $question = $entityManager->getRepository(Question::class)->find($id);
+        // Increment the 'Signale_Q' column
+        $question->setSignaleQ($question->getSignaleQ() + 1);
+        $entityManager->flush();
 
-    if (!$question) {
-        throw $this->createNotFoundException('Question not found.');
+        // Return a success response
+        return new Response('Question reported successfully!', Response::HTTP_OK);
     }
 
-    // Delete the question
-    $entityManager->remove($question);
-    $entityManager->flush();
+    #[Route('/question/{id}/isQuestionReported', name: 'app_question_isQuestionReported', methods: ['GET'])]
+    public function isQuestionReported(Request $request, EntityManagerInterface $entityManager, $id): Response
+    {
+        $question = $entityManager->getRepository(Question::class)->find($id);
 
-    // Redirect to a success page or any other desired action
-    return $this->redirectToRoute('app_my_questions');
-}
+        if (!$question) {
+            throw $this->createNotFoundException('Question not found.');
+        }
 
+        $isReported = $question->getSignaleQ() > 0;
+
+        return new Response($isReported ? 'true' : 'false', Response::HTTP_OK);
+    }
 }

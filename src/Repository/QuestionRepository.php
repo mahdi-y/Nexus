@@ -94,13 +94,13 @@ class QuestionRepository extends ServiceEntityRepository
     }
 
     public function findByUser($user)
-{
-    return $this->createQueryBuilder('q')
-        ->andWhere('q.idU = :user')
-        ->setParameter('user', $user)
-        ->getQuery()
-        ->getResult();
-}
+    {
+        return $this->createQueryBuilder('q')
+            ->andWhere('q.idU = :user')
+            ->setParameter('user', $user)
+            ->getQuery()
+            ->getResult();
+    }
     public function getVotesForQuestion($questionName)
     {
         $query = $this->createQueryBuilder('q')
